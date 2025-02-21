@@ -5,9 +5,12 @@
       "name": "blindfold-chess",
       "dependencies": {
         "@tailwindcss/vite": "^4.0.6",
+        "@types/chess.js": "^0.13.7",
+        "chess.js": "^1.0.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-router-dom": "^7.1.5",
+        "stockfish.wasm": "^0.10.0",
       },
       "devDependencies": {
         "@eslint/js": "^9.19.0",
@@ -230,6 +233,8 @@
 
     "@types/babel__traverse": ["@types/babel__traverse@7.20.6", "", { "dependencies": { "@babel/types": "^7.20.7" } }, "sha512-r1bzfrm0tomOI8g1SzvCaQHo6Lcv6zu0EA+W2kHrt8dyrHQxGzBBL4kdkzIS+jBMV+EYcMAEAqXqYaLJq5rOZg=="],
 
+    "@types/chess.js": ["@types/chess.js@0.13.7", "", {}, "sha512-o9TeeBdFXelFJXOD9+6sT6bbpBvWG0ZbpOnlIyUNXBjewh7xoFS0+BifGc71T45D5E952io3i8dDsaN6hnLaxw=="],
+
     "@types/cookie": ["@types/cookie@0.6.0", "", {}, "sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA=="],
 
     "@types/estree": ["@types/estree@1.0.6", "", {}, "sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw=="],
@@ -283,6 +288,8 @@
     "caniuse-lite": ["caniuse-lite@1.0.30001699", "", {}, "sha512-b+uH5BakXZ9Do9iK+CkDmctUSEqZl+SP056vc5usa0PL+ev5OHw003rZXcnjNDv3L8P5j6rwT6C0BPKSikW08w=="],
 
     "chalk": ["chalk@4.1.2", "", { "dependencies": { "ansi-styles": "^4.1.0", "supports-color": "^7.1.0" } }, "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="],
+
+    "chess.js": ["chess.js@1.0.0", "", {}, "sha512-zHaSRub6xkUXxvX9lqgovwRiBvbOmVCTh47rZ0I/HVyCiNc0T5bVLwzshL5X6JtrP+rN/CTmIxdpFr943eP97Q=="],
 
     "color-convert": ["color-convert@2.0.1", "", { "dependencies": { "color-name": "~1.1.4" } }, "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ=="],
 
@@ -503,6 +510,8 @@
     "shebang-regex": ["shebang-regex@3.0.0", "", {}, "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A=="],
 
     "source-map-js": ["source-map-js@1.2.1", "", {}, "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="],
+
+    "stockfish.wasm": ["stockfish.wasm@0.10.0", "", {}, "sha512-OTvOlz0ijCSmIb/YvOZ1Dn6vwZVS4Ge3N+RcV0d2b6LXUtCJ9UwmBHypRW3DZ+VXf8WNm7E3P+6jMTVvb3QaBg=="],
 
     "strip-json-comments": ["strip-json-comments@3.1.1", "", {}, "sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig=="],
 
