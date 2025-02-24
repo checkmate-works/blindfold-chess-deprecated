@@ -1,7 +1,7 @@
-import TopPage from '../components/TopPage';
+import TopPage from "../components/TopPage";
 
 const Home = () => {
   return <TopPage />;
 };
 
-export default Home; 
+export default Home;

@@ -1,4 +1,4 @@
-import { Game } from '../types';
+import { Game } from "../types";
 
 interface GameListProps {
   games: Game[];
@@ -8,7 +8,9 @@ const GameList = ({ games }: GameListProps) => {
   if (games.length === 0) {
     return (
       <div className="flex items-center justify-center p-8 text-gray-500">
-        <p className="text-center">No games yet. Start playing to see your games here!</p>
+        <p className="text-center">
+          No games yet. Start playing to see your games here!
+        </p>
       </div>
     );
   }
@@ -24,11 +26,15 @@ const GameList = ({ games }: GameListProps) => {
                   {new Date(game.createdAt).toLocaleDateString()}
                 </span>
                 {game.result && (
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    game.result === 'win' ? 'bg-green-100 text-green-800' :
-                    game.result === 'loss' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      game.result === "win"
+                        ? "bg-green-100 text-green-800"
+                        : game.result === "loss"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
                     {game.result.toUpperCase()}
                   </span>
                 )}
@@ -46,4 +52,4 @@ const GameList = ({ games }: GameListProps) => {
   );
 };
 
-export default GameList; 
+export default GameList;

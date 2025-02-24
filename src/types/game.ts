@@ -1,4 +1,4 @@
-export type PlayerColor = 'white' | 'black';
+export type PlayerColor = "white" | "black";
 
 export interface GameSettings {
   color: PlayerColor;

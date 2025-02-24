@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import { GameSettings } from '@/types/game';
-import MoveInput from './MoveInput';
+import { useState } from "react";
+import { GameSettings } from "@/types/game";
+import MoveInput from "./MoveInput";
 
 interface GameState {
-  fen: string;  // Current position in FEN notation
-  history: string[];  // List of moves in algebraic notation
+  fen: string; // Current position in FEN notation
+  history: string[]; // List of moves in algebraic notation
   castlingRights: {
     whiteKingside: boolean;
     whiteQueenside: boolean;
     blackKingside: boolean;
     blackQueenside: boolean;
   };
-  enPassantTarget: string | null;  // Square where en passant capture is possible (e.g., 'e3')
-  halfMoveClock: number;  // Moves since last pawn move or capture
-  isPlayerTurn: boolean;  // Whether it's the player's turn
+  enPassantTarget: string | null; // Square where en passant capture is possible (e.g., 'e3')
+  halfMoveClock: number; // Moves since last pawn move or capture
+  isPlayerTurn: boolean; // Whether it's the player's turn
 }
 
 interface GamePlayProps {
@@ -21,12 +21,15 @@ interface GamePlayProps {
 }
 
 const GamePlay = ({ settings }: GamePlayProps) => {
-  const displayColor = settings.color === 'random' 
-    ? (Math.random() < 0.5 ? 'white' : 'black')
-    : settings.color;
+  const displayColor =
+    settings.color === "random"
+      ? Math.random() < 0.5
+        ? "white"
+        : "black"
+      : settings.color;
 
-  const [gameState, setGameState] = useState<GameState>({
-    fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', // Initial position
+  const [gameState] = useState<GameState>({
+    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", // Initial position
     history: [],
     castlingRights: {
       whiteKingside: true,
@@ -36,18 +39,22 @@ const GamePlay = ({ settings }: GamePlayProps) => {
     },
     enPassantTarget: null,
     halfMoveClock: 0,
-    isPlayerTurn: displayColor === 'white', // White moves first
+    isPlayerTurn: displayColor === "white", // White moves first
   });
 
   return (
     <div className="max-w-2xl mx-auto p-4">
       <div className="text-center mb-6">
-        <div>Playing as: {displayColor === 'white' ? '♔ White' : '♚ Black'}</div>
-        <div className="text-sm text-gray-600">AI Level: {settings.skillLevel}</div>
+        <div>
+          Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
+        </div>
+        <div className="text-sm text-gray-600">
+          AI Level: {settings.skillLevel}
+        </div>
       </div>
-      
+
       <div className="mt-8">
-        <MoveInput 
+        <MoveInput
           isPlayerTurn={gameState.isPlayerTurn}
           lastMove={gameState.history[gameState.history.length - 1]}
         />
@@ -56,4 +63,4 @@ const GamePlay = ({ settings }: GamePlayProps) => {
   );
 };
 
-export default GamePlay; 
+export default GamePlay;
