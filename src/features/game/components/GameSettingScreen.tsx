@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { PlayerColor } from '@/types/game';
 import { StockfishClient } from '../stockfish/client';
 import MoveInput from './MoveInput';
 import ColorSelector from './ColorSelector';
 import SkillLevelSelector from './SkillLevelSelector';
-import { PlayerColor } from '../../../types/game';
 
 interface GameSettingsProps {
   onStartGame: (settings: { color: PlayerColor; skillLevel: number }) => void;
