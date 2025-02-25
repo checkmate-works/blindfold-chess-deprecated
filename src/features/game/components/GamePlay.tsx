@@ -3,17 +3,18 @@ import { GameSettings } from "@/types/game";
 import MoveInput from "./MoveInput";
 
 interface GameState {
-  fen: string; // Current position in FEN notation
-  history: string[]; // List of moves in algebraic notation
+  // TODO: define the type of the algebraic notation
+  fen: string;
+  history: string[];
   castlingRights: {
     whiteKingside: boolean;
     whiteQueenside: boolean;
     blackKingside: boolean;
     blackQueenside: boolean;
   };
-  enPassantTarget: string | null; // Square where en passant capture is possible (e.g., 'e3')
-  halfMoveClock: number; // Moves since last pawn move or capture
-  isPlayerTurn: boolean; // Whether it's the player's turn
+  enPassantTarget: string | null;
+  halfMoveClock: number;
+  isPlayerTurn: boolean;
 }
 
 interface GamePlayProps {
@@ -39,7 +40,7 @@ const GamePlay = ({ settings }: GamePlayProps) => {
     },
     enPassantTarget: null,
     halfMoveClock: 0,
-    isPlayerTurn: displayColor === "white", // White moves first
+    isPlayerTurn: displayColor === "white",
   });
 
   return (
