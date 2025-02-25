@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { PlayerColor } from "@/types/game";
-import MoveInput from "./MoveInput";
 import ColorSelector from "./ColorSelector";
 import SkillLevelSelector from "./SkillLevelSelector";
 
@@ -9,17 +8,10 @@ interface GameSettingsProps {
 }
 
 const GameSettingScreen = ({ onStartGame }: GameSettingsProps) => {
-  const [game, setGame] = useState<StockfishClient | null>(null);
-  const [lastMove, setLastMove] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<PlayerColor>("white");
   const [skillLevel, setSkillLevel] = useState<number>(10);
 
   const handleStartGame = () => {
-    const newGame = new StockfishClient();
-    newGame.onMove((move) => {
-      setLastMove(move);
-    });
-    setGame(newGame);
     onStartGame({ color: selectedColor, skillLevel });
   };
 
@@ -41,8 +33,6 @@ const GameSettingScreen = ({ onStartGame }: GameSettingsProps) => {
       >
         Start Game
       </button>
-
-      {game && <MoveInput lastMove={lastMove} />}
     </div>
   );
 };
