@@ -21,7 +21,7 @@ const TopPage = () => {
 
         <div className="flex justify-center mb-12">
           <button
-            onClick={() => navigate("/game")}
+            onClick={() => navigate("/game/setup")}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg 
                      shadow-md transition-colors duration-200 flex items-center space-x-2"
           >
