@@ -1,11 +1,11 @@
 import { PlayerColor } from "@/types";
 
-interface ColorSelectorProps {
+type ColorSelectorProps = {
   selectedColor: PlayerColor;
   onColorSelect: (color: PlayerColor) => void;
-}
+};
 
-const ColorSelector = ({
+export const ColorSelector = ({
   selectedColor,
   onColorSelect,
 }: ColorSelectorProps) => {
@@ -55,5 +55,3 @@ const ColorSelector = ({
     </div>
   );
 };
-
-export default ColorSelector;

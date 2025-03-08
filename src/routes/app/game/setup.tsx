@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { GameSettings } from "@/types";
-import GameSettingScreen from "@/features/game/components/GameSettingScreen";
+import { GameSetting } from "@/features/game";
+import { ContentLayout } from "@/components/layouts";
 
 export const GameSetup = () => {
   const navigate = useNavigate();
@@ -10,9 +11,8 @@ export const GameSetup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <h1 className="text-2xl font-bold text-center mb-8">Blindfold Chess</h1>
-      <GameSettingScreen onStartGame={handleStartGame} />
-    </div>
+    <ContentLayout title="Blindfold Chess">
+      <GameSetting onStartGame={handleStartGame} />
+    </ContentLayout>
   );
 };

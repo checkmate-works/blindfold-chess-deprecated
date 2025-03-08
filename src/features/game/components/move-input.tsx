@@ -4,11 +4,17 @@ const PIECES = ["K", "Q", "R", "B", "N"];
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const RANKS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-interface ButtonRowProps {
+type ButtonRowProps = {
   symbols: string[];
   onSymbolClick: (symbol: string) => void;
   disabled?: boolean;
-}
+};
+
+type MoveInputProps = {
+  isPlayerTurn: boolean;
+  lastMove?: string;
+  onMove?: (move: string) => void;
+};
 
 const ButtonRow = ({ symbols, onSymbolClick, disabled }: ButtonRowProps) => (
   <div className="flex">
@@ -31,13 +37,11 @@ const ButtonRow = ({ symbols, onSymbolClick, disabled }: ButtonRowProps) => (
   </div>
 );
 
-interface MoveInputProps {
-  isPlayerTurn: boolean;
-  lastMove?: string;
-  onMove?: (move: string) => void;
-}
-
-const MoveInput = ({ isPlayerTurn, lastMove, onMove }: MoveInputProps) => {
+export const MoveInput = ({
+  isPlayerTurn,
+  lastMove,
+  onMove,
+}: MoveInputProps) => {
   const [currentMove, setCurrentMove] = useState<string>("");
 
   const handleSymbolClick = (symbol: string) => {
@@ -89,5 +93,3 @@ const MoveInput = ({ isPlayerTurn, lastMove, onMove }: MoveInputProps) => {
     </div>
   );
 };
-
-export default MoveInput;

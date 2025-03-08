@@ -1,6 +1,7 @@
 import { useLocation, Navigate } from "react-router-dom";
 import { GameSettings } from "@/types";
-import GamePlayScreen from "@/features/game/components/GamePlay";
+import { GamePlay as GamePlayContainer } from "@/features/game";
+import { ContentLayout } from "@/components/layouts";
 
 export const GamePlay = () => {
   const location = useLocation();
@@ -11,9 +12,8 @@ export const GamePlay = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <h1 className="text-2xl font-bold text-center mb-8">Blindfold Chess</h1>
-      <GamePlayScreen settings={settings} />
-    </div>
+    <ContentLayout title="Blindfold Chess">
+      <GamePlayContainer settings={settings} />
+    </ContentLayout>
   );
 };

@@ -1,11 +1,11 @@
 import { SKILL_LEVELS } from "@/types";
 
-interface SkillLevelSelectorProps {
+type SkillLevelSelectorProps = {
   selectedLevel: number;
   onLevelSelect: (level: number) => void;
-}
+};
 
-const SkillLevelSelector = ({
+export const SkillLevelSelector = ({
   selectedLevel,
   onLevelSelect,
 }: SkillLevelSelectorProps) => {
@@ -31,5 +31,3 @@ const SkillLevelSelector = ({
     </div>
   );
 };
-
-export default SkillLevelSelector;

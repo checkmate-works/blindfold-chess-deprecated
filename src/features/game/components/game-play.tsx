@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { GameSettings } from "@/types";
-import MoveInput from "./MoveInput";
+import { MoveInput } from "./move-input";
 
-interface GameState {
+type GameState = {
   // TODO: define the type of the algebraic notation
   fen: string;
   history: string[];
@@ -15,13 +15,13 @@ interface GameState {
   enPassantTarget: string | null;
   halfMoveClock: number;
   isPlayerTurn: boolean;
-}
+};
 
 interface GamePlayProps {
   settings: GameSettings;
 }
 
-const GamePlay = ({ settings }: GamePlayProps) => {
+export const GamePlay = ({ settings }: GamePlayProps) => {
   const displayColor =
     settings.color === "random"
       ? Math.random() < 0.5
@@ -63,5 +63,3 @@ const GamePlay = ({ settings }: GamePlayProps) => {
     </div>
   );
 };
-
-export default GamePlay;
