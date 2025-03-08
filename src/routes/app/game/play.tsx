@@ -1,5 +1,5 @@
 import { useLocation, Navigate } from "react-router-dom";
-import { GameSettings } from "@/types/game";
+import { GameSettings } from "@/types";
 import GamePlayScreen from "@/features/game/components/GamePlay";
 
 export const GamePlay = () => {

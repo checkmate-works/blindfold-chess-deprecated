@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayerColor } from "@/types/game";
+import { PlayerColor } from "@/types";
 import ColorSelector from "./ColorSelector";
 import SkillLevelSelector from "./SkillLevelSelector";
 

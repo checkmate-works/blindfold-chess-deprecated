@@ -1,4 +1,4 @@
-import { SKILL_LEVELS } from "@/types/game";
+import { SKILL_LEVELS } from "@/types";
 
 interface SkillLevelSelectorProps {
   selectedLevel: number;

@@ -1,4 +1,4 @@
-import { PlayerColor } from "@/types/game";
+import { PlayerColor } from "@/types";
 
 interface ColorSelectorProps {
   selectedColor: PlayerColor;

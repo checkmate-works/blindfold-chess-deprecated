@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GameSettings } from "@/types/game";
+import { GameSettings } from "@/types";
 import MoveInput from "./MoveInput";
 
 interface GameState {
