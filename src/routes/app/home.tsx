@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/layouts";
-import TopPage from "@/features/home/components/TopPage";
+import { TopPage } from "@/features/home/";
 
 export const Home = () => {
   return (

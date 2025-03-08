@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import GameList from "./GameList";
+import { GameList } from "./game-list";
 import { Game } from "../types";
 
-const TopPage = () => {
+export const TopPage = () => {
   const [games, setGames] = useState<Game[]>([]);
   const navigate = useNavigate();
 
@@ -32,5 +32,3 @@ const TopPage = () => {
     </div>
   );
 };
-
-export default TopPage;
