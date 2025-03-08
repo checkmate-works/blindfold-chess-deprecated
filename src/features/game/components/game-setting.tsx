@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { PlayerColor } from "@/types/game";
-import ColorSelector from "./ColorSelector";
-import SkillLevelSelector from "./SkillLevelSelector";
+import { PlayerColor } from "@/types";
+import { ColorSelector } from "./color-selector";
+import { SkillLevelSelector } from "./skill-level-selector";
 
-interface GameSettingsProps {
+type GameSettingsProps = {
   onStartGame: (settings: { color: PlayerColor; skillLevel: number }) => void;
-}
+};
 
-const GameSettingScreen = ({ onStartGame }: GameSettingsProps) => {
+export const GameSetting = ({ onStartGame }: GameSettingsProps) => {
   const [selectedColor, setSelectedColor] = useState<PlayerColor>("white");
   const [skillLevel, setSkillLevel] = useState<number>(10);
 
@@ -36,5 +36,3 @@ const GameSettingScreen = ({ onStartGame }: GameSettingsProps) => {
     </div>
   );
 };
-
-export default GameSettingScreen;

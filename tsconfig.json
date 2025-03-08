@@ -1,10 +1,12 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["bun-types"],
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "strict": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

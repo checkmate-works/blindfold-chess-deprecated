@@ -1,10 +1,10 @@
-import { Game } from "../types";
+import { Game } from "@/types";
 
 interface GameListProps {
   games: Game[];
 }
 
-const GameList = ({ games }: GameListProps) => {
+export const GameList = ({ games }: GameListProps) => {
   if (games.length === 0) {
     return (
       <div className="flex items-center justify-center p-8 text-gray-500">
@@ -51,5 +51,3 @@ const GameList = ({ games }: GameListProps) => {
     </div>
   );
 };
-
-export default GameList;
