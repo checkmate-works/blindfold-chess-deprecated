@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GameSettings } from "@/types";
 import { MoveInput } from "./move-input";
+import { Chessboard } from "react-chessboard";
 
 type GameState = {
   // TODO: define the type of the algebraic notation
@@ -22,6 +23,7 @@ interface GamePlayProps {
 }
 
 export const GamePlay = ({ settings }: GamePlayProps) => {
+  const [showBoard, setShowBoard] = useState(false);
   const displayColor =
     settings.color === "random"
       ? Math.random() < 0.5
@@ -30,7 +32,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
       : settings.color;
 
   const [gameState] = useState<GameState>({
-    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", // Initial position
+    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     history: [],
     castlingRights: {
       whiteKingside: true,
@@ -53,6 +55,22 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
           AI Level: {settings.skillLevel}
         </div>
       </div>
+
+      <button
+        onClick={() => setShowBoard(!showBoard)}
+        className="w-full mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        {showBoard ? "Hide Board" : "Peek at Board"}
+      </button>
+
+      {showBoard && (
+        <div className="mb-8">
+          <Chessboard
+            position={gameState.fen}
+            boardOrientation={displayColor}
+          />
+        </div>
+      )}
 
       <div className="mt-8">
         <MoveInput
