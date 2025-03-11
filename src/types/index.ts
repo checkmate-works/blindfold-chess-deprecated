@@ -17,3 +17,6 @@ export type Game = {
   result?: "win" | "loss" | "draw";
   moves: string[];
 };
+
+export type UciMove = `${string}${number}${string}${number}`;
+export type Fen = string;
