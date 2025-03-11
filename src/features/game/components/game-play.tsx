@@ -2,6 +2,8 @@ import { useState } from "react";
 import { GameSettings } from "@/types";
 import { MoveInput } from "./move-input";
 import { Chessboard } from "react-chessboard";
+import { Chess } from "chess.js";
+import { getNextMove } from "@/lib/game";
 
 type GameState = {
   // TODO: define the type of the algebraic notation
@@ -31,7 +33,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
         : "black"
       : settings.color;
 
-  const [gameState] = useState<GameState>({
+  const [gameState, setGameState] = useState<GameState>({
     fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     history: [],
     castlingRights: {
@@ -44,6 +46,31 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
     halfMoveClock: 0,
     isPlayerTurn: displayColor === "white",
   });
+
+  const handleMove = (move: string) => {
+    const chess = new Chess(gameState.fen);
+    chess.move(move);
+
+    // Update game state with player's move
+    const newState = {
+      ...gameState,
+      fen: chess.fen(),
+      history: [...gameState.history, move],
+      isPlayerTurn: false,
+    };
+    setGameState(newState);
+
+    // Get and apply AI's move
+    const aiMove = getNextMove(chess.fen());
+    chess.move(aiMove);
+
+    setGameState((prev) => ({
+      ...prev,
+      fen: chess.fen(),
+      history: [...prev.history, aiMove],
+      isPlayerTurn: true,
+    }));
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -68,6 +95,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
           <Chessboard
             position={gameState.fen}
             boardOrientation={displayColor}
+            boardWidth={400}
           />
         </div>
       )}
@@ -76,6 +104,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
         <MoveInput
           isPlayerTurn={gameState.isPlayerTurn}
           lastMove={gameState.history[gameState.history.length - 1]}
+          onMove={handleMove}
         />
       </div>
     </div>
