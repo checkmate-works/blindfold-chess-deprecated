@@ -1,20 +1,24 @@
 import { useState } from "react";
+import {
+  ALL_FILES,
+  ALL_RANKS,
+  PIECES,
+  type AlgebraicNotation,
+  type File,
+  type PieceSymbol,
+} from "@/types";
 
-const PIECES = ["K", "Q", "R", "B", "N"];
-const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
-const RANKS = ["1", "2", "3", "4", "5", "6", "7", "8"];
-
-type ButtonRowProps = {
-  symbols: string[];
+interface ButtonRowProps {
+  symbols: readonly string[];
   onSymbolClick: (symbol: string) => void;
   disabled?: boolean;
-};
+}
 
-type MoveInputProps = {
+interface MoveInputProps {
   isPlayerTurn: boolean;
-  lastMove?: string;
-  onMove?: (move: string) => void;
-};
+  lastMove?: AlgebraicNotation;
+  onMove?: (move: AlgebraicNotation) => void;
+}
 
 const ButtonRow = ({ symbols, onSymbolClick, disabled }: ButtonRowProps) => (
   <div className="flex">
@@ -46,19 +50,91 @@ export const MoveInput = ({
 
   const handleSymbolClick = (symbol: string) => {
     setCurrentMove((prev) => {
-      const newMove = prev + symbol;
+      if (prev === "") {
+        return symbol;
+      }
 
-      // If we have a complete move (e.g., "e4" or "Nf3")
+      // If first character is a piece and clicking the same piece, clear it
       if (
-        (newMove.length === 2 && !PIECES.includes(newMove[0])) || // Pawn move
-        (newMove.length === 3 && PIECES.includes(newMove[0])) // Piece move
+        prev.length === 1 &&
+        PIECES.includes(prev as PieceSymbol) &&
+        symbol === prev
       ) {
-        onMove?.(newMove);
         return "";
       }
 
-      return newMove;
+      // If first character is a piece and clicking another piece, replace it
+      if (
+        prev.length === 1 &&
+        PIECES.includes(prev as PieceSymbol) &&
+        PIECES.includes(symbol as PieceSymbol)
+      ) {
+        return symbol;
+      }
+
+      // If first character is a file and clicking a file, replace it
+      if (
+        prev.length === 1 &&
+        ALL_FILES.includes(prev as File) &&
+        ALL_FILES.includes(symbol as File)
+      ) {
+        return symbol;
+      }
+
+      // If second character is a file and clicking a file, replace it
+      if (
+        prev.length === 2 &&
+        ALL_FILES.includes(prev[1] as File) &&
+        ALL_FILES.includes(symbol as File)
+      ) {
+        return prev[0] + symbol;
+      }
+
+      // If last character is a rank and clicking a rank, replace it
+      if (
+        ALL_RANKS.includes(
+          Number(prev[prev.length - 1]) as (typeof ALL_RANKS)[number],
+        ) &&
+        ALL_RANKS.includes(Number(symbol) as (typeof ALL_RANKS)[number])
+      ) {
+        return prev.slice(0, -1) + symbol;
+      }
+
+      // Add character if it follows valid pattern
+      if (
+        (prev.length === 1 &&
+          !PIECES.includes(prev as PieceSymbol) &&
+          ALL_RANKS.includes(Number(symbol) as (typeof ALL_RANKS)[number])) || // e4
+        (prev.length === 1 &&
+          PIECES.includes(prev as PieceSymbol) &&
+          ALL_FILES.includes(symbol as File)) || // Nf3
+        (prev.length === 2 &&
+          PIECES.includes(prev[0] as PieceSymbol) &&
+          ALL_FILES.includes(prev[1] as File) &&
+          ALL_RANKS.includes(Number(symbol) as (typeof ALL_RANKS)[number])) // Nf3
+      ) {
+        const newMove = prev + symbol;
+        if (isValidMove(newMove)) {
+          onMove?.(newMove as AlgebraicNotation);
+          return "";
+        }
+        return newMove;
+      }
+
+      return prev;
     });
+  };
+
+  const isValidMove = (move: string): boolean => {
+    return (
+      (move.length === 2 &&
+        ALL_FILES.includes(move[0] as File) &&
+        ALL_RANKS.includes(Number(move[1]) as (typeof ALL_RANKS)[number])) || // e4
+      (move.length === 3 &&
+        PIECES.includes(move[0] as PieceSymbol) &&
+        ALL_FILES.includes(move[1] as File) &&
+        ALL_RANKS.includes(Number(move[2]) as (typeof ALL_RANKS)[number])) // Nf3
+    );
   };
 
   return (
@@ -80,12 +156,12 @@ export const MoveInput = ({
           disabled={!isPlayerTurn}
         />
         <ButtonRow
-          symbols={FILES}
+          symbols={ALL_FILES}
           onSymbolClick={handleSymbolClick}
           disabled={!isPlayerTurn}
         />
         <ButtonRow
-          symbols={RANKS}
+          symbols={ALL_RANKS.map(String)}
           onSymbolClick={handleSymbolClick}
           disabled={!isPlayerTurn}
         />
