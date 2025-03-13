@@ -115,7 +115,9 @@ export const MoveInput = ({
       ) {
         const newMove = prev + symbol;
         if (isValidMove(newMove)) {
-          onMove?.(newMove as AlgebraicNotation);
+          const moveToSubmit = newMove as AlgebraicNotation;
+          setCurrentMove("");
+          setTimeout(() => onMove?.(moveToSubmit), 0);
           return "";
         }
         return newMove;

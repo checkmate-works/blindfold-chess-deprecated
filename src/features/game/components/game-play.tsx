@@ -3,20 +3,10 @@ import { GameSettings, AlgebraicNotation } from "@/types";
 import { MoveInput } from "./move-input";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
-import { getNextMove } from "@/lib/game";
+import { getNextMove, historyToFen } from "@/lib/game";
 
 type GameState = {
-  // TODO: define the type of the algebraic notation
-  fen: string;
-  history: string[];
-  castlingRights: {
-    whiteKingside: boolean;
-    whiteQueenside: boolean;
-    blackKingside: boolean;
-    blackQueenside: boolean;
-  };
-  enPassantTarget: string | null;
-  halfMoveClock: number;
+  moves: AlgebraicNotation[];
   isPlayerTurn: boolean;
 };
 
@@ -26,7 +16,6 @@ interface GamePlayProps {
 
 export const GamePlay = ({ settings }: GamePlayProps) => {
   const [showBoard, setShowBoard] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const displayColor =
     settings.color === "random"
       ? Math.random() < 0.5
@@ -34,60 +23,44 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
         : "black"
       : settings.color;
 
-  const [gameState, setGameState] = useState<GameState>({
-    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-    history: [],
-    castlingRights: {
-      whiteKingside: true,
-      whiteQueenside: true,
-      blackKingside: true,
-      blackQueenside: true,
-    },
-    enPassantTarget: null,
-    halfMoveClock: 0,
-    isPlayerTurn: displayColor === "white",
+  const [gameState, setGameState] = useState<GameState>(() => {
+    if (displayColor === "black") {
+      const firstMove = getNextMove([]);
+      return {
+        moves: [firstMove],
+        isPlayerTurn: true,
+      };
+    }
+
+    return {
+      moves: [],
+      isPlayerTurn: true,
+    };
   });
 
   const handleMove = (move: AlgebraicNotation) => {
-    const chess = new Chess(gameState.fen);
-
-    try {
-      chess.move(move);
-    } catch {
-      setErrorMessage(`${move} is an illegal move`);
-      return;
+    const chess = new Chess();
+    for (const historyMove of gameState.moves) {
+      chess.move(historyMove);
     }
+    chess.move(move);
 
-    setErrorMessage(null);
-    // Update game state with player's move
-    const newState = {
-      ...gameState,
-      fen: chess.fen(),
-      history: [...gameState.history, move],
-      isPlayerTurn: false,
-    };
-    setGameState(newState);
+    const newMoves = [...gameState.moves, move];
+    const aiMove = getNextMove(newMoves);
 
-    // Get and apply AI's move
-    const aiMove = getNextMove(chess.fen());
     chess.move(aiMove);
 
-    setGameState((prev) => ({
-      ...prev,
-      fen: chess.fen(),
-      history: [...prev.history, aiMove],
+    setGameState({
+      moves: [...newMoves, aiMove],
       isPlayerTurn: true,
-    }));
+    });
   };
+
+  console.log("gameState.moves:", gameState.moves);
+  const currentFen = historyToFen(gameState.moves);
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      {errorMessage && (
-        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded text-center">
-          {errorMessage}
-        </div>
-      )}
-
       <div className="text-center mb-6">
         <div>
           Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
@@ -107,7 +80,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
       {showBoard && (
         <div className="mb-8">
           <Chessboard
-            position={gameState.fen}
+            position={currentFen}
             boardOrientation={displayColor}
             boardWidth={400}
           />
@@ -117,9 +90,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
       <div className="mt-8">
         <MoveInput
           isPlayerTurn={gameState.isPlayerTurn}
-          lastMove={
-            gameState.history[gameState.history.length - 1] as AlgebraicNotation
-          }
+          lastMove={gameState.moves[gameState.moves.length - 1]}
           onMove={handleMove}
         />
       </div>

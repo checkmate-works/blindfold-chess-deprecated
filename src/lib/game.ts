@@ -1,13 +1,24 @@
 import { Chess } from "chess.js";
-import { UciMove, Fen } from "@/types";
+import { AlgebraicNotation } from "@/types";
 
-export function getNextMove(fen: Fen): UciMove {
-  const chess = new Chess(fen);
-  const moveNumber = chess.history().length + 1;
+export function getNextMove(moves: AlgebraicNotation[]): AlgebraicNotation {
+  const chess = new Chess();
 
-  if (moveNumber === 1) {
-    return chess.turn() === "w" ? "e2e4" : "e7e5";
+  for (const move of moves) {
+    chess.move(move);
+  }
+
+  if (chess.history().length < 2) {
+    return chess.turn() === "w" ? "e4" : "e5";
   } else {
     throw new Error("NotImplementedError: Only the first move is supported.");
   }
 }
+
+export const historyToFen = (moves: AlgebraicNotation[]) => {
+  const chess = new Chess();
+  for (const move of moves) {
+    chess.move(move);
+  }
+  return chess.fen();
+};
