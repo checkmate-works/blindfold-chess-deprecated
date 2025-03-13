@@ -16,7 +16,6 @@ interface GamePlayProps {
 
 export const GamePlay = ({ settings }: GamePlayProps) => {
   const [showBoard, setShowBoard] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const displayColor =
     settings.color === "random"
       ? Math.random() < 0.5
@@ -24,9 +23,19 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
         : "black"
       : settings.color;
 
-  const [gameState, setGameState] = useState<GameState>({
-    moves: [],
-    isPlayerTurn: displayColor === "white",
+  const [gameState, setGameState] = useState<GameState>(() => {
+    if (displayColor === "black") {
+      const firstMove = getNextMove([]);
+      return {
+        moves: [firstMove],
+        isPlayerTurn: true,
+      };
+    }
+
+    return {
+      moves: [],
+      isPlayerTurn: true,
+    };
   });
 
   const handleMove = (move: AlgebraicNotation) => {
@@ -34,42 +43,24 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
     for (const historyMove of gameState.moves) {
       chess.move(historyMove);
     }
-
-    try {
-      chess.move(move);
-    } catch {
-      setErrorMessage(`${move} is an illegal move`);
-      return;
-    }
-
-    setErrorMessage(null);
+    chess.move(move);
 
     const newMoves = [...gameState.moves, move];
-    setGameState((prev) => ({
-      ...prev,
-      moves: newMoves,
-      isPlayerTurn: false,
-    }));
-
     const aiMove = getNextMove(newMoves);
 
-    setGameState((prev) => ({
-      ...prev,
+    chess.move(aiMove);
+
+    setGameState({
       moves: [...newMoves, aiMove],
       isPlayerTurn: true,
-    }));
+    });
   };
 
+  console.log("gameState.moves:", gameState.moves);
   const currentFen = historyToFen(gameState.moves);
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      {errorMessage && (
-        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded text-center">
-          {errorMessage}
-        </div>
-      )}
-
       <div className="text-center mb-6">
         <div>
           Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
