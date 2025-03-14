@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GameSettings, AlgebraicNotation } from "@/types";
 import { MoveInput } from "./move-input";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
-import { getNextMove, historyToFen } from "@/lib/game";
+import { getNextMove, historyToFen, cleanup } from "@/lib/game";
 
 type GameState = {
   moves: AlgebraicNotation[];
@@ -16,6 +16,8 @@ interface GamePlayProps {
 
 export const GamePlay = ({ settings }: GamePlayProps) => {
   const [showBoard, setShowBoard] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isThinking, setIsThinking] = useState(false);
   const displayColor =
     settings.color === "random"
       ? Math.random() < 0.5
@@ -23,44 +25,96 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
         : "black"
       : settings.color;
 
-  const [gameState, setGameState] = useState<GameState>(() => {
-    if (displayColor === "black") {
-      const firstMove = getNextMove([]);
-      return {
-        moves: [firstMove],
-        isPlayerTurn: true,
-      };
-    }
+  const [gameState, setGameState] = useState<GameState>(() => ({
+    moves: [],
+    isPlayerTurn: displayColor === "white",
+  }));
 
-    return {
-      moves: [],
-      isPlayerTurn: true,
+  useEffect(() => {
+    const makeFirstMove = async () => {
+      if (displayColor === "black") {
+        setIsThinking(true);
+        try {
+          const firstMove = await getNextMove([]);
+          setGameState({
+            moves: [firstMove],
+            isPlayerTurn: true,
+          });
+        } catch (error) {
+          console.error("First move error:", error);
+          setErrorMessage("Failed to get first move");
+        }
+        setIsThinking(false);
+      }
     };
-  });
 
-  const handleMove = (move: AlgebraicNotation) => {
+    makeFirstMove();
+  }, [displayColor]);
+
+  useEffect(() => {
+    return () => {
+      cleanup();
+    };
+  }, []);
+
+  const handleMove = async (move: AlgebraicNotation) => {
     const chess = new Chess();
-    for (const historyMove of gameState.moves) {
-      chess.move(historyMove);
+    try {
+      for (const historyMove of gameState.moves) {
+        chess.move(historyMove);
+      }
+      chess.move(move);
+    } catch {
+      setErrorMessage(
+        `${move} is an illegal move\nCurrent position reached after: ${gameState.moves.join(", ")}`,
+      );
+      return;
     }
-    chess.move(move);
 
+    setErrorMessage(null);
     const newMoves = [...gameState.moves, move];
-    const aiMove = getNextMove(newMoves);
 
-    chess.move(aiMove);
+    setGameState((prev) => ({
+      ...prev,
+      moves: newMoves,
+      isPlayerTurn: false,
+    }));
 
-    setGameState({
-      moves: [...newMoves, aiMove],
-      isPlayerTurn: true,
-    });
+    setIsThinking(true);
+    try {
+      const aiMove = await getNextMove(newMoves);
+      chess.move(aiMove);
+
+      setGameState((prev) => ({
+        ...prev,
+        moves: [...newMoves, aiMove],
+        isPlayerTurn: true,
+      }));
+    } catch (error) {
+      console.error("AI move error:", error);
+      setErrorMessage(
+        `AI made an invalid move.\nMove history: ${gameState.moves.join(", ")}`,
+      );
+      setGameState((prev) => ({
+        ...prev,
+        moves: gameState.moves,
+        isPlayerTurn: true,
+      }));
+    } finally {
+      setIsThinking(false);
+    }
   };
 
-  console.log("gameState.moves:", gameState.moves);
   const currentFen = historyToFen(gameState.moves);
 
   return (
     <div className="max-w-2xl mx-auto p-4">
+      {errorMessage && (
+        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded text-center">
+          {errorMessage}
+        </div>
+      )}
+
       <div className="text-center mb-6">
         <div>
           Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
@@ -89,7 +143,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
 
       <div className="mt-8">
         <MoveInput
-          isPlayerTurn={gameState.isPlayerTurn}
+          isPlayerTurn={gameState.isPlayerTurn && !isThinking}
           lastMove={gameState.moves[gameState.moves.length - 1]}
           onMove={handleMove}
         />
