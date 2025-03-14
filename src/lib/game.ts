@@ -1,17 +1,41 @@
 import { Chess } from "chess.js";
 import { AlgebraicNotation } from "@/types";
+import { StockfishWrapper } from "./stockfish";
 
-export function getNextMove(moves: AlgebraicNotation[]): AlgebraicNotation {
+let stockfish: StockfishWrapper | null = null;
+
+async function getEngine() {
+  if (!stockfish) {
+    stockfish = new StockfishWrapper();
+  }
+  return stockfish;
+}
+
+export async function getNextMove(
+  moves: AlgebraicNotation[],
+): Promise<AlgebraicNotation> {
   const chess = new Chess();
 
+  // Replay moves to get current position
   for (const move of moves) {
     chess.move(move);
   }
 
-  if (chess.history().length < 2) {
-    return chess.turn() === "w" ? "e4" : "e5";
-  } else {
-    throw new Error("NotImplementedError: Only the first move is supported.");
+  // Get engine's move
+  const engine = await getEngine();
+  const uciMove = await engine.getMove(chess.fen());
+
+  // Convert UCI move to algebraic notation
+  const move = chess.move(uciMove);
+  if (!move) throw new Error(`Invalid engine move: ${uciMove}`);
+
+  return move.san as AlgebraicNotation;
+}
+
+export function cleanup() {
+  if (stockfish) {
+    stockfish.destroy();
+    stockfish = null;
   }
 }
 
