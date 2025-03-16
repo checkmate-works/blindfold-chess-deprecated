@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameList } from "./game-list";
+import { GameList } from "../components/game-list";
 import { Game } from "@/types";
+import { loadGames } from "@/lib/storage";
 
 export const TopPage = () => {
   const [games, setGames] = useState<Game[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedGames = localStorage.getItem("blindfoldChessGames");
-    if (storedGames) {
-      setGames(JSON.parse(storedGames));
-    }
+    setGames(loadGames());
   }, []);
 
   return (

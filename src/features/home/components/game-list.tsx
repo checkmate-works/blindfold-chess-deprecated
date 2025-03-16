@@ -23,7 +23,10 @@ export const GameList = ({ games }: GameListProps) => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4">
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-gray-500">
-                  {new Date(game.createdAt).toLocaleDateString()}
+                  {new Date(game.date).toLocaleDateString()}
+                </span>
+                <span className="text-sm text-gray-600">
+                  Playing as {game.playerColor}
                 </span>
                 {game.result && (
                   <span
