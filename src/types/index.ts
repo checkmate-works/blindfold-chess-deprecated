@@ -28,9 +28,10 @@ export const SKILL_LEVELS = {
 
 export type Game = {
   id: string;
-  createdAt: string;
+  date: string;
+  moves: AlgebraicNotation[];
+  playerColor: "white" | "black";
   result?: "win" | "loss" | "draw";
-  moves: string[];
 };
 
 export type UciMove = `${string}${number}${string}${number}`;
