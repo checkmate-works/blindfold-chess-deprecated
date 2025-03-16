@@ -1,10 +1,25 @@
 import { Game } from "@/types";
+import { useNavigate } from "react-router-dom";
 
 interface GameListProps {
   games: Game[];
 }
 
 export const GameList = ({ games }: GameListProps) => {
+  const navigate = useNavigate();
+
+  const handleGameClick = (game: Game) => {
+    navigate("/game/play", {
+      state: {
+        settings: {
+          color: game.playerColor,
+          skillLevel: 20,
+        },
+        savedMoves: game.moves,
+      },
+    });
+  };
+
   if (games.length === 0) {
     return (
       <div className="flex items-center justify-center p-8 text-gray-500">
@@ -19,7 +34,11 @@ export const GameList = ({ games }: GameListProps) => {
     <div className="w-full max-w-4xl mx-auto">
       <ul className="divide-y divide-gray-200">
         {games.map((game) => (
-          <li key={game.id} className="py-4 hover:bg-gray-50 transition-colors">
+          <li
+            key={game.id}
+            className="py-4 hover:bg-gray-50 transition-colors cursor-pointer"
+            onClick={() => handleGameClick(game)}
+          >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4">
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-gray-500">
