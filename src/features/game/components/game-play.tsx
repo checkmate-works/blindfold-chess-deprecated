@@ -13,9 +13,10 @@ type GameState = {
 
 interface GamePlayProps {
   settings: GameSettings;
+  savedMoves?: AlgebraicNotation[];
 }
 
-export const GamePlay = ({ settings }: GamePlayProps) => {
+export const GamePlay = ({ settings, savedMoves }: GamePlayProps) => {
   const [showBoard, setShowBoard] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isThinking, setIsThinking] = useState(false);
@@ -27,13 +28,15 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
       : settings.color;
 
   const [gameState, setGameState] = useState<GameState>(() => ({
-    moves: [],
-    isPlayerTurn: displayColor === "white",
+    moves: savedMoves || [],
+    isPlayerTurn: savedMoves
+      ? (savedMoves.length % 2 === 0) === (displayColor === "white")
+      : displayColor === "white",
   }));
 
   useEffect(() => {
     const makeFirstMove = async () => {
-      if (displayColor === "black") {
+      if (displayColor === "black" && !savedMoves) {
         setIsThinking(true);
         try {
           const firstMove = await getNextMove([]);
@@ -50,7 +53,7 @@ export const GamePlay = ({ settings }: GamePlayProps) => {
     };
 
     makeFirstMove();
-  }, [displayColor]);
+  }, [displayColor, savedMoves]);
 
   useEffect(() => {
     return () => {

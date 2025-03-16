@@ -1,19 +1,27 @@
 import { useLocation, Navigate } from "react-router-dom";
-import { GameSettings } from "@/types";
+import { GameSettings, AlgebraicNotation } from "@/types";
 import { GamePlay as GamePlayContainer } from "@/features/game";
 import { ContentLayout } from "@/components/layouts";
 
+interface LocationState {
+  settings: GameSettings;
+  savedMoves?: AlgebraicNotation[];
+}
+
 export const GamePlay = () => {
   const location = useLocation();
-  const settings = location.state as GameSettings;
+  const state = location.state as LocationState;
 
-  if (!settings) {
+  if (!state?.settings) {
     return <Navigate to="/game/setup" replace />;
   }
 
   return (
     <ContentLayout title="Blindfold Chess">
-      <GamePlayContainer settings={settings} />
+      <GamePlayContainer
+        settings={state.settings}
+        savedMoves={state.savedMoves}
+      />
     </ContentLayout>
   );
 };
