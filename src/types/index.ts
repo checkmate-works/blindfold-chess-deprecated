@@ -7,11 +7,29 @@ export type Rank = (typeof ALL_RANKS)[number];
 export const PIECES = ["K", "Q", "R", "B", "N"] as const;
 export type PieceSymbol = (typeof PIECES)[number];
 
-export type PawnMove = `${File}${Rank}`;
-export type PieceMove = `${PieceSymbol}${File}${Rank}`;
-export type CastlingMove = "O-O" | "O-O-O";
+type PawnMove = `${File}${Rank}`;
+type PieceMove = `${PieceSymbol}${File}${Rank}`;
+type CastlingMove = "O-O" | "O-O-O";
 
-export type AlgebraicNotation = PawnMove | PieceMove | CastlingMove;
+type PawnCapture = `${File}x${File}${Rank}`;
+type PieceCapture = `${PieceSymbol}x${File}${Rank}`;
+
+type DisambiguatedMove = `${PieceSymbol}${File | Rank}${File}${Rank}`;
+
+type CheckSuffix = "" | "+" | "#";
+
+export type AlgebraicNotation =
+  | PawnMove
+  | PieceMove
+  | CastlingMove
+  | PawnCapture
+  | PieceCapture
+  | DisambiguatedMove
+  | `${PawnMove}${CheckSuffix}`
+  | `${PieceMove}${CheckSuffix}`
+  | `${PawnCapture}${CheckSuffix}`
+  | `${PieceCapture}${CheckSuffix}`
+  | `${DisambiguatedMove}${CheckSuffix}`;
 
 export type PlayerColor = "white" | "black" | "random";
 
