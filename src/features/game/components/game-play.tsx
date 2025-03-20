@@ -20,6 +20,7 @@ export const GamePlay = ({ settings, savedMoves }: GamePlayProps) => {
   const [showBoard, setShowBoard] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isThinking, setIsThinking] = useState(false);
+
   const displayColor =
     settings.color === "random"
       ? Math.random() < 0.5
