@@ -1,18 +1,5 @@
-import { useState } from "react";
-import {
-  ALL_FILES,
-  ALL_RANKS,
-  PIECES,
-  type AlgebraicNotation,
-  type File,
-  type PieceSymbol,
-} from "@/types";
-
-interface ButtonRowProps {
-  symbols: readonly string[];
-  onSymbolClick: (symbol: string) => void;
-  disabled?: boolean;
-}
+import { useState, useRef, useEffect } from "react";
+import { type AlgebraicNotation } from "@/types";
 
 interface MoveInputProps {
   isPlayerTurn: boolean;
@@ -20,123 +7,26 @@ interface MoveInputProps {
   onMove?: (move: AlgebraicNotation) => void;
 }
 
-const ButtonRow = ({ symbols, onSymbolClick, disabled }: ButtonRowProps) => (
-  <div className="flex">
-    {symbols.map((symbol) => (
-      <button
-        key={symbol}
-        onClick={() => onSymbolClick(symbol)}
-        disabled={disabled}
-        className={`w-10 h-10 flex items-center justify-center border border-gray-300 
-                   ${
-                     disabled
-                       ? "bg-gray-100 cursor-not-allowed"
-                       : "hover:bg-gray-100 active:bg-gray-200"
-                   } 
-                   transition-colors`}
-      >
-        {symbol}
-      </button>
-    ))}
-  </div>
-);
-
 export const MoveInput = ({
   isPlayerTurn,
   lastMove,
   onMove,
 }: MoveInputProps) => {
   const [currentMove, setCurrentMove] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSymbolClick = (symbol: string) => {
-    setCurrentMove((prev) => {
-      if (prev === "") {
-        return symbol;
-      }
+  useEffect(() => {
+    if (isPlayerTurn && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isPlayerTurn]);
 
-      // If first character is a piece and clicking the same piece, clear it
-      if (
-        prev.length === 1 &&
-        PIECES.includes(prev as PieceSymbol) &&
-        symbol === prev
-      ) {
-        return "";
-      }
-
-      // If first character is a piece and clicking another piece, replace it
-      if (
-        prev.length === 1 &&
-        PIECES.includes(prev as PieceSymbol) &&
-        PIECES.includes(symbol as PieceSymbol)
-      ) {
-        return symbol;
-      }
-
-      // If first character is a file and clicking a file, replace it
-      if (
-        prev.length === 1 &&
-        ALL_FILES.includes(prev as File) &&
-        ALL_FILES.includes(symbol as File)
-      ) {
-        return symbol;
-      }
-
-      // If second character is a file and clicking a file, replace it
-      if (
-        prev.length === 2 &&
-        ALL_FILES.includes(prev[1] as File) &&
-        ALL_FILES.includes(symbol as File)
-      ) {
-        return prev[0] + symbol;
-      }
-
-      // If last character is a rank and clicking a rank, replace it
-      if (
-        ALL_RANKS.includes(
-          Number(prev[prev.length - 1]) as (typeof ALL_RANKS)[number],
-        ) &&
-        ALL_RANKS.includes(Number(symbol) as (typeof ALL_RANKS)[number])
-      ) {
-        return prev.slice(0, -1) + symbol;
-      }
-
-      // Add character if it follows valid pattern
-      if (
-        (prev.length === 1 &&
-          !PIECES.includes(prev as PieceSymbol) &&
-          ALL_RANKS.includes(Number(symbol) as (typeof ALL_RANKS)[number])) || // e4
-        (prev.length === 1 &&
-          PIECES.includes(prev as PieceSymbol) &&
-          ALL_FILES.includes(symbol as File)) || // Nf3
-        (prev.length === 2 &&
-          PIECES.includes(prev[0] as PieceSymbol) &&
-          ALL_FILES.includes(prev[1] as File) &&
-          ALL_RANKS.includes(Number(symbol) as (typeof ALL_RANKS)[number])) // Nf3
-      ) {
-        const newMove = prev + symbol;
-        if (isValidMove(newMove)) {
-          const moveToSubmit = newMove as AlgebraicNotation;
-          setCurrentMove("");
-          setTimeout(() => onMove?.(moveToSubmit), 0);
-          return "";
-        }
-        return newMove;
-      }
-
-      return prev;
-    });
-  };
-
-  const isValidMove = (move: string): boolean => {
-    return (
-      (move.length === 2 &&
-        ALL_FILES.includes(move[0] as File) &&
-        ALL_RANKS.includes(Number(move[1]) as (typeof ALL_RANKS)[number])) || // e4
-      (move.length === 3 &&
-        PIECES.includes(move[0] as PieceSymbol) &&
-        ALL_FILES.includes(move[1] as File) &&
-        ALL_RANKS.includes(Number(move[2]) as (typeof ALL_RANKS)[number])) // Nf3
-    );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (currentMove && onMove) {
+      onMove(currentMove as AlgebraicNotation);
+      setCurrentMove("");
+    }
   };
 
   return (
@@ -151,23 +41,31 @@ export const MoveInput = ({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <ButtonRow
-          symbols={PIECES}
-          onSymbolClick={handleSymbolClick}
+      <form onSubmit={handleSubmit} className="space-y-2">
+        <input
+          ref={inputRef}
+          type="text"
+          value={currentMove}
+          onChange={(e) => setCurrentMove(e.target.value)}
           disabled={!isPlayerTurn}
+          placeholder="Enter move (e.g. e4, Nf3, O-O, Bxc6)"
+          className="w-64 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          autoComplete="off"
+          spellCheck="false"
         />
-        <ButtonRow
-          symbols={ALL_FILES}
-          onSymbolClick={handleSymbolClick}
-          disabled={!isPlayerTurn}
-        />
-        <ButtonRow
-          symbols={ALL_RANKS.map(String)}
-          onSymbolClick={handleSymbolClick}
-          disabled={!isPlayerTurn}
-        />
-      </div>
+        <button
+          type="submit"
+          disabled={!isPlayerTurn || !currentMove}
+          className={`w-full px-4 py-2 text-white rounded
+            ${
+              isPlayerTurn && currentMove
+                ? "bg-blue-500 hover:bg-blue-600"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+        >
+          Make Move
+        </button>
+      </form>
     </div>
   );
 };
