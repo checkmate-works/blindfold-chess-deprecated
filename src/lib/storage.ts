@@ -1,29 +1,19 @@
-import { AlgebraicNotation } from "@/types";
+import { AlgebraicNotation, Game, Side } from "@/types";
 
-export interface SavedGame {
-  id: string;
-  date: string;
-  moves: AlgebraicNotation[];
-  playerColor: "white" | "black";
-}
-
-export function saveGame(
-  moves: AlgebraicNotation[],
-  playerColor: "white" | "black",
-): void {
+export function saveGame(moves: AlgebraicNotation[], side: Side): void {
   const games = loadGames();
-  const newGame: SavedGame = {
+  const newGame: Game = {
     id: crypto.randomUUID(),
     date: new Date().toISOString(),
     moves,
-    playerColor,
+    playerColor: side,
   };
 
   games.push(newGame);
   localStorage.setItem("savedGames", JSON.stringify(games));
 }
 
-export function loadGames(): SavedGame[] {
+export function loadGames(): Game[] {
   const saved = localStorage.getItem("savedGames");
   return saved ? JSON.parse(saved) : [];
 }
