@@ -31,7 +31,8 @@ export type AlgebraicNotation =
   | `${PieceCapture}${CheckSuffix}`
   | `${DisambiguatedMove}${CheckSuffix}`;
 
-export type PlayerColor = "white" | "black" | "random";
+export type Side = "white" | "black";
+export type PlayerColor = Side | "random";
 
 export type GameSettings = {
   color: PlayerColor;
@@ -44,12 +45,13 @@ export const SKILL_LEVELS = {
   EXPERT: 20,
 } as const;
 
+type GameResult = "win" | "loss" | "draw";
 export type Game = {
   id: string;
   date: string;
   moves: AlgebraicNotation[];
-  playerColor: "white" | "black";
-  result?: "win" | "loss" | "draw";
+  playerColor: Side;
+  result?: GameResult;
 };
 
 export type UciMove = `${string}${number}${string}${number}`;
