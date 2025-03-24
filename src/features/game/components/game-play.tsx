@@ -117,54 +117,60 @@ export const GamePlay = ({ settings, savedMoves }: GamePlayProps) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      {errorMessage && (
-        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded text-center">
-          {errorMessage}
-        </div>
-      )}
+    <div className="min-h-screen pb-20 relative">
+      <div className="max-w-2xl mx-auto p-4">
+        {errorMessage && (
+          <div className="mb-4 p-2 bg-red-100 text-red-700 rounded text-center whitespace-pre-wrap">
+            {errorMessage}
+          </div>
+        )}
 
-      <div className="text-center mb-6">
-        <div>
-          Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
+        <div className="text-center mb-6">
+          <div className="text-gray-800 font-medium">
+            Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
+          </div>
+          <div className="text-sm text-gray-600">
+            AI Level: {settings.skillLevel}
+          </div>
         </div>
-        <div className="text-sm text-gray-600">
-          AI Level: {settings.skillLevel}
-        </div>
-      </div>
 
-      <button
-        onClick={() => setShowBoard(!showBoard)}
-        className="w-full mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        {showBoard ? "Hide Board" : "Peek at Board"}
-      </button>
+        <button
+          onClick={() => setShowBoard(!showBoard)}
+          className="w-full mb-4 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded transition"
+        >
+          {showBoard ? "Hide Board" : "Peek at Board"}
+        </button>
 
-      {showBoard && (
-        <div className="mb-8">
-          <Chessboard
-            position={currentFen}
-            boardOrientation={displayColor}
-            boardWidth={400}
+        {showBoard && (
+          <div className="mb-8">
+            <Chessboard
+              position={currentFen}
+              boardOrientation={displayColor}
+              boardWidth={400}
+            />
+          </div>
+        )}
+
+        <div className="mt-8">
+          <MoveInput
+            isPlayerTurn={gameState.isPlayerTurn && !isThinking}
+            lastMove={gameState.moves[gameState.moves.length - 1]}
+            onMove={handleMove}
           />
         </div>
-      )}
-
-      <div className="mt-8">
-        <MoveInput
-          isPlayerTurn={gameState.isPlayerTurn && !isThinking}
-          lastMove={gameState.moves[gameState.moves.length - 1]}
-          onMove={handleMove}
-        />
       </div>
 
-      <button
-        onClick={handleSave}
-        className="w-full mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        disabled={gameState.moves.length === 0}
-      >
-        Save Game
-      </button>
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200">
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <button
+            onClick={handleSave}
+            className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg shadow transition-colors duration-200"
+            disabled={gameState.moves.length === 0}
+          >
+            Save Game
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
