@@ -13,19 +13,20 @@ export const TopPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen pb-20 relative">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-center mb-12">
+        <GameList games={games} />
+      </div>
+
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4">
           <button
             onClick={() => navigate("/game/setup")}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg 
-                     shadow-md transition-colors duration-200 flex items-center space-x-2"
+            className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg shadow transition-colors duration-200"
           >
-            <span>Start New Game</span>
+            Start New Game
           </button>
         </div>
-
-        <GameList games={games} />
       </div>
     </div>
   );
