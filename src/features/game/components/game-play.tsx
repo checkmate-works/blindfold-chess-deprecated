@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { GameSettings, AlgebraicNotation } from "@/types";
-import { MoveInput } from "./move-input";
-import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { getNextMove, historyToFen, cleanup } from "@/lib/game";
 import { saveGame } from "@/lib/storage";
+import { TabMenu } from "./tab-menu";
+import { GameHeader } from "./game-header";
+import { GameContent } from "./game-content";
 
 type GameState = {
   moves: AlgebraicNotation[];
@@ -121,65 +122,23 @@ export const GamePlay = ({ settings, savedMoves }: Props) => {
   return (
     <div className="min-h-screen pb-20 relative">
       <div className="max-w-2xl mx-auto p-4">
-        {errorMessage && (
-          <div className="mb-4 p-2 bg-red-100 text-red-700 rounded text-center whitespace-pre-wrap">
-            {errorMessage}
-          </div>
-        )}
+        <GameHeader
+          displayColor={displayColor}
+          skillLevel={settings.skillLevel}
+          errorMessage={errorMessage}
+        />
 
-        <div className="text-center mb-6">
-          <div className="text-gray-800 font-medium">
-            Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
-          </div>
-          <div className="text-sm text-gray-600">
-            AI Level: {settings.skillLevel}
-          </div>
-        </div>
+        <TabMenu activeTab={activeTab} onTabChange={setActiveTab} />
 
-        <div className="mb-6">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex">
-              <button
-                onClick={() => setActiveTab("move")}
-                className={`mr-8 py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "move"
-                    ? "border-black text-black"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                Enter Move
-              </button>
-              <button
-                onClick={() => setActiveTab("board")}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === "board"
-                    ? "border-black text-black"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                View Board
-              </button>
-            </nav>
-          </div>
-        </div>
-
-        <div className="mt-4">
-          {activeTab === "move" ? (
-            <MoveInput
-              isPlayerTurn={gameState.isPlayerTurn && !isThinking}
-              lastMove={gameState.moves[gameState.moves.length - 1]}
-              onMove={handleMove}
-            />
-          ) : (
-            <div className="flex justify-center">
-              <Chessboard
-                position={currentFen}
-                boardOrientation={displayColor}
-                boardWidth={400}
-              />
-            </div>
-          )}
-        </div>
+        <GameContent
+          activeTab={activeTab}
+          isPlayerTurn={gameState.isPlayerTurn}
+          isThinking={isThinking}
+          lastMove={gameState.moves[gameState.moves.length - 1]}
+          currentFen={currentFen}
+          displayColor={displayColor}
+          onMove={handleMove}
+        />
       </div>
 
       <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200">
