@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { GameSettings, AlgebraicNotation } from "@/types";
 import { Chess } from "chess.js";
 import { getNextMove, historyToFen, cleanup } from "@/lib/game";
-import { saveGame } from "@/lib/storage";
 
 type GameState = {
   moves: AlgebraicNotation[];
@@ -107,10 +106,6 @@ export const useGamePlay = (
 
   const currentFen = historyToFen(gameState.moves);
 
-  const handleSave = () => {
-    saveGame(gameState.moves, displayColor);
-  };
-
   return {
     errorMessage,
     isThinking,
@@ -118,6 +113,5 @@ export const useGamePlay = (
     displayColor,
     currentFen,
     handleMove,
-    handleSave,
   };
 };

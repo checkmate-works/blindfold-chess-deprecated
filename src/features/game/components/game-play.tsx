@@ -4,6 +4,7 @@ import { TabMenu } from "./tab-menu";
 import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
 import { useGamePlay } from "../hooks/use-game-play";
+import { saveGame } from "@/lib/storage";
 
 type Tab = "move" | "board";
 
@@ -22,8 +23,11 @@ export const GamePlay = ({ settings, savedMoves }: Props) => {
     displayColor,
     currentFen,
     handleMove,
-    handleSave,
   } = useGamePlay(settings, savedMoves);
+
+  const handleSave = () => {
+    saveGame(gameState.moves, displayColor);
+  };
 
   return (
     <div className="min-h-screen pb-20 relative">
