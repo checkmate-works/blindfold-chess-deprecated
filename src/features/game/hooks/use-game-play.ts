@@ -9,13 +9,10 @@ type GameState = {
   isPlayerTurn: boolean;
 };
 
-type Tab = "move" | "board";
-
 export const useGamePlay = (
   settings: GameSettings,
   savedMoves?: AlgebraicNotation[],
 ) => {
-  const [activeTab, setActiveTab] = useState<Tab>("move");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isThinking, setIsThinking] = useState(false);
 
@@ -115,8 +112,6 @@ export const useGamePlay = (
   };
 
   return {
-    activeTab,
-    setActiveTab,
     errorMessage,
     isThinking,
     gameState,

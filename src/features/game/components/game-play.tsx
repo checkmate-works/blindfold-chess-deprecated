@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { GameSettings, AlgebraicNotation } from "@/types";
 import { TabMenu } from "./tab-menu";
 import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
 import { useGamePlay } from "../hooks/use-game-play";
+
+type Tab = "move" | "board";
 
 type Props = {
   settings: GameSettings;
@@ -10,9 +13,9 @@ type Props = {
 };
 
 export const GamePlay = ({ settings, savedMoves }: Props) => {
+  const [activeTab, setActiveTab] = useState<Tab>("move");
+
   const {
-    activeTab,
-    setActiveTab,
     errorMessage,
     isThinking,
     gameState,
