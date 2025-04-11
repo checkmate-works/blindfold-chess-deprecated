@@ -1,6 +1,6 @@
 import { Chessboard } from "react-chessboard";
 import { MoveInput } from "./move-input";
-import { AlgebraicNotation } from "@/types";
+import { AlgebraicNotation, Side } from "@/types";
 
 type Tab = "move" | "board";
 
@@ -10,7 +10,7 @@ type Props = {
   isThinking: boolean;
   lastMove?: AlgebraicNotation;
   currentFen: string;
-  displayColor: "white" | "black";
+  playerSide: Side;
   onMove: (move: AlgebraicNotation) => void;
 };
 
@@ -20,7 +20,7 @@ export const GameContent = ({
   isThinking,
   lastMove,
   currentFen,
-  displayColor,
+  playerSide,
   onMove,
 }: Props) => {
   return (
@@ -35,7 +35,7 @@ export const GameContent = ({
         <div className="flex justify-center">
           <Chessboard
             position={currentFen}
-            boardOrientation={displayColor}
+            boardOrientation={playerSide}
             boardWidth={400}
           />
         </div>

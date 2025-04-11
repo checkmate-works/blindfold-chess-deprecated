@@ -35,7 +35,8 @@ export type Side = "white" | "black";
 export type PlayerColor = Side | "random";
 
 export type GameSettings = {
-  color: PlayerColor;
+  // TODO: Rename to playerSide
+  color: Side;
   skillLevel: number;
 };
 

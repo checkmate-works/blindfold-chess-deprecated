@@ -11,21 +11,18 @@ async function getEngine() {
   return stockfish;
 }
 
-export async function getNextMove(
+export async function computeNextMoveFromEngine(
   moves: AlgebraicNotation[],
 ): Promise<AlgebraicNotation> {
   const chess = new Chess();
 
-  // Replay moves to get current position
   for (const move of moves) {
     chess.move(move);
   }
 
-  // Get engine's move
   const engine = await getEngine();
   const uciMove = await engine.getMove(chess.fen());
 
-  // Convert UCI move to algebraic notation
   const move = chess.move(uciMove);
   if (!move) throw new Error(`Invalid engine move: ${uciMove}`);
 
@@ -38,11 +35,3 @@ export function cleanup() {
     stockfish = null;
   }
 }
-
-export const historyToFen = (moves: AlgebraicNotation[]) => {
-  const chess = new Chess();
-  for (const move of moves) {
-    chess.move(move);
-  }
-  return chess.fen();
-};

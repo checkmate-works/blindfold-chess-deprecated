@@ -3,10 +3,10 @@ import { GameSettings, AlgebraicNotation } from "@/types";
 import { GamePlay as GamePlayContainer } from "@/features/game";
 import { ContentLayout } from "@/components/layouts";
 
-interface LocationState {
+type LocationState = {
   settings: GameSettings;
-  savedMoves?: AlgebraicNotation[];
-}
+  initialMoves: AlgebraicNotation[];
+};
 
 export const GamePlay = () => {
   const location = useLocation();
@@ -20,7 +20,7 @@ export const GamePlay = () => {
     <ContentLayout title="Blindfold Chess">
       <GamePlayContainer
         settings={state.settings}
-        savedMoves={state.savedMoves}
+        initialMoves={state.initialMoves || []}
       />
     </ContentLayout>
   );
