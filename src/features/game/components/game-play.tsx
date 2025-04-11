@@ -3,7 +3,7 @@ import { GameSettings, AlgebraicNotation, Side } from "@/types";
 import { TabMenu } from "./tab-menu";
 import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
-import { useGamePlay } from "../hooks/use-game-play";
+import { useAiVersus } from "../hooks/use-ai-versus";
 import { saveGame } from "@/lib/storage";
 import { historyToFen } from "@/lib/game";
 
@@ -20,7 +20,7 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<Tab>("move");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { getAiMove } = useGamePlay();
+  const { getAiMove } = useAiVersus();
 
   useEffect(() => {
     const makeFirstMove = async () => {
