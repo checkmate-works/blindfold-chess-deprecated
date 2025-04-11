@@ -12,7 +12,6 @@ export const useGamePlay = (
   settings: GameSettings,
   savedMoves?: AlgebraicNotation[],
 ) => {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isThinking, setIsThinking] = useState(false);
 
   const displayColor =
@@ -41,7 +40,7 @@ export const useGamePlay = (
           });
         } catch (error) {
           console.error("First move error:", error);
-          setErrorMessage("Failed to get first move");
+          throw new Error("Failed to get first move");
         }
         setIsThinking(false);
       }
@@ -64,13 +63,11 @@ export const useGamePlay = (
       }
       chess.move(move);
     } catch {
-      setErrorMessage(
+      throw new Error(
         `${move} is an illegal move\nCurrent position reached after: ${gameState.moves.join(", ")}`,
       );
-      return;
     }
 
-    setErrorMessage(null);
     const newMoves = [...gameState.moves, move];
 
     setGameState((prev) => ({
@@ -91,14 +88,14 @@ export const useGamePlay = (
       }));
     } catch (error) {
       console.error("AI move error:", error);
-      setErrorMessage(
-        `AI made an invalid move.\nMove history: ${gameState.moves.join(", ")}`,
-      );
       setGameState((prev) => ({
         ...prev,
         moves: gameState.moves,
         isPlayerTurn: true,
       }));
+      throw new Error(
+        `AI made an invalid move.\nMove history: ${gameState.moves.join(", ")}`,
+      );
     } finally {
       setIsThinking(false);
     }
@@ -107,7 +104,6 @@ export const useGamePlay = (
   const currentFen = historyToFen(gameState.moves);
 
   return {
-    errorMessage,
     isThinking,
     gameState,
     displayColor,

@@ -15,18 +15,24 @@ type Props = {
 
 export const GamePlay = ({ settings, savedMoves }: Props) => {
   const [activeTab, setActiveTab] = useState<Tab>("move");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const {
-    errorMessage,
-    isThinking,
-    gameState,
-    displayColor,
-    currentFen,
-    handleMove,
-  } = useGamePlay(settings, savedMoves);
+  const { isThinking, gameState, displayColor, currentFen, handleMove } =
+    useGamePlay(settings, savedMoves);
 
   const handleSave = () => {
     saveGame(gameState.moves, displayColor);
+  };
+
+  const onMove = async (move: AlgebraicNotation) => {
+    try {
+      await handleMove(move);
+      setErrorMessage(null);
+    } catch (err) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message);
+      }
+    }
   };
 
   return (
@@ -47,7 +53,7 @@ export const GamePlay = ({ settings, savedMoves }: Props) => {
           lastMove={gameState.moves[gameState.moves.length - 1]}
           currentFen={currentFen}
           displayColor={displayColor}
-          onMove={handleMove}
+          onMove={onMove}
         />
       </div>
 
