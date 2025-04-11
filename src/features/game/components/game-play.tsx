@@ -1,37 +1,55 @@
-import { useState } from "react";
-import { GameSettings, AlgebraicNotation } from "@/types";
+import { useState, useEffect } from "react";
+import { GameSettings, AlgebraicNotation, Side } from "@/types";
 import { TabMenu } from "./tab-menu";
 import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
 import { useGamePlay } from "../hooks/use-game-play";
 import { saveGame } from "@/lib/storage";
+import { historyToFen } from "@/lib/game";
 
 type Tab = "move" | "board";
 
 type Props = {
   settings: GameSettings;
-  savedMoves?: AlgebraicNotation[];
+  initialMoves: AlgebraicNotation[];
 };
 
-export const GamePlay = ({ settings, savedMoves }: Props) => {
+export const GamePlay = ({ settings, initialMoves }: Props) => {
+  const [playerSide] = useState<Side>(settings.color);
+  const [moves, setMoves] = useState<AlgebraicNotation[]>(initialMoves);
+  const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<Tab>("move");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { getAiMove } = useGamePlay();
 
-  const { isThinking, gameState, displayColor, currentFen, handleMove } =
-    useGamePlay(settings, savedMoves);
+  useEffect(() => {
+    const makeFirstMove = async () => {
+      setMoves([await getAiMove([])]);
+    };
+
+    if (playerSide === "black" && moves.length === 0) {
+      setIsPlayerTurn(false);
+      makeFirstMove();
+      setIsPlayerTurn(true);
+    }
+  }, [playerSide, moves, getAiMove]);
 
   const handleSave = () => {
-    saveGame(gameState.moves, displayColor);
+    saveGame(moves, playerSide);
   };
 
   const onMove = async (move: AlgebraicNotation) => {
     try {
-      await handleMove(move);
+      setIsPlayerTurn(false);
+      const newMoves = [...moves, move];
+      setMoves([...newMoves, await getAiMove(newMoves)]);
       setErrorMessage(null);
     } catch (err) {
       if (err instanceof Error) {
         setErrorMessage(err.message);
       }
+    } finally {
+      setIsPlayerTurn(true);
     }
   };
 
@@ -39,7 +57,7 @@ export const GamePlay = ({ settings, savedMoves }: Props) => {
     <div className="min-h-screen pb-20 relative">
       <div className="max-w-2xl mx-auto p-4">
         <GameHeader
-          displayColor={displayColor}
+          playerSide={playerSide}
           skillLevel={settings.skillLevel}
           errorMessage={errorMessage}
         />
@@ -48,11 +66,11 @@ export const GamePlay = ({ settings, savedMoves }: Props) => {
 
         <GameContent
           activeTab={activeTab}
-          isPlayerTurn={gameState.isPlayerTurn}
-          isThinking={isThinking}
-          lastMove={gameState.moves[gameState.moves.length - 1]}
-          currentFen={currentFen}
-          displayColor={displayColor}
+          isPlayerTurn={isPlayerTurn}
+          isThinking={!isPlayerTurn}
+          lastMove={moves[moves.length - 1]}
+          currentFen={historyToFen(moves)}
+          playerSide={playerSide}
           onMove={onMove}
         />
       </div>
@@ -62,7 +80,7 @@ export const GamePlay = ({ settings, savedMoves }: Props) => {
           <button
             onClick={handleSave}
             className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg shadow transition-colors duration-200"
-            disabled={gameState.moves.length === 0}
+            disabled={moves.length === 0}
           >
             Save Game
           </button>

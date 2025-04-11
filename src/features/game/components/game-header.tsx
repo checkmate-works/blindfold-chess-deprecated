@@ -1,16 +1,12 @@
-import { PlayerColor } from "@/types";
+import { Side } from "@/types";
 
 type Props = {
-  displayColor: PlayerColor;
+  playerSide: Side;
   skillLevel: number;
   errorMessage: string | null;
 };
 
-export const GameHeader = ({
-  displayColor,
-  skillLevel,
-  errorMessage,
-}: Props) => {
+export const GameHeader = ({ playerSide, skillLevel, errorMessage }: Props) => {
   return (
     <>
       {errorMessage && (
@@ -21,7 +17,7 @@ export const GameHeader = ({
 
       <div className="text-center mb-6">
         <div className="text-gray-800 font-medium">
-          Playing as: {displayColor === "white" ? "♔ White" : "♚ Black"}
+          Playing as: {playerSide === "white" ? "♔ White" : "♚ Black"}
         </div>
         <div className="text-sm text-gray-600">AI Level: {skillLevel}</div>
       </div>

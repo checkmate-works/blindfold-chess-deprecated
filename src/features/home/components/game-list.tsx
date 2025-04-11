@@ -10,12 +10,13 @@ export const GameList = ({ games }: GameListProps) => {
 
   const handleGameClick = (game: Game) => {
     navigate("/game/play", {
+      // hack: Isn't the type safety of this place properly guaranteed?
       state: {
         settings: {
           color: game.playerColor,
           skillLevel: 20,
         },
-        savedMoves: game.moves,
+        initialMoves: game.moves,
       },
     });
   };
