@@ -4,8 +4,8 @@ import { TabMenu } from "./tab-menu";
 import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
 import { useAiVersus } from "../hooks/use-ai-versus";
+import { useNotation } from "../hooks/use-notation";
 import { saveGame } from "@/lib/storage";
-import { historyToFen } from "@/lib/game";
 
 type Tab = "move" | "board";
 
@@ -16,15 +16,15 @@ type Props = {
 
 export const GamePlay = ({ settings, initialMoves }: Props) => {
   const [playerSide] = useState<Side>(settings.color);
-  const [moves, setMoves] = useState<AlgebraicNotation[]>(initialMoves);
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<Tab>("move");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { getAiMove } = useAiVersus();
+  const { moves, pushMove, getFen } = useNotation(initialMoves);
 
   useEffect(() => {
     const makeFirstMove = async () => {
-      setMoves([await getAiMove([])]);
+      pushMove(await getAiMove([]));
     };
 
     if (playerSide === "black" && moves.length === 0) {
@@ -32,7 +32,7 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
       makeFirstMove();
       setIsPlayerTurn(true);
     }
-  }, [playerSide, moves, getAiMove]);
+  }, [playerSide, moves, pushMove, getAiMove]);
 
   const handleSave = () => {
     saveGame(moves, playerSide);
@@ -41,8 +41,8 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
   const onMove = async (move: AlgebraicNotation) => {
     try {
       setIsPlayerTurn(false);
-      const newMoves = [...moves, move];
-      setMoves([...newMoves, await getAiMove(newMoves)]);
+      const aiMove = await getAiMove([...moves, move]);
+      pushMove(move, aiMove);
       setErrorMessage(null);
     } catch (err) {
       if (err instanceof Error) {
@@ -69,7 +69,7 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
           isPlayerTurn={isPlayerTurn}
           isThinking={!isPlayerTurn}
           lastMove={moves[moves.length - 1]}
-          currentFen={historyToFen(moves)}
+          currentFen={getFen()}
           playerSide={playerSide}
           onMove={onMove}
         />

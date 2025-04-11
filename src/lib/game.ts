@@ -35,11 +35,3 @@ export function cleanup() {
     stockfish = null;
   }
 }
-
-export const historyToFen = (moves: AlgebraicNotation[]) => {
-  const chess = new Chess();
-  for (const move of moves) {
-    chess.move(move);
-  }
-  return chess.fen();
-};
