@@ -19,7 +19,7 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<Tab>("move");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { getAiMove } = useAiVersus();
+  const { getAiMove } = useAiVersus({ skillLevel: settings.skillLevel });
   const { moves, pushMove, getFen } = useNotation(initialMoves);
 
   useEffect(() => {

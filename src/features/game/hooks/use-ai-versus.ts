@@ -1,6 +1,10 @@
 import { useEffect, useRef } from "react";
-import { AlgebraicNotation } from "@/types";
+import { AlgebraicNotation, SkillLevel } from "@/types";
 import { Chess } from "chess.js";
+
+type UseAiVersusOptions = {
+  skillLevel?: SkillLevel;
+};
 
 type StockfishWorker = Worker & {
   postMessage: (message: string) => void;
@@ -11,7 +15,7 @@ class StockfishWrapper {
   private worker: StockfishWorker;
   private isReady = false;
 
-  constructor() {
+  constructor(private skillLevel: SkillLevel) {
     this.worker = new Worker("/stockfish.js") as StockfishWorker;
     this.init();
   }
@@ -21,7 +25,9 @@ class StockfishWrapper {
       this.worker.onmessage = (e) => {
         if (e.data === "uciok") {
           this.isReady = true;
-          this.worker.postMessage("setoption name Skill Level value 20");
+          this.worker.postMessage(
+            `setoption name Skill Level value ${this.skillLevel}`,
+          );
           resolve();
         }
       };
@@ -49,11 +55,11 @@ class StockfishWrapper {
   }
 }
 
-export const useAiVersus = () => {
+export const useAiVersus = ({ skillLevel = 20 }: UseAiVersusOptions = {}) => {
   const stockfishRef = useRef<StockfishWrapper | null>(null);
 
   useEffect(() => {
-    stockfishRef.current = new StockfishWrapper();
+    stockfishRef.current = new StockfishWrapper(skillLevel);
 
     return () => {
       stockfishRef.current?.destroy();

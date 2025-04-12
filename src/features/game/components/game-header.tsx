@@ -1,8 +1,8 @@
-import { Side } from "@/types";
+import { Side, SkillLevel } from "@/types";
 
 type Props = {
   playerSide: Side;
-  skillLevel: number;
+  skillLevel: SkillLevel;
   errorMessage: string | null;
 };
 
