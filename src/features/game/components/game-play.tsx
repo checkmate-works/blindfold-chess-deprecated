@@ -12,9 +12,10 @@ type Tab = "move" | "board";
 type Props = {
   settings: GameSettings;
   initialMoves: AlgebraicNotation[];
+  gameId?: string;
 };
 
-export const GamePlay = ({ settings, initialMoves }: Props) => {
+export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const [playerSide] = useState<Side>(settings.color);
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<Tab>("move");
@@ -25,6 +26,7 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
     moves,
     playerColor: playerSide,
     skillLevel: settings.skillLevel,
+    initialId: gameId,
   });
 
   useEffect(() => {

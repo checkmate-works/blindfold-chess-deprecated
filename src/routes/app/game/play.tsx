@@ -1,16 +1,17 @@
 import { useLocation, Navigate } from "react-router-dom";
-import { GameSettings, AlgebraicNotation } from "@/types";
 import { GamePlay as GamePlayContainer } from "@/features/game";
 import { ContentLayout } from "@/components/layouts";
+import { GameSettings, AlgebraicNotation } from "@/types";
 
-type LocationState = {
+export type PlayScreenState = {
+  gameId?: string;
   settings: GameSettings;
   initialMoves: AlgebraicNotation[];
 };
 
 export const GamePlay = () => {
   const location = useLocation();
-  const state = location.state as LocationState;
+  const state = location.state as PlayScreenState;
 
   if (!state?.settings) {
     return <Navigate to="/game/setup" replace />;
@@ -21,6 +22,7 @@ export const GamePlay = () => {
       <GamePlayContainer
         settings={state.settings}
         initialMoves={state.initialMoves || []}
+        gameId={state.gameId}
       />
     </ContentLayout>
   );

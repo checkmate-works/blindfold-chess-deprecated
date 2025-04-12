@@ -1,5 +1,6 @@
 import { Game } from "@/types";
 import { useNavigate } from "react-router-dom";
+import { PlayScreenState } from "@/routes/app/game/play";
 
 interface GameListProps {
   games: Game[];
@@ -10,14 +11,14 @@ export const GameList = ({ games }: GameListProps) => {
 
   const handleGameClick = (game: Game) => {
     navigate("/game/play", {
-      // hack: Isn't the type safety of this place properly guaranteed?
       state: {
         settings: {
           color: game.playerColor,
           skillLevel: game.skillLevel,
         },
         initialMoves: game.moves,
-      },
+        gameId: game.id,
+      } satisfies PlayScreenState,
     });
   };
 
