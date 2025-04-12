@@ -34,17 +34,20 @@ export type AlgebraicNotation =
 export type Side = "white" | "black";
 export type PlayerColor = Side | "random";
 
+export const SKILL_LEVEL_OPTIONS = [
+  { label: "Beginner", value: 0 },
+  { label: "Easy", value: 5 },
+  { label: "Intermediate", value: 10 },
+  { label: "Advanced", value: 15 },
+  { label: "Expert", value: 20 },
+] as const;
+
+export type SkillLevel = (typeof SKILL_LEVEL_OPTIONS)[number]["value"];
 export type GameSettings = {
   // TODO: Rename to playerSide
   color: Side;
-  skillLevel: number;
+  skillLevel: SkillLevel;
 };
-
-export const SKILL_LEVELS = {
-  BEGINNER: 0,
-  INTERMEDIATE: 10,
-  EXPERT: 20,
-} as const;
 
 type GameResult = "win" | "loss" | "draw";
 export type Game = {

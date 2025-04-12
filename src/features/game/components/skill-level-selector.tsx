@@ -1,8 +1,8 @@
-import { SKILL_LEVELS } from "@/types";
+import { SKILL_LEVEL_OPTIONS, SkillLevel } from "@/types";
 
 type SkillLevelSelectorProps = {
-  selectedLevel: number;
-  onLevelSelect: (level: number) => void;
+  selectedLevel: SkillLevel;
+  onLevelSelect: (level: SkillLevel) => void;
 };
 
 export const SkillLevelSelector = ({
@@ -13,12 +13,12 @@ export const SkillLevelSelector = ({
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-gray-800">Select AI Level</h3>
       <div className="grid grid-cols-1 gap-3">
-        {Object.entries(SKILL_LEVELS).map(([label, value]) => {
+        {SKILL_LEVEL_OPTIONS.map(({ label, value }) => {
           const isSelected = selectedLevel === value;
 
           return (
             <button
-              key={label}
+              key={value}
               onClick={() => onLevelSelect(value)}
               className={`py-3 px-4 border-2 rounded-lg transition
                 ${
@@ -28,7 +28,7 @@ export const SkillLevelSelector = ({
                 }
               `}
             >
-              {label.charAt(0) + label.slice(1).toLowerCase()}
+              {label}
             </button>
           );
         })}

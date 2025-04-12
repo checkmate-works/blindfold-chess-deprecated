@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PlayerColor, Side } from "@/types";
+import { PlayerColor, Side, SkillLevel } from "@/types";
 import { ColorSelector } from "./color-selector";
 import { SkillLevelSelector } from "./skill-level-selector";
 
@@ -14,7 +14,7 @@ const decidePlayerSide = (colorSetting: PlayerColor): Side => {
 export const GameSetting = () => {
   const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState<PlayerColor>("white");
-  const [skillLevel, setSkillLevel] = useState<number>(10);
+  const [skillLevel, setSkillLevel] = useState<SkillLevel>(10);
 
   const handleStartGame = () => {
     navigate("/game/play", {
