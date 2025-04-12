@@ -14,7 +14,7 @@ export const GameList = ({ games }: GameListProps) => {
       state: {
         settings: {
           color: game.playerColor,
-          skillLevel: 20,
+          skillLevel: game.skillLevel,
         },
         initialMoves: game.moves,
       },

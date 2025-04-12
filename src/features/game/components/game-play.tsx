@@ -5,7 +5,7 @@ import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
 import { useAiVersus } from "../hooks/use-ai-versus";
 import { useNotation } from "../hooks/use-notation";
-import { saveGame } from "@/lib/storage";
+import { useGameSaver } from "../hooks/use-game-saver";
 
 type Tab = "move" | "board";
 
@@ -21,6 +21,11 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { getAiMove } = useAiVersus({ skillLevel: settings.skillLevel });
   const { moves, pushMove, getFen } = useNotation(initialMoves);
+  const { save } = useGameSaver({
+    moves,
+    playerColor: playerSide,
+    skillLevel: settings.skillLevel,
+  });
 
   useEffect(() => {
     const makeFirstMove = async () => {
@@ -35,7 +40,7 @@ export const GamePlay = ({ settings, initialMoves }: Props) => {
   }, [playerSide, moves, pushMove, getAiMove]);
 
   const handleSave = () => {
-    saveGame(moves, playerSide);
+    save();
   };
 
   const onMove = async (move: AlgebraicNotation) => {

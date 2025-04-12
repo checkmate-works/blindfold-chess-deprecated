@@ -55,6 +55,7 @@ export type Game = {
   date: string;
   moves: AlgebraicNotation[];
   playerColor: Side;
+  skillLevel: SkillLevel;
   result?: GameResult;
 };
 

@@ -1,12 +1,17 @@
-import { AlgebraicNotation, Game, Side } from "@/types";
+import { AlgebraicNotation, Game, Side, SkillLevel } from "@/types";
 
-export function saveGame(moves: AlgebraicNotation[], side: Side): void {
+export function saveGame(
+  moves: AlgebraicNotation[],
+  playerColor: Side,
+  skillLevel: SkillLevel,
+): void {
   const games = loadGames();
   const newGame: Game = {
     id: crypto.randomUUID(),
     date: new Date().toISOString(),
     moves,
-    playerColor: side,
+    playerColor,
+    skillLevel,
   };
 
   games.push(newGame);
