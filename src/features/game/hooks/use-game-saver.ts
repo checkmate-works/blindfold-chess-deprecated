@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AlgebraicNotation, Side, SkillLevel } from "@/types";
 import { saveGame } from "@/lib/storage";
 import { toast } from "react-hot-toast";
@@ -18,17 +18,22 @@ export const useGameSaver = ({
 }: UseGameSaverProps) => {
   const [gameId, setGameId] = useState<string | null>(initialId ?? null);
 
-  const save = () => {
-    if (moves.length > 0) {
-      const id = saveGame(moves, playerColor, skillLevel, gameId ?? undefined);
-      setGameId(id);
-      toast.success("Game saved!");
+  const latestMovesRef = useRef(moves);
+  const isDirtyRef = useRef(false);
+
+  useEffect(() => {
+    if (
+      latestMovesRef.current.length !== moves.length ||
+      !latestMovesRef.current.every((m, i) => m === moves[i])
+    ) {
+      isDirtyRef.current = true;
+      latestMovesRef.current = moves;
     }
-  };
+  }, [moves]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (moves.length > 0) {
+      if (isDirtyRef.current && latestMovesRef.current.length > 0) {
         e.preventDefault();
         e.returnValue = "";
       }
@@ -37,7 +42,17 @@ export const useGameSaver = ({
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      save();
+
+      if (isDirtyRef.current && latestMovesRef.current.length > 0) {
+        const id = saveGame(
+          latestMovesRef.current,
+          playerColor,
+          skillLevel,
+          gameId ?? undefined,
+        );
+        setGameId(id);
+        toast.success("Game saved!");
+      }
     };
-  }, [moves]);
+  }, []);
 };
