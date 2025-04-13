@@ -22,7 +22,7 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { getAiMove } = useAiVersus({ skillLevel: settings.skillLevel });
   const { moves, pushMove, getFen } = useNotation(initialMoves);
-  const { save } = useGameSaver({
+  useGameSaver({
     moves,
     playerColor: playerSide,
     skillLevel: settings.skillLevel,
@@ -40,10 +40,6 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
       setIsPlayerTurn(true);
     }
   }, [playerSide, moves, pushMove, getAiMove]);
-
-  const handleSave = () => {
-    save();
-  };
 
   const onMove = async (move: AlgebraicNotation) => {
     try {
@@ -80,18 +76,6 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
           playerSide={playerSide}
           onMove={onMove}
         />
-      </div>
-
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200">
-        <div className="max-w-2xl mx-auto px-4 py-4">
-          <button
-            onClick={handleSave}
-            className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg shadow transition-colors duration-200"
-            disabled={moves.length === 0}
-          >
-            Save Game
-          </button>
-        </div>
       </div>
     </div>
   );

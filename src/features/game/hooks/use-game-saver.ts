@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AlgebraicNotation, Side, SkillLevel } from "@/types";
 import { saveGame } from "@/lib/storage";
+import { toast } from "react-hot-toast";
 
 type UseGameSaverProps = {
   moves: AlgebraicNotation[];
@@ -21,6 +22,7 @@ export const useGameSaver = ({
     if (moves.length > 0) {
       const id = saveGame(moves, playerColor, skillLevel, gameId ?? undefined);
       setGameId(id);
+      toast.success("Game saved!");
     }
   };
 
@@ -38,6 +40,4 @@ export const useGameSaver = ({
       save();
     };
   }, [moves]);
-
-  return { save };
 };
