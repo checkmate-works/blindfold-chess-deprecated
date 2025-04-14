@@ -49,19 +49,17 @@ export const GameList = ({ games }: GameListProps) => {
                 <span className="text-sm text-gray-600">
                   Playing as {game.playerColor}
                 </span>
-                {game.result && (
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      game.result === "win"
-                        ? "bg-green-100 text-green-800"
-                        : game.result === "loss"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {game.result.toUpperCase()}
-                  </span>
-                )}
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    game.status === "win"
+                      ? "bg-green-100 text-green-800"
+                      : game.status === "loss"
+                        ? "bg-red-100 text-red-800"
+                        : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {game.status.toUpperCase()}
+                </span>
               </div>
               <div className="mt-2 sm:mt-0">
                 <span className="text-sm text-gray-600">

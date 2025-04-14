@@ -1,10 +1,11 @@
-import { AlgebraicNotation, Game, Side, SkillLevel } from "@/types";
+import { AlgebraicNotation, Game, Side, SkillLevel, GameStatus } from "@/types";
 
 export function saveGame(
   moves: AlgebraicNotation[],
   playerColor: Side,
   skillLevel: SkillLevel,
   id?: string,
+  status: GameStatus = "in_progress",
 ): string {
   const games = loadGames();
 
@@ -17,6 +18,7 @@ export function saveGame(
     moves,
     playerColor,
     skillLevel,
+    status,
   };
 
   if (existingIndex !== -1) {
