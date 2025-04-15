@@ -2,11 +2,11 @@ import { Game } from "@/types";
 import { useNavigate } from "react-router-dom";
 import { PlayScreenState } from "@/routes/app/game/play";
 
-interface GameListProps {
+interface Props {
   games: Game[];
 }
 
-export const GameList = ({ games }: GameListProps) => {
+export const GameList = ({ games }: Props) => {
   const navigate = useNavigate();
 
   const handleGameClick = (game: Game) => {

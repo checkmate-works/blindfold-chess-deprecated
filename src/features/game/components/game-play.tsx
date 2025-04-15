@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "react-hot-toast";
 import { GameSettings, GameStatus, AlgebraicNotation, Side } from "@/types";
 import { TabMenu } from "./tab-menu";
 import { GameHeader } from "./game-header";
@@ -24,11 +25,15 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
 
   const { getAiMove } = useAiVersus({ skillLevel: settings.skillLevel });
   const { moves, pushMove, getFen } = useNotation(initialMoves);
+  const handleAutoSave = useCallback(() => {
+    toast.success("Game saved!");
+  }, []);
   useGameSaver({
     moves,
     playerColor: playerSide,
     skillLevel: settings.skillLevel,
     initialId: gameId,
+    onAutoSave: handleAutoSave,
   });
 
   useEffect(() => {

@@ -1,14 +1,13 @@
 import { useEffect, useState, useRef } from "react";
-import { AlgebraicNotation, Side, SkillLevel, GameStatus } from "@/types";
+import { AlgebraicNotation, Side, SkillLevel } from "@/types";
 import { saveGame } from "@/lib/storage";
-import { toast } from "react-hot-toast";
 
-type UseGameSaverProps = {
+type Props = {
   moves: AlgebraicNotation[];
   playerColor: Side;
   skillLevel: SkillLevel;
   initialId?: string;
-  status?: GameStatus;
+  onAutoSave?: () => void;
 };
 
 export const useGameSaver = ({
@@ -16,8 +15,8 @@ export const useGameSaver = ({
   playerColor,
   skillLevel,
   initialId,
-  status = "in_progress",
-}: UseGameSaverProps) => {
+  onAutoSave,
+}: Props) => {
   const [gameId, setGameId] = useState<string | null>(initialId ?? null);
 
   const latestMovesRef = useRef(moves);
@@ -51,10 +50,10 @@ export const useGameSaver = ({
           playerColor,
           skillLevel,
           gameId ?? undefined,
-          status,
+          "in_progress",
         );
         setGameId(id);
-        toast.success("Game saved!");
+        onAutoSave?.();
       }
     };
   }, []);
