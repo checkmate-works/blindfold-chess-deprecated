@@ -8,6 +8,7 @@ type Props = {
   skillLevel: SkillLevel;
   initialId?: string;
   onAutoSave?: () => void;
+  disabled?: boolean;
 };
 
 export const useGameSaver = ({
@@ -16,6 +17,7 @@ export const useGameSaver = ({
   skillLevel,
   initialId,
   onAutoSave,
+  disabled,
 }: Props) => {
   const [gameId, setGameId] = useState<string | null>(initialId ?? null);
 
@@ -40,21 +42,26 @@ export const useGameSaver = ({
       }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+    if (!disabled) {
+      window.addEventListener("beforeunload", handleBeforeUnload);
+    }
 
-      if (isDirtyRef.current && latestMovesRef.current.length > 0) {
-        const id = saveGame(
-          latestMovesRef.current,
-          playerColor,
-          skillLevel,
-          gameId ?? undefined,
-          "in_progress",
-        );
-        setGameId(id);
-        onAutoSave?.();
+    return () => {
+      if (!disabled) {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+
+        if (isDirtyRef.current && latestMovesRef.current.length > 0) {
+          const id = saveGame(
+            latestMovesRef.current,
+            playerColor,
+            skillLevel,
+            gameId ?? undefined,
+            "in_progress",
+          );
+          setGameId(id);
+          onAutoSave?.();
+        }
       }
     };
-  }, []);
+  }, [disabled, gameId, playerColor, skillLevel, onAutoSave]);
 };

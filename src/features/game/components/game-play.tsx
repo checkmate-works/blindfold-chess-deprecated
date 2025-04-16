@@ -7,6 +7,7 @@ import { GameContent } from "./game-content";
 import { useAiVersus } from "../hooks/use-ai-versus";
 import { useNotation } from "../hooks/use-notation";
 import { useGameSaver } from "../hooks/use-game-saver";
+import { saveGame } from "@/lib/storage";
 
 type Tab = "move" | "board";
 
@@ -34,6 +35,7 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
     skillLevel: settings.skillLevel,
     initialId: gameId,
     onAutoSave: handleAutoSave,
+    disabled: gameStatus !== "in_progress",
   });
 
   useEffect(() => {
@@ -48,6 +50,13 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
       setIsPlayerTurn(true);
     }
   }, [playerSide, moves, pushMove, getAiMove]);
+
+  useEffect(() => {
+    if (gameStatus !== "in_progress") {
+      saveGame(moves, playerSide, settings.skillLevel, gameId, gameStatus);
+      toast.success("Game result saved!");
+    }
+  }, [gameStatus]);
 
   const onMove = async (move: AlgebraicNotation) => {
     try {
