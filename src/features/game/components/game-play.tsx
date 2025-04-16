@@ -6,7 +6,7 @@ import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
 import { useAiVersus } from "../hooks/use-ai-versus";
 import { useNotation } from "../hooks/use-notation";
-import { useGameSaver } from "../hooks/use-game-saver";
+import { useAutoSave } from "../hooks/use-auto-save";
 import { saveGame } from "@/lib/storage";
 
 type Tab = "move" | "board";
@@ -29,7 +29,7 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const handleAutoSave = useCallback(() => {
     toast.success("Game saved!");
   }, []);
-  useGameSaver({
+  useAutoSave({
     moves,
     playerColor: playerSide,
     skillLevel: settings.skillLevel,

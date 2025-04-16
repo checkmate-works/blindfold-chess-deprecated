@@ -11,7 +11,7 @@ type Props = {
   disabled?: boolean;
 };
 
-export const useGameSaver = ({
+export const useAutoSave = ({
   moves,
   playerColor,
   skillLevel,
