@@ -1,21 +1,24 @@
 import { useEffect, useState, useRef } from "react";
 import { AlgebraicNotation, Side, SkillLevel } from "@/types";
 import { saveGame } from "@/lib/storage";
-import { toast } from "react-hot-toast";
 
-type UseGameSaverProps = {
+type Props = {
   moves: AlgebraicNotation[];
   playerColor: Side;
   skillLevel: SkillLevel;
   initialId?: string;
+  onAutoSave?: () => void;
+  disabled?: boolean;
 };
 
-export const useGameSaver = ({
+export const useAutoSave = ({
   moves,
   playerColor,
   skillLevel,
   initialId,
-}: UseGameSaverProps) => {
+  onAutoSave,
+  disabled,
+}: Props) => {
   const [gameId, setGameId] = useState<string | null>(initialId ?? null);
 
   const latestMovesRef = useRef(moves);
@@ -39,20 +42,26 @@ export const useGameSaver = ({
       }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+    if (!disabled) {
+      window.addEventListener("beforeunload", handleBeforeUnload);
+    }
 
-      if (isDirtyRef.current && latestMovesRef.current.length > 0) {
-        const id = saveGame(
-          latestMovesRef.current,
-          playerColor,
-          skillLevel,
-          gameId ?? undefined,
-        );
-        setGameId(id);
-        toast.success("Game saved!");
+    return () => {
+      if (!disabled) {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+
+        if (isDirtyRef.current && latestMovesRef.current.length > 0) {
+          const id = saveGame(
+            latestMovesRef.current,
+            playerColor,
+            skillLevel,
+            gameId ?? undefined,
+            "in_progress",
+          );
+          setGameId(id);
+          onAutoSave?.();
+        }
       }
     };
-  }, []);
+  }, [disabled, gameId, playerColor, skillLevel, onAutoSave]);
 };

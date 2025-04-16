@@ -1,9 +1,14 @@
 import { useEffect, useRef } from "react";
-import { AlgebraicNotation, SkillLevel } from "@/types";
+import { AlgebraicNotation, SkillLevel, GameStatus } from "@/types";
 import { Chess } from "chess.js";
 
 type UseAiVersusOptions = {
   skillLevel?: SkillLevel;
+};
+
+type AiMoveResult = {
+  move: AlgebraicNotation;
+  status: GameStatus;
 };
 
 type StockfishWorker = Worker & {
@@ -69,9 +74,11 @@ export const useAiVersus = ({ skillLevel = 20 }: UseAiVersusOptions = {}) => {
 
   const getAiMove = async (
     moves: AlgebraicNotation[],
-  ): Promise<AlgebraicNotation> => {
+  ): Promise<AiMoveResult> => {
     const chess = new Chess();
     for (const move of moves) chess.move(move);
+
+    const aiSide = chess.turn();
 
     const engine = stockfishRef.current;
     if (!engine) throw new Error("Stockfish engine is not initialized.");
@@ -80,7 +87,25 @@ export const useAiVersus = ({ skillLevel = 20 }: UseAiVersusOptions = {}) => {
     const move = chess.move(uciMove);
 
     if (!move) throw new Error(`Invalid engine move: ${uciMove}`);
-    return move.san as AlgebraicNotation;
+
+    if (chess.isCheckmate()) {
+      return {
+        move: move.san as AlgebraicNotation,
+        status: aiSide === "w" ? "loss" : "win",
+      };
+    }
+
+    if (chess.isDraw()) {
+      return {
+        move: move.san as AlgebraicNotation,
+        status: "draw",
+      };
+    }
+
+    return {
+      move: move.san as AlgebraicNotation,
+      status: "in_progress",
+    };
   };
 
   return {

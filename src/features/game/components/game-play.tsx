@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
-import { GameSettings, AlgebraicNotation, Side } from "@/types";
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "react-hot-toast";
+import { GameSettings, GameStatus, AlgebraicNotation, Side } from "@/types";
 import { TabMenu } from "./tab-menu";
 import { GameHeader } from "./game-header";
 import { GameContent } from "./game-content";
 import { useAiVersus } from "../hooks/use-ai-versus";
 import { useNotation } from "../hooks/use-notation";
-import { useGameSaver } from "../hooks/use-game-saver";
+import { useAutoSave } from "../hooks/use-auto-save";
+import { saveGame } from "@/lib/storage";
 
 type Tab = "move" | "board";
 
@@ -20,18 +22,26 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<Tab>("move");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [gameStatus, setGameStatus] = useState<GameStatus>("in_progress");
+
   const { getAiMove } = useAiVersus({ skillLevel: settings.skillLevel });
   const { moves, pushMove, getFen } = useNotation(initialMoves);
-  useGameSaver({
+  const handleAutoSave = useCallback(() => {
+    toast.success("Game saved!");
+  }, []);
+  useAutoSave({
     moves,
     playerColor: playerSide,
     skillLevel: settings.skillLevel,
     initialId: gameId,
+    onAutoSave: handleAutoSave,
+    disabled: gameStatus !== "in_progress",
   });
 
   useEffect(() => {
     const makeFirstMove = async () => {
-      pushMove(await getAiMove([]));
+      const aiResult = await getAiMove([]);
+      pushMove(aiResult.move);
     };
 
     if (playerSide === "black" && moves.length === 0) {
@@ -41,12 +51,22 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
     }
   }, [playerSide, moves, pushMove, getAiMove]);
 
+  useEffect(() => {
+    if (gameStatus !== "in_progress") {
+      saveGame(moves, playerSide, settings.skillLevel, gameId, gameStatus);
+      toast.success("Game result saved!");
+    }
+  }, [gameStatus]);
+
   const onMove = async (move: AlgebraicNotation) => {
     try {
       setIsPlayerTurn(false);
-      const aiMove = await getAiMove([...moves, move]);
-      pushMove(move, aiMove);
+      const aiResult = await getAiMove([...moves, move]);
+      pushMove(move, aiResult.move);
       setErrorMessage(null);
+      if (aiResult.status !== "in_progress") {
+        setGameStatus(aiResult.status);
+      }
     } catch (err) {
       if (err instanceof Error) {
         setErrorMessage(err.message);
@@ -64,6 +84,14 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
           skillLevel={settings.skillLevel}
           errorMessage={errorMessage}
         />
+
+        {gameStatus !== "in_progress" && (
+          <div className="mt-4 p-4 rounded bg-blue-50 text-blue-800 text-center font-semibold">
+            {gameStatus === "win" && "You won!"}
+            {gameStatus === "loss" && "You lost!"}
+            {gameStatus === "draw" && "Game drawn!"}
+          </div>
+        )}
 
         <TabMenu activeTab={activeTab} onTabChange={setActiveTab} />
 

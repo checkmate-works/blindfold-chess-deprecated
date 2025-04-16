@@ -49,14 +49,14 @@ export type GameSettings = {
   skillLevel: SkillLevel;
 };
 
-type GameResult = "win" | "loss" | "draw";
+export type GameStatus = "in_progress" | "win" | "loss" | "draw";
 export type Game = {
   id: string;
   date: string;
   moves: AlgebraicNotation[];
   playerColor: Side;
   skillLevel: SkillLevel;
-  result?: GameResult;
+  status: GameStatus;
 };
 
 export type UciMove = `${string}${number}${string}${number}`;
