@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { GameSettings, GameStatus, AlgebraicNotation, Side } from "@/types";
-import { TabMenu } from "./tab-menu";
-import { GameHeader } from "./game-header";
-import { GameContent } from "./game-content";
-import { useAiVersus } from "../hooks/use-ai-versus";
-import { useNotation } from "../hooks/use-notation";
-import { useAutoSave } from "../hooks/use-auto-save";
+import { TabMenu } from "./components/tab-menu";
+import { GameHeader } from "./components/game-header";
+import { GameContent } from "./components/game-content";
+import { useAiVersus } from "./hooks/use-ai-versus";
+import { useNotation } from "./hooks/use-notation";
+import { useAutoSave } from "./hooks/use-auto-save";
 import { saveGame } from "@/lib/storage";
 
 type Tab = "move" | "board";

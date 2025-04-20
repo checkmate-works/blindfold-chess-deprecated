@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlayerColor, Side, SkillLevel } from "@/types";
-import { ColorSelector } from "./color-selector";
-import { SkillLevelSelector } from "./skill-level-selector";
+import { ColorSelector } from "./components/color-selector";
+import { SkillLevelSelector } from "./components/skill-level-selector";
 
 const decidePlayerSide = (colorSetting: PlayerColor): Side => {
   if (colorSetting === "random") {

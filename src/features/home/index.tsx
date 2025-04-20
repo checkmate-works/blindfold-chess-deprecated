@@ -1,1 +1,1 @@
-export { TopPage } from "./components/top-page";
+export { TopPage } from "./top-page";
