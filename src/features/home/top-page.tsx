@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameList } from "../components/game-list";
+import { GameList } from "./components/game-list";
 import { Game } from "@/types";
 import { loadGames } from "@/lib/storage";
 
