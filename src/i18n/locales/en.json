@@ -1,0 +1,10 @@
+{
+  "game": {
+    "title": "Blindfold Chess",
+    "start": "Start Game",
+    "color": "Choose Color",
+    "color.white": "White",
+    "color.black": "Black",
+    "color.random": "Random"
+  }
+}

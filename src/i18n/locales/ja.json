@@ -1,0 +1,10 @@
+{
+  "game": {
+    "title": "目隠しチェス",
+    "start": "ゲーム開始",
+    "color": "色を選択",
+    "color.white": "白",
+    "color.black": "黒",
+    "color.random": "ランダム"
+  }
+}
