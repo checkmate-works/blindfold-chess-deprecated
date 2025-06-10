@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
+    "@sentry/react": "^9.27.0",
     "@tailwindcss/vite": "^4.0.15",
     "@types/chess.js": "^0.13.7",
     "chess.js": "^1.0.0",
