@@ -34,3 +34,18 @@ $ bun run copy-stockfish
 ```bash
 $ bun run dev
 ```
+
+## Deployment
+
+### Vercel Configuration
+
+When deploying to Vercel, you need to configure the following environment variable:
+
+- `VITE_SENTRY_DSN`: Your Sentry DSN for error tracking
+  - You can find this in your Sentry project settings
+  - This is required for error tracking in production
+
+To set this up:
+1. Go to your Vercel project dashboard
+2. Navigate to Settings > Environment Variables
+3. Add a new environment variable with the name `VITE_SENTRY_DSN` and your Sentry DSN as the value
