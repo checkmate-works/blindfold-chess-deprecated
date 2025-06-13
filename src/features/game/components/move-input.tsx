@@ -5,12 +5,16 @@ interface MoveInputProps {
   isPlayerTurn: boolean;
   lastMove?: AlgebraicNotation;
   onMove?: (move: AlgebraicNotation) => void;
+  errorMessage?: string | null;
+  onErrorClear?: () => void;
 }
 
 export const MoveInput = ({
   isPlayerTurn,
   lastMove,
   onMove,
+  errorMessage,
+  onErrorClear,
 }: MoveInputProps) => {
   const [currentMove, setCurrentMove] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,6 +33,13 @@ export const MoveInput = ({
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentMove(e.target.value);
+    if (errorMessage && onErrorClear) {
+      onErrorClear();
+    }
+  };
+
   return (
     <div className="flex flex-col space-y-4 max-w-fit mx-auto">
       <div className="text-center space-y-2">
@@ -44,17 +55,34 @@ export const MoveInput = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-2">
-        <input
-          ref={inputRef}
-          type="text"
-          value={currentMove}
-          onChange={(e) => setCurrentMove(e.target.value)}
-          disabled={!isPlayerTurn}
-          placeholder="Enter move (e.g. e4, Nf3, O-O, Bxc6)"
-          className="w-64 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black text-gray-900"
-          autoComplete="off"
-          spellCheck="false"
-        />
+        <div className="relative">
+          <input
+            ref={inputRef}
+            type="text"
+            value={currentMove}
+            onChange={handleChange}
+            disabled={!isPlayerTurn}
+            placeholder="Enter move (e.g. e4, Nf3, O-O, Bxc6)"
+            className={`w-64 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black text-gray-900 ${
+              errorMessage
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-black"
+            }`}
+            autoComplete="off"
+            spellCheck="false"
+            aria-invalid={!!errorMessage}
+            aria-describedby={errorMessage ? "move-error" : undefined}
+          />
+          {errorMessage && (
+            <div
+              id="move-error"
+              className="absolute left-0 right-0 mt-1 p-2 bg-red-100 text-red-700 text-sm rounded shadow-lg z-10"
+              role="alert"
+            >
+              {errorMessage}
+            </div>
+          )}
+        </div>
         <button
           type="submit"
           disabled={!isPlayerTurn || !currentMove}

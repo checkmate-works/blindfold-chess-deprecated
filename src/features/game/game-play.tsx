@@ -76,14 +76,14 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
     }
   };
 
+  const handleErrorClear = useCallback(() => {
+    setErrorMessage(null);
+  }, []);
+
   return (
     <div className="min-h-screen pb-20 relative">
       <div className="max-w-2xl mx-auto p-4">
-        <GameHeader
-          playerSide={playerSide}
-          skillLevel={settings.skillLevel}
-          errorMessage={errorMessage}
-        />
+        <GameHeader playerSide={playerSide} skillLevel={settings.skillLevel} />
 
         {gameStatus !== "in_progress" && (
           <div className="mt-4 p-4 rounded bg-blue-50 text-blue-800 text-center font-semibold">
@@ -103,6 +103,8 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
           currentFen={getFen()}
           playerSide={playerSide}
           onMove={onMove}
+          errorMessage={errorMessage}
+          onErrorClear={handleErrorClear}
         />
       </div>
     </div>

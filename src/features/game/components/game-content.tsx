@@ -12,6 +12,8 @@ type Props = {
   currentFen: string;
   playerSide: Side;
   onMove: (move: AlgebraicNotation) => void;
+  errorMessage: string | null;
+  onErrorClear: () => void;
 };
 
 export const GameContent = ({
@@ -22,6 +24,8 @@ export const GameContent = ({
   currentFen,
   playerSide,
   onMove,
+  errorMessage,
+  onErrorClear,
 }: Props) => {
   return (
     <div className="mt-4">
@@ -30,6 +34,8 @@ export const GameContent = ({
           isPlayerTurn={isPlayerTurn && !isThinking}
           lastMove={lastMove}
           onMove={onMove}
+          errorMessage={errorMessage}
+          onErrorClear={onErrorClear}
         />
       ) : (
         <div className="flex justify-center">
