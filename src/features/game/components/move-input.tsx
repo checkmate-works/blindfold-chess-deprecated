@@ -72,6 +72,8 @@ export const MoveInput = ({
             spellCheck="false"
             aria-invalid={!!errorMessage}
             aria-describedby={errorMessage ? "move-error" : undefined}
+            inputMode="text"
+            pattern="[a-hA-H0-8xO-]+"
           />
           {errorMessage && (
             <div
