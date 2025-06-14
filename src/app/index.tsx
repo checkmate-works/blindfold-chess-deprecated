@@ -3,6 +3,7 @@ import { router } from "@/app/router";
 import { Toaster } from "react-hot-toast";
 import "@/i18n/config";
 import * as Sentry from "@sentry/react";
+import { LanguageProvider } from "@/contexts/language-context";
 
 if (!import.meta.env.DEV) {
   Sentry.init({
@@ -13,9 +14,9 @@ if (!import.meta.env.DEV) {
 
 export const App = () => {
   return (
-    <>
+    <LanguageProvider>
       <Toaster position="bottom-center" />
       <RouterProvider router={router} />
-    </>
+    </LanguageProvider>
   );
 };
