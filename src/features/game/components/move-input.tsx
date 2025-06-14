@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { type AlgebraicNotation } from "@/types";
 import { generateMoveSuggestions } from "../utils/move-suggestions";
+import { useTranslation } from "react-i18next";
 
-interface MoveInputProps {
+type MoveInputProps = {
   isPlayerTurn: boolean;
   lastMove?: AlgebraicNotation;
   onMove: (move: AlgebraicNotation) => void;
   errorMessage?: string | null;
   onErrorClear?: () => void;
-}
+};
 
 export const MoveInput = ({
   isPlayerTurn,
@@ -17,6 +18,7 @@ export const MoveInput = ({
   errorMessage,
   onErrorClear,
 }: MoveInputProps) => {
+  const { t } = useTranslation();
   const [currentMove, setCurrentMove] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -87,14 +89,18 @@ export const MoveInput = ({
   return (
     <div className="flex flex-col space-y-4 max-w-fit mx-auto">
       <div className="text-center space-y-2">
-        {lastMove && <div className="text-gray-700">Last move: {lastMove}</div>}
+        {lastMove && (
+          <div className="text-gray-700">
+            {t("game.status.lastMove")}: {lastMove}
+          </div>
+        )}
         {currentMove && (
           <div className="text-gray-800 font-medium">
-            Current input: {currentMove}
+            {t("game.status.currentInput")}: {currentMove}
           </div>
         )}
         <div className="text-gray-600">
-          {isPlayerTurn ? "Your turn" : "Stockfish is thinking..."}
+          {isPlayerTurn ? t("game.status.yourTurn") : t("game.status.thinking")}
         </div>
       </div>
 
@@ -108,7 +114,7 @@ export const MoveInput = ({
             onFocus={() => setShowSuggestions(true)}
             disabled={!isPlayerTurn}
             onKeyDown={handleKeyDown}
-            placeholder="Enter move (e.g. e4, Nf3, O-O, Bxc6)"
+            placeholder={t("game.status.enterMove")}
             className={`w-64 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black text-gray-900 ${
               errorMessage
                 ? "border-red-500 focus:ring-red-500"
@@ -156,7 +162,7 @@ export const MoveInput = ({
                 : "bg-gray-400 cursor-not-allowed"
             }`}
         >
-          Make Move
+          {t("game.status.makeMove")}
         </button>
       </form>
     </div>
