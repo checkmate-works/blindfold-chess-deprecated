@@ -35,6 +35,13 @@ export const MoveInput = ({
     }
   }, [errorMessage]);
 
+  useEffect(() => {
+    if (!isPlayerTurn) {
+      setCurrentMove("");
+      setSuggestions([]);
+    }
+  }, [isPlayerTurn]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCurrentMove(value);
