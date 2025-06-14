@@ -1,6 +1,7 @@
 {
   "game": {
     "title": "Blindfold Chess",
+    "newGame": "New Game",
     "start": "Start Game",
     "color.title": "Choose Your Color",
     "color.white": "White",

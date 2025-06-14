@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Header } from "./header";
-import React from "react";
+import { Footer } from "./footer";
 
 type ContentLayoutProps = {
   children: ReactNode;
@@ -9,11 +9,12 @@ type ContentLayoutProps = {
 
 export const ContentLayout = ({ children, title = "" }: ContentLayoutProps) => {
   return (
-    <React.Fragment>
+    <div className="flex flex-col min-h-screen">
       <Header title={title} />
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 md:px-8">
+      <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-8">
         {children}
-      </div>
-    </React.Fragment>
+      </main>
+      <Footer />
+    </div>
   );
 };

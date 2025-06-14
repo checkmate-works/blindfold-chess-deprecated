@@ -4,6 +4,7 @@ import { GameList } from "./components/game-list";
 import { Game } from "@/types";
 import { loadGames } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 export const TopPage = () => {
   const [games, setGames] = useState<Game[]>([]);
@@ -15,19 +16,18 @@ export const TopPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen pb-20 relative">
-      <div className="container mx-auto px-4 py-8">
-        <GameList games={games} />
-      </div>
-
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+    <div className="min-h-screen pb-20">
+      <div className="container mx-auto p-4">
+        <div className="w-full max-w-4xl mx-auto space-y-6">
           <button
             onClick={() => navigate("/game/setup")}
-            className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg shadow transition-colors duration-200"
+            className="w-full bg-white hover:bg-gray-50 text-gray-800 font-semibold py-3 px-6 rounded-sm border border-gray-300 transition-colors duration-200 flex items-center justify-center space-x-2"
           >
-            {t("game.start")}
+            <PlusIcon className="w-5 h-5" />
+            <span>{t("game.newGame")}</span>
           </button>
+
+          <GameList games={games} />
         </div>
       </div>
     </div>
