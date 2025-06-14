@@ -10,6 +10,17 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
-  }
+    },
+    "skipLibCheck": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "noEmit": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "public",
+    "*.config.js",
+    "*.config.ts",
+    "scripts"
+  ]
 }
