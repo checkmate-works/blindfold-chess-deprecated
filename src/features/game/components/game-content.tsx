@@ -30,11 +30,17 @@ export const GameContent = ({
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(400);
+  const [isResizing, setIsResizing] = useState(false);
 
   const updateBoardWidth = () => {
     if (containerRef.current) {
+      setIsResizing(true);
       const width = containerRef.current.offsetWidth;
       setBoardWidth(width);
+      // リサイズ完了後に少し遅延を入れてから表示する
+      requestAnimationFrame(() => {
+        setIsResizing(false);
+      });
     }
   };
 
@@ -49,7 +55,7 @@ export const GameContent = ({
 
   useEffect(() => {
     if (activeTab === "board") {
-      setTimeout(updateBoardWidth, 0);
+      requestAnimationFrame(updateBoardWidth);
     }
   }, [activeTab]);
 
@@ -69,17 +75,19 @@ export const GameContent = ({
             ref={containerRef}
             className="w-full max-w-[400px] aspect-square"
           >
-            <Chessboard
-              position={currentFen}
-              boardOrientation={playerSide}
-              boardWidth={boardWidth}
-              arePiecesDraggable={false}
-              areArrowsAllowed={false}
-              customBoardStyle={{
-                borderRadius: "4px",
-                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-              }}
-            />
+            {!isResizing && (
+              <Chessboard
+                position={currentFen}
+                boardOrientation={playerSide}
+                boardWidth={boardWidth}
+                arePiecesDraggable={false}
+                areArrowsAllowed={false}
+                customBoardStyle={{
+                  borderRadius: "4px",
+                  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                }}
+              />
+            )}
           </div>
         </div>
       )}
