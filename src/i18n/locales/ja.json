@@ -1,6 +1,7 @@
 {
   "game": {
     "title": "目隠しチェス",
+    "newGame": "対局を作成",
     "start": "ゲーム開始",
     "color.title": "色を選択",
     "color.white": "白",
