@@ -31,14 +31,14 @@ export const GameContent = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(400);
 
-  useEffect(() => {
-    const updateBoardWidth = () => {
-      if (containerRef.current) {
-        const width = containerRef.current.offsetWidth;
-        setBoardWidth(width);
-      }
-    };
+  const updateBoardWidth = () => {
+    if (containerRef.current) {
+      const width = containerRef.current.offsetWidth;
+      setBoardWidth(width);
+    }
+  };
 
+  useEffect(() => {
     updateBoardWidth();
     window.addEventListener("resize", updateBoardWidth);
 
@@ -46,6 +46,12 @@ export const GameContent = ({
       window.removeEventListener("resize", updateBoardWidth);
     };
   }, []);
+
+  useEffect(() => {
+    if (activeTab === "board") {
+      setTimeout(updateBoardWidth, 0);
+    }
+  }, [activeTab]);
 
   return (
     <div className="mt-4">
