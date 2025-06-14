@@ -61,9 +61,12 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const onMove = async (move: AlgebraicNotation) => {
     try {
       setIsPlayerTurn(false);
-      const aiResult = await getAiMove([...moves, move]);
-      pushMove(move, aiResult.move);
+      pushMove(move);
       setErrorMessage(null);
+
+      const aiResult = await getAiMove([...moves, move]);
+      pushMove(aiResult.move);
+
       if (aiResult.status !== "in_progress") {
         setGameStatus(aiResult.status);
       }
