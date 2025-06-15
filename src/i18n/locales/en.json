@@ -1,4 +1,8 @@
 {
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
   "game": {
     "title": "Blindfold Chess",
     "newGame": "New Game",
@@ -48,6 +52,14 @@
         "loss": "LOSS",
         "draw": "DRAW",
         "in_progress": "IN PROGRESS"
+      }
+    },
+    "moveInput": {
+      "placeholder": "Enter your move (e.g., e2e4)",
+      "takeBack": "Take Back",
+      "takeBackConfirm": {
+        "title": "Take Back Move",
+        "description": "This will undo your last move and the AI's response. Are you sure?"
       }
     }
   }
