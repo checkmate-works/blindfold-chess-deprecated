@@ -3,7 +3,7 @@ import { MoveInput } from "./move-input";
 import { AlgebraicNotation, Side } from "@/types";
 import { useRef, useEffect, useState } from "react";
 
-type Tab = "move" | "board";
+type Tab = "move" | "board" | "notation";
 
 type Props = {
   activeTab: Tab;
@@ -69,7 +69,7 @@ export const GameContent = ({
           errorMessage={errorMessage}
           onErrorClear={onErrorClear}
         />
-      ) : (
+      ) : activeTab === "board" ? (
         <div className="flex justify-center w-full">
           <div
             ref={containerRef}
@@ -89,6 +89,10 @@ export const GameContent = ({
               />
             )}
           </div>
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">
+          TODO: Implement notation view
         </div>
       )}
     </div>
