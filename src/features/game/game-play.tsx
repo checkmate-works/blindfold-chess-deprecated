@@ -81,25 +81,15 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
     }
   };
 
-  const handleErrorClear = useCallback(() => {
-    setErrorMessage(null);
-  }, []);
-
   return (
-    <div className="min-h-screen pb-20 relative">
-      <div className="max-w-2xl mx-auto p-4">
-        <GameHeader playerSide={playerSide} skillLevel={settings.skillLevel} />
-
-        {gameStatus !== "in_progress" && (
-          <div className="mt-4 p-4 rounded bg-blue-50 text-blue-800 text-center font-semibold">
-            {gameStatus === "win" && t("game.status.win")}
-            {gameStatus === "loss" && t("game.status.loss")}
-            {gameStatus === "draw" && t("game.status.draw")}
-          </div>
-        )}
-
+    <div className="flex flex-col min-h-screen">
+      <GameHeader
+        playerSide={playerSide}
+        skillLevel={settings.skillLevel}
+        gameStatus={gameStatus}
+      />
+      <div className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-8">
         <TabMenu activeTab={activeTab} onTabChange={setActiveTab} />
-
         <GameContent
           activeTab={activeTab}
           isPlayerTurn={isPlayerTurn}
@@ -109,7 +99,8 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
           playerSide={playerSide}
           onMove={onMove}
           errorMessage={errorMessage}
-          onErrorClear={handleErrorClear}
+          onErrorClear={() => setErrorMessage(null)}
+          moves={moves}
         />
       </div>
     </div>
