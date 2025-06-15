@@ -27,7 +27,7 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const [gameStatus, setGameStatus] = useState<GameStatus>("in_progress");
 
   const { getAiMove } = useAiVersus({ skillLevel: settings.skillLevel });
-  const { moves, pushMove, getFen } = useNotation(initialMoves);
+  const { moves, pushMove, getFen, popMove } = useNotation(initialMoves);
   const handleAutoSave = useCallback(() => {
     toast.success(t("game.notifications.gameSaved"));
   }, [t]);
@@ -81,6 +81,14 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
     }
   };
 
+  const handleTakeBack = () => {
+    if (moves.length >= 2) {
+      popMove();
+      popMove();
+      setIsPlayerTurn(true);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <GameHeader
@@ -101,6 +109,7 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
           errorMessage={errorMessage}
           onErrorClear={() => setErrorMessage(null)}
           moves={moves}
+          onTakeBack={handleTakeBack}
         />
       </div>
     </div>

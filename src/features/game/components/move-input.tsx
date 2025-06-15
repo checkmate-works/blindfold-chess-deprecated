@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { type AlgebraicNotation } from "@/types";
 import { generateMoveSuggestions } from "../utils/move-suggestions";
 import { useTranslation } from "react-i18next";
+import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 type MoveInputProps = {
   isPlayerTurn: boolean;
@@ -9,6 +10,8 @@ type MoveInputProps = {
   onMove: (move: AlgebraicNotation) => void;
   errorMessage?: string | null;
   onErrorClear?: () => void;
+  isThinking: boolean;
+  onTakeBack: () => void;
 };
 
 export const MoveInput = ({
@@ -17,12 +20,15 @@ export const MoveInput = ({
   onMove,
   errorMessage,
   onErrorClear,
+  isThinking,
+  onTakeBack,
 }: MoveInputProps) => {
   const { t } = useTranslation();
   const [currentMove, setCurrentMove] = useState<string>("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   useEffect(() => {
     if (isPlayerTurn && inputRef.current) {
@@ -84,6 +90,15 @@ export const MoveInput = ({
     if (onMove) {
       onMove(suggestion as AlgebraicNotation);
     }
+  };
+
+  const handleTakeBack = () => {
+    setShowConfirmDialog(true);
+  };
+
+  const confirmTakeBack = () => {
+    onTakeBack();
+    setShowConfirmDialog(false);
   };
 
   return (
@@ -165,6 +180,43 @@ export const MoveInput = ({
           {t("game.status.makeMove")}
         </button>
       </form>
+
+      <div className="mt-4 flex justify-center">
+        <button
+          onClick={handleTakeBack}
+          disabled={isThinking || !lastMove}
+          className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+        >
+          <ArrowUturnLeftIcon className="h-5 w-5" />
+        </button>
+      </div>
+
+      {showConfirmDialog && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              {t("game.moveInput.takeBackConfirm.title")}
+            </h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {t("game.moveInput.takeBackConfirm.description")}
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowConfirmDialog(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                {t("common.cancel")}
+              </button>
+              <button
+                onClick={confirmTakeBack}
+                className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
+              >
+                {t("common.confirm")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

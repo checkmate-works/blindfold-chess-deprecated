@@ -16,6 +16,7 @@ type Props = {
   errorMessage: string | null;
   onErrorClear: () => void;
   moves: AlgebraicNotation[];
+  onTakeBack: () => void;
 };
 
 export const GameContent = ({
@@ -29,6 +30,7 @@ export const GameContent = ({
   errorMessage,
   onErrorClear,
   moves,
+  onTakeBack,
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(400);
@@ -95,6 +97,8 @@ export const GameContent = ({
           onMove={onMove}
           errorMessage={errorMessage}
           onErrorClear={onErrorClear}
+          isThinking={isThinking}
+          onTakeBack={onTakeBack}
         />
       ) : activeTab === "board" ? (
         <div className="flex justify-center w-full">
