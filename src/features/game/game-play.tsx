@@ -10,7 +10,7 @@ import { useAutoSave } from "./hooks/use-auto-save";
 import { saveGame } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
 
-type Tab = "move" | "board";
+type Tab = "move" | "board" | "notation";
 
 type Props = {
   settings: GameSettings;
