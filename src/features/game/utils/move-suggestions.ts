@@ -1,6 +1,13 @@
 export const generateMoveSuggestions = (input: string): string[] => {
   if (!input || input.length < 1) return [];
 
+  // 完全な手が入力された場合は何も表示しない
+  if (input.length >= 2 && /^[a-h][1-8]$/.test(input)) return [];
+  if (input.length >= 3 && /^[NBRQK][a-h][1-8]$/.test(input)) return [];
+  if (input.length >= 4 && /^[NBRQK]x[a-h][1-8]$/.test(input)) return [];
+  if (input.length >= 3 && /^[a-h]x[a-h][1-8]$/.test(input)) return [];
+  if (input === "O-O" || input === "O-O-O") return [];
+
   // キャスリングの入力の場合
   if (input === "O") {
     return ["O-O", "O-O-O"];
