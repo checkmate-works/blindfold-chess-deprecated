@@ -3,7 +3,7 @@ import { MoveInput } from "./move-input";
 import { AlgebraicNotation, Side } from "@/types";
 import { useRef, useEffect, useState } from "react";
 
-type Tab = "move" | "board";
+type Tab = "move" | "board" | "notation";
 
 type Props = {
   activeTab: Tab;
@@ -15,6 +15,7 @@ type Props = {
   onMove: (move: AlgebraicNotation) => void;
   errorMessage: string | null;
   onErrorClear: () => void;
+  moves: AlgebraicNotation[];
 };
 
 export const GameContent = ({
@@ -27,6 +28,7 @@ export const GameContent = ({
   onMove,
   errorMessage,
   onErrorClear,
+  moves,
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(400);
@@ -59,6 +61,31 @@ export const GameContent = ({
     }
   }, [activeTab]);
 
+  const renderNotation = () => {
+    return (
+      <div className="w-full max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="grid grid-cols-2 gap-4">
+            {moves.map((move, index) => {
+              const moveNumber = Math.floor(index / 2) + 1;
+              const isWhiteMove = index % 2 === 0;
+              return (
+                <div key={index} className="flex items-center space-x-2">
+                  {isWhiteMove && (
+                    <span className="text-gray-500 w-8">{moveNumber}.</span>
+                  )}
+                  <span className={`font-mono ${isWhiteMove ? "ml-8" : ""}`}>
+                    {move}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="mt-4">
       {activeTab === "move" ? (
@@ -69,7 +96,7 @@ export const GameContent = ({
           errorMessage={errorMessage}
           onErrorClear={onErrorClear}
         />
-      ) : (
+      ) : activeTab === "board" ? (
         <div className="flex justify-center w-full">
           <div
             ref={containerRef}
@@ -90,6 +117,8 @@ export const GameContent = ({
             )}
           </div>
         </div>
+      ) : (
+        renderNotation()
       )}
     </div>
   );

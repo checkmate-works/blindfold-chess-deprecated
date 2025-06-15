@@ -32,7 +32,8 @@
     },
     "tabs": {
       "move": "Enter Move",
-      "board": "View Board"
+      "board": "View Board",
+      "notation": "Notation"
     },
     "notifications": {
       "gameSaved": "Game saved!",
