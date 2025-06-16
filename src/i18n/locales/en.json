@@ -62,7 +62,8 @@
       "takeBackConfirm": {
         "title": "Take Back Move",
         "description": "This will undo your last move and the AI's response. Are you sure?"
-      }
+      },
+      "invalidMove": "Invalid move. Please try again."
     },
     "deleteConfirm": {
       "title": "Delete Game",

@@ -9,6 +9,7 @@ import { useNotation } from "./hooks/use-notation";
 import { useAutoSave } from "./hooks/use-auto-save";
 import { saveGame } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
+import { Chess } from "chess.js";
 
 type Tab = "move" | "board" | "notation";
 
@@ -63,8 +64,28 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const onMove = async (move: AlgebraicNotation) => {
     try {
       setIsPlayerTurn(false);
-      pushMove(move);
       setErrorMessage(null);
+
+      const chess = new Chess();
+      for (const m of moves) {
+        try {
+          chess.move(m);
+        } catch {
+          setErrorMessage(t("game.moveInput.invalidMove"));
+          setIsPlayerTurn(true);
+          return;
+        }
+      }
+
+      try {
+        chess.move(move);
+      } catch {
+        setErrorMessage(t("game.moveInput.invalidMove"));
+        setIsPlayerTurn(true);
+        return;
+      }
+
+      pushMove(move);
 
       const aiResult = await getAiMove([...moves, move]);
       pushMove(aiResult.move);

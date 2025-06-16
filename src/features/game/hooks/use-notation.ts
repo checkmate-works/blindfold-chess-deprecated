@@ -15,7 +15,28 @@ export const useNotation = (
   const [moves, setMoves] = useState<AlgebraicNotation[]>(initialMoves);
 
   const pushMove = useCallback((...newMoves: AlgebraicNotation[]) => {
-    setMoves((prev) => [...prev, ...newMoves]);
+    setMoves((prev) => {
+      const chess = new Chess();
+      // 既存の手を適用
+      for (const move of prev) {
+        try {
+          chess.move(move);
+        } catch {
+          console.error("Invalid move in history:", move);
+          return prev; // 既存の手が無効な場合は変更しない
+        }
+      }
+      // 新しい手を検証
+      for (const move of newMoves) {
+        try {
+          chess.move(move);
+        } catch {
+          console.error("Invalid move:", move);
+          return prev; // 新しい手が無効な場合は追加しない
+        }
+      }
+      return [...prev, ...newMoves];
+    });
   }, []);
 
   const popMove = useCallback(() => {
