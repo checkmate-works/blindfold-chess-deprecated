@@ -92,12 +92,17 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   return (
     <div className="flex flex-col min-h-screen">
       <GameHeader
+        gameStatus={gameStatus}
         playerSide={playerSide}
         skillLevel={settings.skillLevel}
-        gameStatus={gameStatus}
       />
       <div className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-8">
-        <TabMenu activeTab={activeTab} onTabChange={setActiveTab} />
+        <TabMenu
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          isPlayerTurn={isPlayerTurn}
+          gameStatus={gameStatus}
+        />
         <GameContent
           activeTab={activeTab}
           isPlayerTurn={isPlayerTurn}

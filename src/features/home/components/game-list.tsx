@@ -13,6 +13,14 @@ interface Props {
   onDeleteGame: (gameId: string) => void;
 }
 
+const ColorIcon = ({ color }: { color: "white" | "black" }) => (
+  <div
+    className={`w-4 h-4 rounded-full ${
+      color === "white" ? "bg-white border border-gray-400" : "bg-gray-900"
+    }`}
+  />
+);
+
 export const GameList = ({ games, onDeleteGame }: Props) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -71,10 +79,7 @@ export const GameList = ({ games, onDeleteGame }: Props) => {
                   <span className="text-sm text-gray-500">
                     {formatDate(new Date(game.date))}
                   </span>
-                  <span className="text-sm text-gray-600">
-                    {t("game.list.playingAs")}{" "}
-                    {t(`game.color.${game.playerColor}`)}
-                  </span>
+                  <ColorIcon color={game.playerColor} />
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       game.status === "win"

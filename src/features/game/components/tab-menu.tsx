@@ -1,10 +1,13 @@
 import { useTranslation } from "react-i18next";
+import { GameStatus } from "@/types";
 
 type Tab = "move" | "board" | "notation";
 
 type Props = {
   activeTab: Tab;
   onTabChange: (tab: Tab) => void;
+  isPlayerTurn: boolean;
+  gameStatus: GameStatus;
 };
 
 export const TabMenu = ({ activeTab, onTabChange }: Props) => {

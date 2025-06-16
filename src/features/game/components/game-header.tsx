@@ -2,12 +2,20 @@ import { Side, SkillLevel, GameStatus } from "@/types";
 import { useTranslation } from "react-i18next";
 
 type Props = {
+  gameStatus: GameStatus;
   playerSide: Side;
   skillLevel: SkillLevel;
-  gameStatus: GameStatus;
 };
 
-export const GameHeader = ({ playerSide, skillLevel, gameStatus }: Props) => {
+const ColorIcon = ({ color }: { color: Side }) => (
+  <div
+    className={`w-4 h-4 rounded-full ${
+      color === "white" ? "bg-white border border-gray-400" : "bg-gray-900"
+    }`}
+  />
+);
+
+export const GameHeader = ({ gameStatus, playerSide, skillLevel }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -16,11 +24,9 @@ export const GameHeader = ({ playerSide, skillLevel, gameStatus }: Props) => {
         <div className="py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
+              <ColorIcon color={playerSide} />
               <div className="text-sm text-gray-500">
-                {t("game.status.playing")}: {t(`game.color.${playerSide}`)}
-              </div>
-              <div className="text-sm text-gray-500">
-                {t("game.status.aiLevel")}: {t(`game.ai.levels.${skillLevel}`)}
+                {t("game.ai.level")}: {t(`game.ai.levels.${skillLevel}`)}
               </div>
             </div>
             {gameStatus !== "in_progress" && (
