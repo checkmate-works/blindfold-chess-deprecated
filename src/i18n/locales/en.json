@@ -1,69 +1,87 @@
 {
   "common": {
     "cancel": "Cancel",
-    "confirm": "Confirm",
-    "delete": "Delete"
+    "delete": "Delete",
+    "save": "Save",
+    "start": "Start",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading...",
+    "confirm": "Confirm"
   },
   "game": {
     "title": "Blindfold Chess",
     "newGame": "New Game",
     "start": "Start Game",
     "gameLimitReached": "You have reached the maximum number of saved games",
-    "color.title": "Choose Your Color",
-    "color.white": "White",
-    "color.black": "Black",
-    "color.random": "Random",
+    "setup": {
+      "title": "Game Setup",
+      "newGame": "Start New Game",
+      "newGameDescription": "Choose your color and AI level to start a new game",
+      "pgn": "Start from PGN",
+      "pgnDescription": "Enter a PGN to start from a specific position",
+      "startFromPgn": "Start from PGN",
+      "startFromPgnDescription": "Start a game from a PGN notation",
+      "startGame": "Start Game"
+    },
+    "color": {
+      "title": "Choose Your Color",
+      "white": "White",
+      "black": "Black",
+      "random": "Random"
+    },
     "ai": {
-      "level": "Select AI Level",
+      "title": "Select AI Level",
       "levels": {
-        "beginner": "Beginner",
-        "easy": "Easy",
-        "intermediate": "Intermediate",
-        "advanced": "Advanced",
-        "expert": "Expert"
+        "0": "Beginner",
+        "5": "Easy",
+        "10": "Intermediate",
+        "15": "Advanced",
+        "20": "Expert"
       }
     },
     "status": {
-      "playing": "Playing as",
-      "aiLevel": "AI Level",
-      "yourTurn": "Your turn",
-      "thinking": "Stockfish is thinking...",
-      "lastMove": "Last move",
-      "currentInput": "Current input",
-      "enterMove": "Enter move (e.g. e4, Nf3, O-O, Bxc6)",
-      "makeMove": "Make Move",
+      "title": "Game Status",
       "win": "You won!",
-      "loss": "You lost!",
-      "draw": "Game drawn!"
+      "lose": "You lost!",
+      "draw": "Draw!",
+      "in_progress": "Game in progress",
+      "lastMove": "Last move",
+      "yourTurn": "Your turn",
+      "enterMove": "Enter your move",
+      "makeMove": "Make your move"
     },
     "tabs": {
-      "move": "Enter Move",
-      "board": "View Board",
+      "moveInput": "Move Input",
+      "board": "Board",
       "notation": "Notation"
     },
     "notifications": {
-      "gameSaved": "Game saved!",
-      "resultSaved": "Game result saved!"
+      "gameSaved": "Game saved successfully",
+      "resultSaved": "Game result saved"
     },
     "list": {
-      "noGames": "No games yet. Start playing to see your games here!",
-      "playingAs": "Playing as",
-      "moves": "moves",
+      "title": "Game List",
+      "noGames": "No games yet",
       "status": {
-        "win": "WIN",
-        "loss": "LOSS",
-        "draw": "DRAW",
-        "in_progress": "IN PROGRESS"
-      }
+        "win": "Win",
+        "lose": "Loss",
+        "draw": "Draw",
+        "in_progress": "In Progress"
+      },
+      "moves": "moves"
     },
     "moveInput": {
-      "placeholder": "Enter your move (e.g., e2e4)",
-      "takeBack": "Take Back",
+      "placeholder": "Enter move (e.g., e2e4)",
+      "invalid": "Invalid move",
       "takeBackConfirm": {
         "title": "Take Back Move",
-        "description": "This will undo your last move and the AI's response. Are you sure?"
-      },
-      "invalidMove": "Invalid move. Please try again."
+        "description": "Are you sure you want to take back the last move? This will undo both your move and the AI's response."
+      }
+    },
+    "pgnInput": {
+      "placeholder": "Enter PGN",
+      "invalid": "Invalid PGN format"
     },
     "deleteConfirm": {
       "title": "Delete Game",

@@ -1,41 +1,59 @@
-import { Side, SkillLevel, GameStatus } from "@/types";
 import { useTranslation } from "react-i18next";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
+import { SkillLevel, GameStatus } from "@/types";
+import { GameInfo } from "./game-info";
 
-type Props = {
-  gameStatus: GameStatus;
-  playerSide: Side;
+interface Props {
   skillLevel: SkillLevel;
-};
+  status: GameStatus;
+  isPlayerTurn: boolean;
+  playerColor: "white" | "black";
+}
 
-const ColorIcon = ({ color }: { color: Side }) => (
-  <div
-    className={`w-4 h-4 rounded-full ${
-      color === "white" ? "bg-white border border-gray-400" : "bg-gray-900"
-    }`}
-  />
-);
-
-export const GameHeader = ({ gameStatus, playerSide, skillLevel }: Props) => {
+export const GameHeader = ({
+  skillLevel,
+  status,
+  isPlayerTurn,
+  playerColor,
+}: Props) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate("/");
+  };
 
   return (
-    <div className="bg-white border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div className="py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <ColorIcon color={playerSide} />
-              <div className="text-sm text-gray-500">
-                {t("game.ai.level")}: {t(`game.ai.levels.${skillLevel}`)}
-              </div>
+    <div className="bg-white shadow">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          <div className="flex items-center">
+            <button
+              onClick={handleBack}
+              className="mr-4 p-2 rounded-full hover:bg-gray-100"
+            >
+              <ArrowLeftIcon className="h-6 w-6 text-gray-600" />
+            </button>
+            <div>
+              <h1 className="text-lg font-medium text-gray-900">
+                {t("game.status.title")}
+              </h1>
+              <GameInfo skillLevel={skillLevel} playerColor={playerColor} />
             </div>
-            {gameStatus !== "in_progress" && (
-              <div className="text-sm font-medium">
-                {gameStatus === "win" && t("game.status.win")}
-                {gameStatus === "loss" && t("game.status.loss")}
-                {gameStatus === "draw" && t("game.status.draw")}
-              </div>
-            )}
+          </div>
+          <div className="text-right">
+            <p className="text-sm font-medium text-gray-900">
+              {status === "win"
+                ? t("game.status.win")
+                : status === "loss"
+                  ? t("game.status.lose")
+                  : status === "draw"
+                    ? t("game.status.draw")
+                    : isPlayerTurn
+                      ? t("game.status.yourTurn")
+                      : t("game.status.in_progress")}
+            </p>
           </div>
         </div>
       </div>

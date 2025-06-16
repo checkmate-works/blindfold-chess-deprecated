@@ -3,7 +3,7 @@ import { MoveInput } from "./move-input";
 import { AlgebraicNotation, Side } from "@/types";
 import { useRef, useEffect, useState } from "react";
 
-type Tab = "move" | "board" | "notation";
+type Tab = "moveInput" | "board" | "notation";
 
 type Props = {
   activeTab: Tab;
@@ -90,7 +90,7 @@ export const GameContent = ({
 
   return (
     <div className="mt-4">
-      {activeTab === "move" ? (
+      {activeTab === "moveInput" ? (
         <MoveInput
           isPlayerTurn={isPlayerTurn && !isThinking}
           lastMove={lastMove}

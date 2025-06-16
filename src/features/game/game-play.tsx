@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { GameSettings, GameStatus, AlgebraicNotation, Side } from "@/types";
 import { TabMenu } from "./components/tab-menu";
 import { GameHeader } from "./components/game-header";
@@ -11,7 +12,7 @@ import { saveGame } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
 import { Chess } from "chess.js";
 
-type Tab = "move" | "board" | "notation";
+type Tab = "moveInput" | "board" | "notation";
 
 type Props = {
   settings: GameSettings;
@@ -21,9 +22,10 @@ type Props = {
 
 export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [playerSide] = useState<Side>(settings.color);
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<Tab>("move");
+  const [activeTab, setActiveTab] = useState<Tab>("moveInput");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [gameStatus, setGameStatus] = useState<GameStatus>("in_progress");
 
@@ -85,6 +87,38 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
         return;
       }
 
+      if (chess.isCheckmate()) {
+        const newStatus: GameStatus =
+          playerSide === (chess.turn() === "w" ? "white" : "black")
+            ? "loss"
+            : "win";
+        setGameStatus(newStatus);
+        saveGame(
+          [...moves, move],
+          playerSide,
+          settings.skillLevel,
+          gameId,
+          newStatus,
+        );
+        toast.success(t(`game.status.${newStatus}`));
+        navigate("/");
+        return;
+      }
+
+      if (chess.isDraw()) {
+        setGameStatus("draw");
+        saveGame(
+          [...moves, move],
+          playerSide,
+          settings.skillLevel,
+          gameId,
+          "draw",
+        );
+        toast.success(t("game.status.draw"));
+        navigate("/");
+        return;
+      }
+
       pushMove(move);
 
       const aiResult = await getAiMove([...moves, move]);
@@ -92,6 +126,15 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
 
       if (aiResult.status !== "in_progress") {
         setGameStatus(aiResult.status);
+        saveGame(
+          [...moves, move, aiResult.move],
+          playerSide,
+          settings.skillLevel,
+          gameId,
+          aiResult.status,
+        );
+        toast.success(t(`game.status.${aiResult.status}`));
+        navigate("/");
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -113,9 +156,10 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   return (
     <div className="flex flex-col min-h-screen">
       <GameHeader
-        gameStatus={gameStatus}
-        playerSide={playerSide}
         skillLevel={settings.skillLevel}
+        status={gameStatus}
+        isPlayerTurn={isPlayerTurn}
+        playerColor={playerSide}
       />
       <div className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-8">
         <TabMenu

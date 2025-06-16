@@ -1,60 +1,108 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PlayerColor, Side, SkillLevel } from "@/types";
-import { ColorSelector } from "./components/color-selector";
-import { SkillLevelSelector } from "./components/skill-level-selector";
 import { useTranslation } from "react-i18next";
-import { PlayIcon } from "@heroicons/react/24/outline";
+import { PlayIcon } from "@heroicons/react/24/solid";
+import { Chess } from "chess.js";
+import { SkillLevel } from "@/types";
+import { SkillLevelSelector } from "./components/skill-level-selector";
+import { ColorSelector } from "./components/color-selector";
+import { PgnInput } from "./components/pgn-input";
+import { StartMethodSelector } from "./components/start-method-selector";
+import { toast } from "react-hot-toast";
 
-const decidePlayerSide = (colorSetting: PlayerColor): Side => {
-  if (colorSetting === "random") {
+type StartMethod = "new" | "pgn";
+
+const decidePlayerSide = (
+  color: "white" | "black" | "random",
+): "white" | "black" => {
+  if (color === "random") {
     return Math.random() < 0.5 ? "white" : "black";
   }
-  return colorSetting;
+  return color;
 };
 
 export const GameSetting = () => {
-  const navigate = useNavigate();
-  const [selectedColor, setSelectedColor] = useState<PlayerColor>("white");
-  const [skillLevel, setSkillLevel] = useState<SkillLevel>(10);
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [selectedMethod, setSelectedMethod] = useState<StartMethod>("new");
+  const [selectedColor, setSelectedColor] = useState<
+    "white" | "black" | "random"
+  >("white");
+  const [skillLevel, setSkillLevel] = useState<SkillLevel>(10);
+  const [pgn, setPgn] = useState("");
 
   const handleStartGame = () => {
-    navigate("/game/play", {
-      state: {
-        settings: {
-          color: decidePlayerSide(selectedColor),
+    if (selectedMethod === "pgn" && pgn) {
+      try {
+        const chess = new Chess();
+        chess.loadPgn(pgn);
+        const moves = chess.history({ verbose: false });
+        const playerSide = moves.length % 2 === 0 ? "white" : "black";
+        const settings = {
+          color: playerSide,
           skillLevel,
+        };
+        navigate("/game/play", {
+          state: {
+            settings,
+            initialMoves: moves,
+          },
+        });
+      } catch {
+        toast.error(t("game.pgnInput.invalid"));
+        return;
+      }
+    } else {
+      const playerSide = decidePlayerSide(selectedColor);
+      const settings = {
+        color: playerSide,
+        skillLevel,
+      };
+      navigate("/game/play", {
+        state: {
+          settings,
+          initialMoves: [],
         },
-      },
-    });
+      });
+    }
   };
 
   return (
-    <div className="min-h-screen pb-20">
-      <div className="container mx-auto p-4">
-        <div className="w-full max-w-2xl mx-auto space-y-6">
-          <div className="space-y-6">
-            <ColorSelector
-              selectedColor={selectedColor}
-              onColorSelect={setSelectedColor}
-            />
+    <div className="max-w-2xl mx-auto p-4 space-y-8">
+      <StartMethodSelector
+        selectedMethod={selectedMethod}
+        onMethodSelect={setSelectedMethod}
+      />
 
-            <SkillLevelSelector
-              selectedLevel={skillLevel}
-              onLevelSelect={setSkillLevel}
-            />
-          </div>
-
-          <button
-            onClick={handleStartGame}
-            className="w-full bg-white hover:bg-gray-50 text-gray-800 font-semibold py-3 px-6 rounded-sm border border-gray-300 transition-colors duration-200 flex items-center justify-center space-x-2"
-          >
-            <PlayIcon className="w-5 h-5" />
-            <span>{t("game.start")}</span>
-          </button>
+      {selectedMethod === "new" ? (
+        <div className="space-y-8">
+          <ColorSelector
+            selectedColor={selectedColor}
+            onColorSelect={setSelectedColor}
+          />
+          <SkillLevelSelector
+            selectedLevel={skillLevel}
+            onSelect={setSkillLevel}
+          />
         </div>
-      </div>
+      ) : (
+        <div className="space-y-8">
+          <PgnInput value={pgn} onChange={setPgn} onSubmit={handleStartGame} />
+          <SkillLevelSelector
+            selectedLevel={skillLevel}
+            onSelect={setSkillLevel}
+          />
+        </div>
+      )}
+
+      <button
+        onClick={handleStartGame}
+        disabled={selectedMethod === "pgn" && !pgn}
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <PlayIcon className="w-5 h-5" />
+        {t("common.start")}
+      </button>
     </div>
   );
 };
