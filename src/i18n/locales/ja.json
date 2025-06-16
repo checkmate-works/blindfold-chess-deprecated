@@ -7,6 +7,7 @@
     "title": "目隠しチェス",
     "newGame": "対局を作成",
     "start": "ゲーム開始",
+    "gameLimitReached": "保存できるゲームの上限に達しました",
     "color.title": "色を選択",
     "color.white": "白",
     "color.black": "黒",

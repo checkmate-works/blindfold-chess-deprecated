@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "@sentry/react": "^9.27.0",
     "@tailwindcss/vite": "^4.0.15",
