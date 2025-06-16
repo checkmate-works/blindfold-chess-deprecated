@@ -33,6 +33,9 @@ class StockfishWrapper {
           this.worker.postMessage(
             `setoption name Skill Level value ${this.skillLevel}`,
           );
+          this.worker.postMessage("setoption name MultiPV value 1");
+          this.worker.postMessage("setoption name Hash value 128");
+          this.worker.postMessage("setoption name Threads value 2");
           resolve();
         }
       };
@@ -51,8 +54,44 @@ class StockfishWrapper {
       };
 
       this.worker.postMessage(`position fen ${fen}`);
-      this.worker.postMessage("go depth 15");
+      const depth = this.getDepthForSkillLevel();
+      const time = this.getTimeForSkillLevel();
+      this.worker.postMessage(`go depth ${depth} movetime ${time}`);
     });
+  }
+
+  private getDepthForSkillLevel(): number {
+    switch (this.skillLevel) {
+      case 0:
+        return 8;
+      case 5:
+        return 10;
+      case 10:
+        return 12;
+      case 15:
+        return 14;
+      case 20:
+        return 16;
+      default:
+        return 12;
+    }
+  }
+
+  private getTimeForSkillLevel(): number {
+    switch (this.skillLevel) {
+      case 0:
+        return 500;
+      case 5:
+        return 1000;
+      case 10:
+        return 1500;
+      case 15:
+        return 2000;
+      case 20:
+        return 2500;
+      default:
+        return 1500;
+    }
   }
 
   destroy() {
