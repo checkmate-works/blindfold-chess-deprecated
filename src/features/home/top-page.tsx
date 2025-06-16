@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GameList } from "./components/game-list";
 import { Game } from "@/types";
-import { loadGames } from "@/lib/storage";
+import { loadGames, deleteGame } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
 import { PlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { SYSTEM_CONSTANTS } from "@/lib/constants";
@@ -18,6 +18,11 @@ export const TopPage = () => {
   }, []);
 
   const isGameLimitReached = games.length >= SYSTEM_CONSTANTS.MAX_SAVED_GAMES;
+
+  const handleDeleteGame = (gameId: string) => {
+    deleteGame(gameId);
+    setGames(loadGames());
+  };
 
   return (
     <div className="min-h-screen pb-20">
@@ -48,7 +53,7 @@ export const TopPage = () => {
             )}
           </div>
 
-          <GameList games={games} />
+          <GameList games={games} onDeleteGame={handleDeleteGame} />
         </div>
       </div>
     </div>

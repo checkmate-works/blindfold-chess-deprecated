@@ -1,5 +1,7 @@
 import { AlgebraicNotation, Game, Side, SkillLevel, GameStatus } from "@/types";
 
+const GAMES_KEY = "blindfold_chess_games";
+
 export function saveGame(
   moves: AlgebraicNotation[],
   playerColor: Side,
@@ -27,11 +29,26 @@ export function saveGame(
     games.push(newGame);
   }
 
-  localStorage.setItem("savedGames", JSON.stringify(games));
+  localStorage.setItem(GAMES_KEY, JSON.stringify(games));
   return gameId;
 }
 
 export function loadGames(): Game[] {
-  const saved = localStorage.getItem("savedGames");
-  return saved ? JSON.parse(saved) : [];
+  const gamesJson = localStorage.getItem(GAMES_KEY);
+  if (!gamesJson) return [];
+  return JSON.parse(gamesJson);
+}
+
+export function deleteGame(gameId: string) {
+  const games = loadGames();
+  const updatedGames = games.filter((game) => game.id !== gameId);
+  localStorage.setItem(GAMES_KEY, JSON.stringify(updatedGames));
+}
+
+export function saveMove(gameId: string, move: AlgebraicNotation) {
+  const games = loadGames();
+  const game = games.find((g) => g.id === gameId);
+  if (!game) return;
+  game.moves.push(move);
+  localStorage.setItem(GAMES_KEY, JSON.stringify(games));
 }

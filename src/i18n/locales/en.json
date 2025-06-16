@@ -1,7 +1,8 @@
 {
   "common": {
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "delete": "Delete"
   },
   "game": {
     "title": "Blindfold Chess",
@@ -62,6 +63,10 @@
         "title": "Take Back Move",
         "description": "This will undo your last move and the AI's response. Are you sure?"
       }
+    },
+    "deleteConfirm": {
+      "title": "Delete Game",
+      "description": "Are you sure you want to delete this game? This action cannot be undone."
     }
   }
 }

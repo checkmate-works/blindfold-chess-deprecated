@@ -1,13 +1,18 @@
 {
   "common": {
     "cancel": "キャンセル",
-    "confirm": "確認"
+    "confirm": "確認",
+    "delete": "削除"
   },
   "game": {
     "title": "目隠しチェス",
     "newGame": "対局を作成",
     "start": "ゲーム開始",
     "gameLimitReached": "保存できるゲームの上限に達しました",
+    "deleteConfirm": {
+      "title": "対局を削除",
+      "description": "この対局を削除してもよろしいですか？この操作は取り消せません。"
+    },
     "color.title": "色を選択",
     "color.white": "白",
     "color.black": "黒",
