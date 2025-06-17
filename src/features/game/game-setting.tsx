@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import { Chess } from "chess.js";
-import { SkillLevel } from "@/types";
+import { SkillLevel, AlgebraicNotation } from "@/types";
 import { SkillLevelSelector } from "./components/skill-level-selector";
 import { ColorSelector } from "./components/color-selector";
 import { PgnInput } from "./components/pgn-input";
 import { StartMethodSelector } from "./components/start-method-selector";
 import { toast } from "react-hot-toast";
+import { saveGame } from "@/lib/storage";
 
 type StartMethod = "new" | "pgn";
 
@@ -36,16 +37,24 @@ export const GameSetting = () => {
       try {
         const chess = new Chess();
         chess.loadPgn(pgn);
-        const moves = chess.history({ verbose: false });
+        const moves = chess.history({ verbose: false }) as AlgebraicNotation[];
         const playerSide = moves.length % 2 === 0 ? "white" : "black";
         const settings = {
           color: playerSide,
           skillLevel,
         };
+        const gameId = saveGame(
+          moves,
+          playerSide,
+          skillLevel,
+          undefined,
+          "in_progress",
+        );
         navigate("/game/play", {
           state: {
             settings,
             initialMoves: moves,
+            gameId,
           },
         });
       } catch {

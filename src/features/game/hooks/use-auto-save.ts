@@ -23,16 +23,29 @@ export const useAutoSave = ({
 
   const latestMovesRef = useRef(moves);
   const isDirtyRef = useRef(false);
+  const hasPlayerMovedRef = useRef(false);
 
   useEffect(() => {
     if (
       latestMovesRef.current.length !== moves.length ||
       !latestMovesRef.current.every((m, i) => m === moves[i])
     ) {
-      isDirtyRef.current = true;
+      if (hasPlayerMovedRef.current) {
+        isDirtyRef.current = true;
+      }
       latestMovesRef.current = moves;
     }
   }, [moves]);
+
+  useEffect(() => {
+    if (moves.length > 0) {
+      const isPlayerTurn =
+        (moves.length % 2 === 0) === (playerColor === "white");
+      if (isPlayerTurn) {
+        hasPlayerMovedRef.current = true;
+      }
+    }
+  }, [moves, playerColor]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {

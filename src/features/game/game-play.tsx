@@ -28,17 +28,37 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
   const [activeTab, setActiveTab] = useState<Tab>("moveInput");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [gameStatus, setGameStatus] = useState<GameStatus>("in_progress");
+  const [savedGameId, setSavedGameId] = useState<string | null>(gameId ?? null);
 
   const { getAiMove } = useAiVersus({ skillLevel: settings.skillLevel });
   const { moves, pushMove, getFen, popMove } = useNotation(initialMoves);
+
+  const handleSaveGame = useCallback(
+    (status: GameStatus) => {
+      if (status !== "in_progress") {
+        const id = saveGame(
+          moves,
+          playerSide,
+          settings.skillLevel,
+          savedGameId ?? undefined,
+          status,
+        );
+        setSavedGameId(id);
+        toast.success(t("game.notifications.resultSaved"));
+      }
+    },
+    [moves, playerSide, settings.skillLevel, savedGameId, t],
+  );
+
   const handleAutoSave = useCallback(() => {
     toast.success(t("game.notifications.gameSaved"));
   }, [t]);
+
   useAutoSave({
     moves,
     playerColor: playerSide,
     skillLevel: settings.skillLevel,
-    initialId: gameId,
+    initialId: savedGameId ?? undefined,
     onAutoSave: handleAutoSave,
     disabled: gameStatus !== "in_progress",
   });
@@ -55,13 +75,6 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
       setIsPlayerTurn(true);
     }
   }, [playerSide, moves, pushMove, getAiMove]);
-
-  useEffect(() => {
-    if (gameStatus !== "in_progress") {
-      saveGame(moves, playerSide, settings.skillLevel, gameId, gameStatus);
-      toast.success(t("game.notifications.resultSaved"));
-    }
-  }, [gameStatus, moves, playerSide, settings.skillLevel, gameId, t]);
 
   const onMove = async (move: AlgebraicNotation) => {
     try {
@@ -87,53 +100,45 @@ export const GamePlay = ({ settings, initialMoves, gameId }: Props) => {
         return;
       }
 
-      if (chess.isCheckmate()) {
-        const newStatus: GameStatus =
-          playerSide === (chess.turn() === "w" ? "white" : "black")
-            ? "loss"
-            : "win";
-        setGameStatus(newStatus);
-        saveGame(
-          [...moves, move],
-          playerSide,
-          settings.skillLevel,
-          gameId,
-          newStatus,
-        );
-        toast.success(t(`game.status.${newStatus}`));
-        navigate("/");
-        return;
-      }
-
-      if (chess.isDraw()) {
-        setGameStatus("draw");
-        saveGame(
-          [...moves, move],
-          playerSide,
-          settings.skillLevel,
-          gameId,
-          "draw",
-        );
-        toast.success(t("game.status.draw"));
-        navigate("/");
-        return;
-      }
-
       pushMove(move);
 
       const aiResult = await getAiMove([...moves, move]);
       pushMove(aiResult.move);
 
+      const chessAfterAiMove = new Chess();
+      for (const m of [...moves, move, aiResult.move]) {
+        try {
+          chessAfterAiMove.move(m);
+        } catch {
+          console.error("Invalid move in history:", m);
+          return;
+        }
+      }
+
+      if (chessAfterAiMove.isCheckmate()) {
+        const newStatus: GameStatus =
+          playerSide === (chessAfterAiMove.turn() === "w" ? "white" : "black")
+            ? "loss"
+            : "win";
+        setGameStatus(newStatus);
+        handleSaveGame(newStatus);
+        toast.success(t(`game.list.status.${newStatus}`));
+        navigate("/");
+        return;
+      }
+
+      if (chessAfterAiMove.isDraw()) {
+        setGameStatus("draw");
+        handleSaveGame("draw");
+        toast.success(t("game.list.status.draw"));
+        navigate("/");
+        return;
+      }
+
       if (aiResult.status !== "in_progress") {
         setGameStatus(aiResult.status);
-        saveGame(
-          [...moves, move, aiResult.move],
-          playerSide,
-          settings.skillLevel,
-          gameId,
-          aiResult.status,
-        );
-        toast.success(t(`game.status.${aiResult.status}`));
+        handleSaveGame(aiResult.status);
+        toast.success(t(`game.list.status.${aiResult.status}`));
         navigate("/");
       }
     } catch (err) {
