@@ -68,44 +68,48 @@ export const GameList = ({ games, onDeleteGame }: Props) => {
     <>
       <div className="w-full max-w-4xl mx-auto">
         <ul className="divide-y divide-gray-200">
-          {games.map((game) => (
-            <li
-              key={game.id}
-              className="py-4 hover:bg-gray-50 transition-colors cursor-pointer"
-              onClick={() => handleGameClick(game)}
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4">
-                <div className="flex items-center space-x-3">
-                  <span className="text-sm text-gray-500">
-                    {formatDate(new Date(game.date))}
-                  </span>
-                  <ColorIcon color={game.playerColor} />
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      game.status === "win"
-                        ? "bg-green-100 text-green-800"
-                        : game.status === "loss"
-                          ? "bg-red-100 text-red-800"
-                          : "bg-gray-100 text-gray-800"
-                    }`}
+          {[...games]
+            .sort(
+              (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+            )
+            .map((game) => (
+              <li
+                key={game.id}
+                className="py-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => handleGameClick(game)}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-sm text-gray-500">
+                      {formatDate(new Date(game.date))}
+                    </span>
+                    <ColorIcon color={game.playerColor} />
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        game.status === "win"
+                          ? "bg-green-100 text-green-800"
+                          : game.status === "loss"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {t(`game.list.status.${game.status}`)}
+                    </span>
+                  </div>
+                  <div className="mt-2 sm:mt-0">
+                    <span className="text-sm text-gray-600">
+                      {game.moves.length} {t("game.list.moves")}
+                    </span>
+                  </div>
+                  <button
+                    onClick={(e) => handleDeleteClick(e, game.id)}
+                    className="p-2 text-gray-400 hover:text-red-500 transition-colors duration-200"
                   >
-                    {t(`game.list.status.${game.status}`)}
-                  </span>
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
                 </div>
-                <div className="mt-2 sm:mt-0">
-                  <span className="text-sm text-gray-600">
-                    {game.moves.length} {t("game.list.moves")}
-                  </span>
-                </div>
-                <button
-                  onClick={(e) => handleDeleteClick(e, game.id)}
-                  className="p-2 text-gray-400 hover:text-red-500 transition-colors duration-200"
-                >
-                  <TrashIcon className="w-5 h-5" />
-                </button>
-              </div>
-            </li>
-          ))}
+              </li>
+            ))}
         </ul>
       </div>
 
