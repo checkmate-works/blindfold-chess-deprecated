@@ -1,19 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home } from "@/routes/app/home";
-import { GameSetup } from "@/routes/app/game/setup";
-import { GamePlay } from "@/routes/app/game/play";
+import AppRoot from "@/app/routes/home";
+import GameSetupRoute from "@/app/routes/game/setup";
+import GamePlayRoute from "@/app/routes/game/play";
+import { paths } from "@/config/paths";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
+    path: paths.root,
+    element: <AppRoot />,
   },
   {
-    path: "/game/setup",
-    element: <GameSetup />,
+    path: paths.game.setup,
+    element: <GameSetupRoute />,
   },
   {
-    path: "/game/play",
-    element: <GamePlay />,
+    path: paths.game.play,
+    element: <GamePlayRoute />,
   },
 ]);

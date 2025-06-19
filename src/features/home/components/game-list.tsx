@@ -1,6 +1,6 @@
 import { Game } from "@/types";
 import { useNavigate } from "react-router-dom";
-import { PlayScreenState } from "@/routes/app/game/play";
+import { PlayScreenState } from "@/app/routes/game/play";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { ja, enUS } from "date-fns/locale";

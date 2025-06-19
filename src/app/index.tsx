@@ -3,20 +3,21 @@ import { router } from "@/app/router";
 import { Toaster } from "react-hot-toast";
 import "@/i18n/config";
 import * as Sentry from "@sentry/react";
-import { LanguageProvider } from "@/contexts/language-context";
+import { AppProvider } from "@/app/provider";
+import { env } from "@/config/env";
 
-if (!import.meta.env.DEV) {
+if (!env.isDev) {
   Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN,
+    dsn: env.sentry.dsn,
     sendDefaultPii: true,
   });
 }
 
 export const App = () => {
   return (
-    <LanguageProvider>
+    <AppProvider>
       <Toaster position="bottom-center" />
       <RouterProvider router={router} />
-    </LanguageProvider>
+    </AppProvider>
   );
 };
