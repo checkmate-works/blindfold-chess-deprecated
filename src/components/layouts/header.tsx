@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-type Props = {
-  title?: string;
-};
+import { useTranslation } from "react-i18next";
 
-export const Header = ({ title = "" }: Props) => {
+export const Header = () => {
+  const { t } = useTranslation();
   return (
     <>
       <div className="bg-yellow-50 border-b border-yellow-200">
@@ -21,7 +20,7 @@ export const Header = ({ title = "" }: Props) => {
               className="flex items-center space-x-4 hover:opacity-80 transition"
             >
               <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
-              <span>{title}</span>
+              <span>{t("app.title")}</span>
             </Link>
           </h1>
         </div>

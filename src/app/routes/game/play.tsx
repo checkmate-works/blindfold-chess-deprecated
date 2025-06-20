@@ -13,6 +13,7 @@ import { useAutoSave } from "@/features/game/hooks/use-auto-save";
 import { saveGame } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
 import { Chess } from "chess.js";
+import { Helmet } from "react-helmet-async";
 
 type Tab = "moveInput" | "board" | "notation";
 
@@ -185,37 +186,42 @@ const GamePlayRoute = () => {
   };
 
   return (
-    <ContentLayout title={t("game.title")}>
-      <div className="flex flex-col min-h-screen">
-        <GameHeader
-          skillLevel={state.settings.skillLevel}
-          status={gameStatus}
-          isPlayerTurn={isPlayerTurn}
-          playerColor={playerSide}
-        />
-        <div className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-8">
-          <TabMenu
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
+    <>
+      <Helmet>
+        <title>{t("app.title")}</title>
+      </Helmet>
+      <ContentLayout>
+        <div className="flex flex-col min-h-screen">
+          <GameHeader
+            skillLevel={state.settings.skillLevel}
+            status={gameStatus}
             isPlayerTurn={isPlayerTurn}
-            gameStatus={gameStatus}
+            playerColor={playerSide}
           />
-          <GameContent
-            activeTab={activeTab}
-            isPlayerTurn={isPlayerTurn}
-            isThinking={!isPlayerTurn}
-            lastMove={moves[moves.length - 1]}
-            currentFen={getFen()}
-            playerSide={playerSide}
-            onMove={onMove}
-            errorMessage={errorMessage}
-            onErrorClear={() => setErrorMessage(null)}
-            moves={moves}
-            onTakeBack={handleTakeBack}
-          />
+          <div className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-8">
+            <TabMenu
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              isPlayerTurn={isPlayerTurn}
+              gameStatus={gameStatus}
+            />
+            <GameContent
+              activeTab={activeTab}
+              isPlayerTurn={isPlayerTurn}
+              isThinking={!isPlayerTurn}
+              lastMove={moves[moves.length - 1]}
+              currentFen={getFen()}
+              playerSide={playerSide}
+              onMove={onMove}
+              errorMessage={errorMessage}
+              onErrorClear={() => setErrorMessage(null)}
+              moves={moves}
+              onTakeBack={handleTakeBack}
+            />
+          </div>
         </div>
-      </div>
-    </ContentLayout>
+      </ContentLayout>
+    </>
   );
 };
 

@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 type Language = "en" | "ja";
@@ -19,7 +13,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 );
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   const [language, setLanguageState] = useState<Language>(
     (localStorage.getItem("language") as Language) || "en",
   );
@@ -29,10 +23,6 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
   };
-
-  useEffect(() => {
-    document.title = t("app.title");
-  }, [t, language]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>
