@@ -3,6 +3,7 @@ import { type AlgebraicNotation } from "@/types";
 import { generateMoveSuggestions } from "@/utils/move-suggestions";
 import { useTranslation } from "react-i18next";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
+import { AlgebraicNotationSchema } from "@/schemas/algebraic-notation";
 
 type MoveInputProps = {
   isPlayerTurn: boolean;
@@ -29,6 +30,7 @@ export const MoveInput = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isPlayerTurn && inputRef.current) {
@@ -40,6 +42,7 @@ export const MoveInput = ({
     if (errorMessage) {
       setCurrentMove("");
       setSuggestions([]);
+      setLocalError(null);
     }
   }, [errorMessage]);
 
@@ -51,6 +54,7 @@ export const MoveInput = ({
   }, [isPlayerTurn]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalError(null);
     const value = e.target.value;
     setCurrentMove(value);
     setShowSuggestions(true);
@@ -70,10 +74,19 @@ export const MoveInput = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const result = AlgebraicNotationSchema.safeParse(currentMove);
+    if (!result.success) {
+      setLocalError(t("game.moveInput.invalidNotation"));
+      setCurrentMove("");
+      setSuggestions([]);
+      if (onErrorClear) onErrorClear();
+      return;
+    }
     if (currentMove && onMove) {
       onMove(currentMove as AlgebraicNotation);
       setCurrentMove("");
       setSuggestions([]);
+      setLocalError(null);
     }
   };
 
@@ -131,25 +144,25 @@ export const MoveInput = ({
             onKeyDown={handleKeyDown}
             placeholder={t("game.status.enterMove")}
             className={`w-64 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black text-gray-900 ${
-              errorMessage
+              errorMessage || localError
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-black"
             }`}
             autoComplete="off"
             spellCheck="false"
-            aria-invalid={!!errorMessage}
-            aria-describedby={errorMessage ? "move-error" : undefined}
+            aria-invalid={!!(errorMessage || localError)}
+            aria-describedby={
+              errorMessage || localError ? "move-error" : undefined
+            }
             inputMode="text"
-            pattern="[a-hA-H0-8xO-]+"
-            title="Please enter a valid chess move"
           />
-          {errorMessage && (
+          {(errorMessage || localError) && (
             <div
               id="move-error"
               className="absolute left-0 right-0 mt-1 p-2 bg-red-100 text-red-700 text-sm rounded shadow-lg z-10"
               role="alert"
             >
-              {errorMessage}
+              {errorMessage || localError}
             </div>
           )}
           {showSuggestions && suggestions.length > 0 && (

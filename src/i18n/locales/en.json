@@ -74,6 +74,8 @@
     "moveInput": {
       "placeholder": "Enter move (e.g., e2e4)",
       "invalid": "Invalid move",
+      "invalidMove": "Illegal move.",
+      "invalidNotation": "Invalid algebraic notation.",
       "takeBackConfirm": {
         "title": "Take Back Move",
         "description": "Are you sure you want to take back the last move? This will undo both your move and the AI's response."

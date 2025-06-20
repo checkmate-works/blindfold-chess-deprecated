@@ -7,29 +7,30 @@ export type Rank = (typeof ALL_RANKS)[number];
 export const PIECES = ["K", "Q", "R", "B", "N"] as const;
 export type PieceSymbol = (typeof PIECES)[number];
 
-type PawnMove = `${File}${Rank}`;
-type PieceMove = `${PieceSymbol}${File}${Rank}`;
-type CastlingMove = "O-O" | "O-O-O";
+// 昇格
+export type Promotion = `=${"Q" | "R" | "B" | "N"}`;
+// チェック/メイト
+export type CheckSuffix = "" | "+" | "#";
 
-type PawnCapture = `${File}x${File}${Rank}`;
-type PieceCapture = `${PieceSymbol}x${File}${Rank}`;
-
-type DisambiguatedMove = `${PieceSymbol}${File | Rank}${File}${Rank}`;
-
-type CheckSuffix = "" | "+" | "#";
+export type CastlingMove = "O-O" | "O-O-O";
+// ポーンの通常手: e4, e8=Q, e8=Q+, e8=Q#
+export type PawnMove = `${File}${Rank}${Promotion | ""}${CheckSuffix}`;
+// ポーンのキャプチャ: exd5, exd8=Q, exd8=Q+, exd8=Q#
+export type PawnCapture =
+  `${File}x${File}${Rank}${Promotion | ""}${CheckSuffix}`;
+// 駒の通常手: Nf3, Nbd2, Rhe8, Nf3+, Nf3#
+export type PieceMove =
+  `${PieceSymbol}${File | ""}${Rank | ""}${File}${Rank}${CheckSuffix}`;
+// 駒のキャプチャ: Nxe5, Nfxe5, N1xe5, Nxe5+, Nxe5#
+export type PieceCapture =
+  `${PieceSymbol}${File | ""}${Rank | ""}x${File}${Rank}${CheckSuffix}`;
 
 export type AlgebraicNotation =
-  | PawnMove
-  | PieceMove
   | CastlingMove
+  | PawnMove
   | PawnCapture
-  | PieceCapture
-  | DisambiguatedMove
-  | `${PawnMove}${CheckSuffix}`
-  | `${PieceMove}${CheckSuffix}`
-  | `${PawnCapture}${CheckSuffix}`
-  | `${PieceCapture}${CheckSuffix}`
-  | `${DisambiguatedMove}${CheckSuffix}`;
+  | PieceMove
+  | PieceCapture;
 
 export type Side = "white" | "black";
 export type PlayerColor = Side | "random";
