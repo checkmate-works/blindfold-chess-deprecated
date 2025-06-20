@@ -72,11 +72,13 @@
       "moves": "手"
     },
     "moveInput": {
-      "placeholder": "手を入力（例：e2e4）",
+      "placeholder": "例: e2e4",
       "invalid": "無効な手です",
+      "invalidMove": "ルール上不正な手です。",
+      "invalidNotation": "代数記法として無効です。",
       "takeBackConfirm": {
-        "title": "手の取り消し",
-        "description": "最後の手を取り消しますか？あなたの手とAIの応答の両方が取り消されます。"
+        "title": "1手戻す",
+        "description": "本当に1手戻しますか？あなたの手とAIの応手の両方が取り消されます。"
       }
     },
     "pgnInput": {
