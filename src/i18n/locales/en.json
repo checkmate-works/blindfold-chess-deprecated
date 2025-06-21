@@ -88,6 +88,10 @@
     "deleteConfirm": {
       "title": "Delete Game",
       "description": "Are you sure you want to delete this game? This action cannot be undone."
+    },
+    "fen": {
+      "copied": "FEN copied to clipboard",
+      "copyFailed": "Failed to copy FEN"
     }
   },
   "app": {

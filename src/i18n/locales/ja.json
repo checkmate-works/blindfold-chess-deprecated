@@ -88,6 +88,10 @@
     "deleteConfirm": {
       "title": "ゲームの削除",
       "description": "このゲームを削除してもよろしいですか？この操作は取り消せません。"
+    },
+    "fen": {
+      "copied": "FENをコピーしました",
+      "copyFailed": "FENのコピーに失敗しました"
     }
   },
   "app": {

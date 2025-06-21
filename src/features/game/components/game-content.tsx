@@ -2,6 +2,9 @@ import { Chessboard } from "react-chessboard";
 import { MoveInput } from "./move-input";
 import { AlgebraicNotation, Side } from "@/types";
 import { useRef, useEffect, useState } from "react";
+import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 type Tab = "moveInput" | "board" | "notation";
 
@@ -35,6 +38,7 @@ export const GameContent = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(400);
   const [isResizing, setIsResizing] = useState(false);
+  const { t } = useTranslation();
 
   const updateBoardWidth = () => {
     if (containerRef.current) {
@@ -62,6 +66,16 @@ export const GameContent = ({
       requestAnimationFrame(updateBoardWidth);
     }
   }, [activeTab]);
+
+  const handleCopyFen = async () => {
+    try {
+      await navigator.clipboard.writeText(currentFen);
+      toast.success(t("game.fen.copied"));
+    } catch (err) {
+      console.error("Failed to copy FEN:", err);
+      toast.error(t("game.fen.copyFailed"));
+    }
+  };
 
   const renderNotation = () => {
     return (
@@ -101,7 +115,7 @@ export const GameContent = ({
           onTakeBack={onTakeBack}
         />
       ) : activeTab === "board" ? (
-        <div className="flex justify-center w-full">
+        <div className="flex flex-col items-center w-full space-y-4">
           <div
             ref={containerRef}
             className="w-full max-w-[400px] aspect-square"
@@ -119,6 +133,21 @@ export const GameContent = ({
                 }}
               />
             )}
+          </div>
+          <div className="w-full max-w-[400px] flex items-center space-x-2">
+            <input
+              type="text"
+              value={currentFen}
+              readOnly
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-sm font-mono"
+            />
+            <button
+              onClick={handleCopyFen}
+              className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+              title="FENをコピー"
+            >
+              <ClipboardDocumentIcon className="w-5 h-5" />
+            </button>
           </div>
         </div>
       ) : (
