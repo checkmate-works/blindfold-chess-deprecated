@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from "react";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { generatePgn } from "@/utils/pgn-parser";
 
 type Tab = "moveInput" | "board" | "notation";
 
@@ -77,9 +78,20 @@ export const GameContent = ({
     }
   };
 
+  const handleCopyPgn = async () => {
+    try {
+      const pgn = generatePgn(moves);
+      await navigator.clipboard.writeText(pgn);
+      toast.success(t("game.pgn.copied"));
+    } catch (err) {
+      console.error("Failed to copy PGN:", err);
+      toast.error(t("game.pgn.copyFailed"));
+    }
+  };
+
   const renderNotation = () => {
     return (
-      <div className="w-full max-w-2xl mx-auto">
+      <div className="w-full max-w-2xl mx-auto space-y-4">
         <div className="bg-white rounded-lg shadow p-4">
           <div className="grid grid-cols-2 gap-4">
             {moves.map((move, index) => {
@@ -97,6 +109,16 @@ export const GameContent = ({
               );
             })}
           </div>
+        </div>
+        <div className="flex justify-end">
+          <button
+            onClick={handleCopyPgn}
+            className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+            title="PGNをコピー"
+          >
+            <ClipboardDocumentIcon className="w-5 h-5" />
+            <span className="text-sm">PGN</span>
+          </button>
         </div>
       </div>
     );

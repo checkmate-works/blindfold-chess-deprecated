@@ -20,3 +20,18 @@ export const validatePgn = (pgn: string): boolean => {
     return false;
   }
 };
+
+export const generatePgn = (moves: AlgebraicNotation[]): string => {
+  const chess = new Chess();
+
+  // 手を適用
+  moves.forEach((move) => {
+    try {
+      chess.move(move);
+    } catch {
+      console.error("Invalid move in history:", move);
+    }
+  });
+
+  return chess.pgn();
+};

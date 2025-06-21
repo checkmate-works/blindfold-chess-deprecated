@@ -92,6 +92,10 @@
     "fen": {
       "copied": "FENをコピーしました",
       "copyFailed": "FENのコピーに失敗しました"
+    },
+    "pgn": {
+      "copied": "PGNをコピーしました",
+      "copyFailed": "PGNのコピーに失敗しました"
     }
   },
   "app": {

@@ -92,6 +92,10 @@
     "fen": {
       "copied": "FEN copied to clipboard",
       "copyFailed": "Failed to copy FEN"
+    },
+    "pgn": {
+      "copied": "PGN copied to clipboard",
+      "copyFailed": "Failed to copy PGN"
     }
   },
   "app": {
