@@ -10,7 +10,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "copy-stockfish": "bun run scripts/copy-stockfish.ts"
+    "copy-stockfish": "bun run scripts/copy-stockfish.ts",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -42,10 +45,14 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.20",
     "bun-types": "^1.2.3",
     "eslint": "^9.21.0",
@@ -54,12 +61,14 @@
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "lint-staged": "^15.4.3",
     "postcss": "^8.5.2",
     "prettier": "^3.5.2",
     "tailwindcss": "^4.0.15",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
-    "vite": "^6.1.0"
+    "vite": "^6.1.0",
+    "vitest": "^3.2.4"
   }
 }

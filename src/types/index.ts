@@ -13,22 +13,36 @@ export type Promotion = `=${"Q" | "R" | "B" | "N"}`;
 export type CheckSuffix = "" | "+" | "#";
 
 export type CastlingMove = "O-O" | "O-O-O";
+
 // ポーンの通常手: e4, e8=Q, e8=Q+, e8=Q#
 export type PawnMove = `${File}${Rank}${Promotion | ""}${CheckSuffix}`;
+
 // ポーンのキャプチャ: exd5, exd8=Q, exd8=Q+, exd8=Q#
 export type PawnCapture =
   `${File}x${File}${Rank}${Promotion | ""}${CheckSuffix}`;
-// 駒の通常手: Nf3, Nbd2, Rhe8, Nf3+, Nf3#
+
+// アンパッサン: exd6 (ランク6または3のみ有効だが、型レベルでは制限しない)
+export type EnPassant = `${File}x${File}${3 | 6}${CheckSuffix}`;
+
+// 駒の通常手 - 曖昧性排除パターンを正確に定義
 export type PieceMove =
-  `${PieceSymbol}${File | ""}${Rank | ""}${File}${Rank}${CheckSuffix}`;
-// 駒のキャプチャ: Nxe5, Nfxe5, N1xe5, Nxe5+, Nxe5#
+  | `${PieceSymbol}${File}${Rank}${CheckSuffix}` // Nf3 (基本形)
+  | `${PieceSymbol}${File}${File}${Rank}${CheckSuffix}` // Nbd2 (ファイルで区別)
+  | `${PieceSymbol}${Rank}${File}${Rank}${CheckSuffix}` // N1d2 (ランクで区別)
+  | `${PieceSymbol}${File}${Rank}${File}${Rank}${CheckSuffix}`; // Nb1d2 (完全指定)
+
+// 駒のキャプチャ - 曖昧性排除パターンを正確に定義
 export type PieceCapture =
-  `${PieceSymbol}${File | ""}${Rank | ""}x${File}${Rank}${CheckSuffix}`;
+  | `${PieceSymbol}x${File}${Rank}${CheckSuffix}` // Nxe5 (基本形)
+  | `${PieceSymbol}${File}x${File}${Rank}${CheckSuffix}` // Nfxe5 (ファイルで区別)
+  | `${PieceSymbol}${Rank}x${File}${Rank}${CheckSuffix}` // N1xe5 (ランクで区別)
+  | `${PieceSymbol}${File}${Rank}x${File}${Rank}${CheckSuffix}`; // Nb1xe5 (完全指定)
 
 export type AlgebraicNotation =
   | CastlingMove
   | PawnMove
   | PawnCapture
+  | EnPassant
   | PieceMove
   | PieceCapture;
 

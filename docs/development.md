@@ -94,6 +94,31 @@ Recommended extensions:
 
 The project includes VS Code settings for consistent formatting and linting.
 
+## Code Conventions
+
+### Import Aliases
+
+Use the `@/` alias for imports from the src directory:
+
+```typescript
+// ✅ Good
+import type { AlgebraicNotation } from "@/types";
+import { generateMoveSuggestions } from "@/utils/move-suggestions";
+
+// ❌ Avoid
+import type { AlgebraicNotation } from "../types";
+import { generateMoveSuggestions } from "./move-suggestions";
+```
+
+The `@/` alias is configured in both Vite and TypeScript to point to the `src/` directory.
+
+### Other Conventions
+
+- Use TypeScript's `type` imports for type-only imports
+- Prefer named exports over default exports
+- Use meaningful variable and function names
+- Follow the existing code patterns in each feature module
+
 ## Troubleshooting
 
 ### Port Already in Use
