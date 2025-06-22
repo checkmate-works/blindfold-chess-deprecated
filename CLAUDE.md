@@ -52,6 +52,8 @@ bun run dev
 
 This is an open-source project. Contributions are welcome! Please ensure that:
 - All code follows the existing patterns and conventions
+- Use `@/` alias for imports from the src directory
+- Use TypeScript `type` imports for type-only imports
 - Documentation is written in English
 - Commits messages are clear and in English
 - Code passes linting and type checking
