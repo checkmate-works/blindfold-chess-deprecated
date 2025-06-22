@@ -1,4 +1,6 @@
-export const generateMoveSuggestions = (input: string): string[] => {
+import type { AlgebraicNotation } from "@/types";
+
+export const generateMoveSuggestions = (input: string): AlgebraicNotation[] => {
   if (!input || input.length < 1) return [];
 
   // 完全な手が入力された場合は何も表示しない
@@ -47,7 +49,7 @@ export const generateMoveSuggestions = (input: string): string[] => {
       const moves = Array.from(
         { length: 8 },
         (_, i) => `Kx${captureFile}${i + 1}`,
-      );
+      ) as AlgebraicNotation[];
       return moves;
     }
   }
@@ -58,7 +60,10 @@ export const generateMoveSuggestions = (input: string): string[] => {
     if (!["a", "b", "c", "d", "e", "f", "g", "h"].includes(file)) return [];
 
     // そのファイルの1から8までのランクを返す
-    return Array.from({ length: 8 }, (_, i) => `${firstChar}${file}${i + 1}`);
+    return Array.from(
+      { length: 8 },
+      (_, i) => `${firstChar}${file}${i + 1}`,
+    ) as AlgebraicNotation[];
   }
 
   // キャプチャの入力の場合（例：Bxb2）
@@ -70,7 +75,7 @@ export const generateMoveSuggestions = (input: string): string[] => {
           { length: 8 },
           (_, j) => `${firstChar}x${String.fromCharCode(97 + i)}${j + 1}`,
         ),
-      ).flat();
+      ).flat() as AlgebraicNotation[];
     }
 
     // Bxa の場合は、そのファイルの1から8までのランクを返す
@@ -81,7 +86,7 @@ export const generateMoveSuggestions = (input: string): string[] => {
       return Array.from(
         { length: 8 },
         (_, i) => `${firstChar}x${captureFile}${i + 1}`,
-      );
+      ) as AlgebraicNotation[];
     }
   }
 
@@ -91,12 +96,15 @@ export const generateMoveSuggestions = (input: string): string[] => {
 
   // 入力が1文字の場合は、そのファイルの全ての移動先を返す
   if (input.length === 1) {
-    return Array.from({ length: 8 }, (_, i) => `${fromFile}${i + 1}`);
+    return Array.from(
+      { length: 8 },
+      (_, i) => `${fromFile}${i + 1}`,
+    ) as AlgebraicNotation[];
   }
 
   // ポーンのキャプチャの入力の場合（例：gxh6）
   if (input.length === 2 && input[1] === "x") {
-    const moves: string[] = [];
+    const moves: AlgebraicNotation[] = [];
     const fileIndex = fromFile.charCodeAt(0) - 97;
 
     // 斜め方向のファイルのみを対象とする（左右1マス）
@@ -108,7 +116,7 @@ export const generateMoveSuggestions = (input: string): string[] => {
     // 各斜め方向のファイルに対して、1から8までのランクを生成
     for (const file of captureFiles) {
       for (let rank = 1; rank <= 8; rank++) {
-        moves.push(`${fromFile}x${file}${rank}`);
+        moves.push(`${fromFile}x${file}${rank}` as AlgebraicNotation);
       }
     }
     return moves;
@@ -127,7 +135,7 @@ export const generateMoveSuggestions = (input: string): string[] => {
     return Array.from(
       { length: 8 },
       (_, i) => `${fromFile}x${captureFile}${i + 1}`,
-    );
+    ) as AlgebraicNotation[];
   }
 
   const fromRank = parseInt(input[1]);
@@ -135,18 +143,18 @@ export const generateMoveSuggestions = (input: string): string[] => {
 
   // 入力が2文字の場合は、そのマスからの全ての可能な移動先を返す
   if (input.length === 2) {
-    const moves: string[] = [];
+    const moves: AlgebraicNotation[] = [];
     // 同じファイルの移動
     for (let rank = 1; rank <= 8; rank++) {
       if (rank !== fromRank) {
-        moves.push(`${fromFile}${rank}`);
+        moves.push(`${fromFile}${rank}` as AlgebraicNotation);
       }
     }
     // 同じランクの移動
     for (let file = 0; file < 8; file++) {
       const fileChar = String.fromCharCode(97 + file);
       if (fileChar !== fromFile) {
-        moves.push(`${fileChar}${fromRank}`);
+        moves.push(`${fileChar}${fromRank}` as AlgebraicNotation);
       }
     }
     // 斜めの移動
@@ -161,7 +169,7 @@ export const generateMoveSuggestions = (input: string): string[] => {
         if (file >= "a" && file <= "h") {
           for (const rank of ranks) {
             if (rank >= 1 && rank <= 8) {
-              moves.push(`${file}${rank}`);
+              moves.push(`${file}${rank}` as AlgebraicNotation);
             }
           }
         }
