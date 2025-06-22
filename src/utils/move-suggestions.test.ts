@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateMoveSuggestions } from "./move-suggestions";
+import { generateMoveSuggestions } from "@/features/game/utils/move-suggestions";
 
 describe("generateMoveSuggestions", () => {
   describe("empty or complete moves", () => {

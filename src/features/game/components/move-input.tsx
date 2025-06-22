@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { type AlgebraicNotation } from "@/types";
-import { generateMoveSuggestions } from "@/utils/move-suggestions";
+import { generateMoveSuggestions } from "../utils/move-suggestions";
 import { useTranslation } from "react-i18next";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 import { AlgebraicNotationSchema } from "@/schemas/algebraic-notation";

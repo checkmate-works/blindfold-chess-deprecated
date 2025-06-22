@@ -1,150 +1,35 @@
 import { useEffect, useRef } from "react";
-import { AlgebraicNotation, SkillLevel, GameStatus } from "@/types";
-import { Chess } from "chess.js";
+import { AlgebraicNotation, SkillLevel } from "@/types";
+import {
+  ChessEngineService,
+  StockfishEngine,
+  AiMoveResult,
+} from "@/features/game/services/chess-engine.service";
 
 type UseAiVersusOptions = {
   skillLevel?: SkillLevel;
 };
 
-type AiMoveResult = {
-  move: AlgebraicNotation;
-  status: GameStatus;
-};
-
-type StockfishWorker = Worker & {
-  postMessage: (message: string) => void;
-  onmessage: ((event: MessageEvent<string>) => void) | null;
-};
-
-class StockfishWrapper {
-  private worker: StockfishWorker;
-  private isReady = false;
-
-  constructor(private skillLevel: SkillLevel) {
-    this.worker = new Worker("/stockfish.js") as StockfishWorker;
-    this.init();
-  }
-
-  private init() {
-    return new Promise<void>((resolve) => {
-      this.worker.onmessage = (e) => {
-        if (e.data === "uciok") {
-          this.isReady = true;
-          this.worker.postMessage(
-            `setoption name Skill Level value ${this.skillLevel}`,
-          );
-          this.worker.postMessage("setoption name MultiPV value 1");
-          this.worker.postMessage("setoption name Hash value 128");
-          this.worker.postMessage("setoption name Threads value 2");
-          resolve();
-        }
-      };
-      this.worker.postMessage("uci");
-    });
-  }
-
-  async getMove(fen: string): Promise<string> {
-    return new Promise((resolve) => {
-      this.worker.onmessage = (e) => {
-        const msg = e.data;
-        if (msg.startsWith("bestmove")) {
-          const move = msg.split(" ")[1];
-          resolve(move);
-        }
-      };
-
-      this.worker.postMessage(`position fen ${fen}`);
-      const depth = this.getDepthForSkillLevel();
-      const time = this.getTimeForSkillLevel();
-      this.worker.postMessage(`go depth ${depth} movetime ${time}`);
-    });
-  }
-
-  private getDepthForSkillLevel(): number {
-    switch (this.skillLevel) {
-      case 0:
-        return 8;
-      case 5:
-        return 10;
-      case 10:
-        return 12;
-      case 15:
-        return 14;
-      case 20:
-        return 16;
-      default:
-        return 12;
-    }
-  }
-
-  private getTimeForSkillLevel(): number {
-    switch (this.skillLevel) {
-      case 0:
-        return 500;
-      case 5:
-        return 1000;
-      case 10:
-        return 1500;
-      case 15:
-        return 2000;
-      case 20:
-        return 2500;
-      default:
-        return 1500;
-    }
-  }
-
-  destroy() {
-    this.worker.terminate();
-  }
-}
-
 export const useAiVersus = ({ skillLevel = 20 }: UseAiVersusOptions = {}) => {
-  const stockfishRef = useRef<StockfishWrapper | null>(null);
+  const chessEngineServiceRef = useRef<ChessEngineService | null>(null);
 
   useEffect(() => {
-    stockfishRef.current = new StockfishWrapper(skillLevel);
+    const stockfishEngine = new StockfishEngine(skillLevel);
+    chessEngineServiceRef.current = new ChessEngineService(stockfishEngine);
 
     return () => {
-      stockfishRef.current?.destroy();
-      stockfishRef.current = null;
+      chessEngineServiceRef.current?.destroy();
+      chessEngineServiceRef.current = null;
     };
-  }, []);
+  }, [skillLevel]);
 
   const getAiMove = async (
     moves: AlgebraicNotation[],
   ): Promise<AiMoveResult> => {
-    const chess = new Chess();
-    for (const move of moves) chess.move(move);
+    const service = chessEngineServiceRef.current;
+    if (!service) throw new Error("Chess engine service is not initialized.");
 
-    const aiSide = chess.turn();
-
-    const engine = stockfishRef.current;
-    if (!engine) throw new Error("Stockfish engine is not initialized.");
-
-    const uciMove = await engine.getMove(chess.fen());
-    const move = chess.move(uciMove);
-
-    if (!move) throw new Error(`Invalid engine move: ${uciMove}`);
-
-    if (chess.isCheckmate()) {
-      return {
-        move: move.san as AlgebraicNotation,
-        status: aiSide === "w" ? "loss" : "win",
-      };
-    }
-
-    if (chess.isDraw()) {
-      return {
-        move: move.san as AlgebraicNotation,
-        status: "draw",
-      };
-    }
-
-    return {
-      move: move.san as AlgebraicNotation,
-      status: "in_progress",
-    };
+    return service.getAiMove(moves);
   };
 
   return {
