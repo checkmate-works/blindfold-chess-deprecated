@@ -28,8 +28,12 @@ export const generateMoveSuggestions = (input: string): AlgebraicNotation[] => {
   const pieceTypes = ["N", "B", "R", "Q", "K"];
   const firstChar = input[0];
 
-  // 駒の種類のみの入力の場合は何も表示しない
-  if (input.length === 1 && pieceTypes.includes(firstChar.toUpperCase())) {
+  // 駒の種類のみの入力の場合は何も表示しない（大文字で入力された場合のみ）
+  if (
+    input.length === 1 &&
+    pieceTypes.includes(firstChar) &&
+    firstChar === firstChar.toUpperCase()
+  ) {
     return [];
   }
 
@@ -54,7 +58,7 @@ export const generateMoveSuggestions = (input: string): AlgebraicNotation[] => {
     }
   }
 
-  // 駒の種類 + ファイルの入力の場合
+  // 駒の種類 + ファイルの入力の場合（例：Ne, Rh）
   if (input.length === 2 && pieceTypes.includes(firstChar.toUpperCase())) {
     const file = input[1].toLowerCase();
     if (!["a", "b", "c", "d", "e", "f", "g", "h"].includes(file)) return [];
@@ -88,6 +92,48 @@ export const generateMoveSuggestions = (input: string): AlgebraicNotation[] => {
         (_, i) => `${firstChar}x${captureFile}${i + 1}`,
       ) as AlgebraicNotation[];
     }
+
+    // 曖昧性排除付きキャプチャの場合（例：Ngxf）
+    if (input.length === 4 && input[2] === "x") {
+      const disambiguationFile = input[1].toLowerCase();
+      const captureFile = input[3].toLowerCase();
+
+      // 両方のファイルが有効かチェック
+      if (
+        !["a", "b", "c", "d", "e", "f", "g", "h"].includes(
+          disambiguationFile,
+        ) ||
+        !["a", "b", "c", "d", "e", "f", "g", "h"].includes(captureFile)
+      ) {
+        return [];
+      }
+
+      // キャプチャ先ファイルの1から8までのランクを返す（曖昧性排除付き）
+      return Array.from(
+        { length: 8 },
+        (_, i) => `${firstChar}${disambiguationFile}x${captureFile}${i + 1}`,
+      ) as AlgebraicNotation[];
+    }
+  }
+
+  // 駒の種類 + 曖昧性排除ファイル + 目的地ファイルの入力の場合（例：Ngf, Rhe）
+  if (input.length === 3 && pieceTypes.includes(firstChar.toUpperCase())) {
+    const disambiguationFile = input[1].toLowerCase();
+    const destinationFile = input[2].toLowerCase();
+
+    // 両方のファイルが有効かチェック
+    if (
+      !["a", "b", "c", "d", "e", "f", "g", "h"].includes(disambiguationFile) ||
+      !["a", "b", "c", "d", "e", "f", "g", "h"].includes(destinationFile)
+    ) {
+      return [];
+    }
+
+    // 目的地ファイルの1から8までのランクを返す（曖昧性排除付き）
+    return Array.from(
+      { length: 8 },
+      (_, i) => `${firstChar}${disambiguationFile}${destinationFile}${i + 1}`,
+    ) as AlgebraicNotation[];
   }
 
   // ポーンの移動とキャプチャの入力の場合

@@ -62,6 +62,40 @@ describe("generateMoveSuggestions", () => {
       expect(suggestions).toContain("Ne1");
       expect(suggestions).toContain("Ne8");
     });
+
+    it("should suggest moves with disambiguation (piece + file + file)", () => {
+      const suggestions = generateMoveSuggestions("Ngf");
+      expect(suggestions).toHaveLength(8);
+      expect(suggestions).toContain("Ngf1");
+      expect(suggestions).toContain("Ngf2");
+      expect(suggestions).toContain("Ngf3");
+      expect(suggestions).toContain("Ngf4");
+      expect(suggestions).toContain("Ngf5");
+      expect(suggestions).toContain("Ngf6");
+      expect(suggestions).toContain("Ngf7");
+      expect(suggestions).toContain("Ngf8");
+    });
+
+    it("should suggest rook moves with disambiguation", () => {
+      const suggestions = generateMoveSuggestions("Rhe");
+      expect(suggestions).toHaveLength(8);
+      expect(suggestions).toContain("Rhe1");
+      expect(suggestions).toContain("Rhe8");
+    });
+
+    it("should suggest bishop moves with disambiguation", () => {
+      const suggestions = generateMoveSuggestions("Bce");
+      expect(suggestions).toHaveLength(8);
+      expect(suggestions).toContain("Bce1");
+      expect(suggestions).toContain("Bce8");
+    });
+
+    it("should suggest queen moves with disambiguation", () => {
+      const suggestions = generateMoveSuggestions("Qad");
+      expect(suggestions).toHaveLength(8);
+      expect(suggestions).toContain("Qad1");
+      expect(suggestions).toContain("Qad8");
+    });
   });
 
   describe("piece captures", () => {
@@ -76,6 +110,33 @@ describe("generateMoveSuggestions", () => {
       expect(suggestions).toHaveLength(8);
       expect(suggestions).toContain("Rxd1");
       expect(suggestions).toContain("Rxd8");
+    });
+
+    it("should suggest captures with disambiguation (piece + file + x + file)", () => {
+      const suggestions = generateMoveSuggestions("Ngxf");
+      expect(suggestions).toHaveLength(8);
+      expect(suggestions).toContain("Ngxf1");
+      expect(suggestions).toContain("Ngxf2");
+      expect(suggestions).toContain("Ngxf3");
+      expect(suggestions).toContain("Ngxf4");
+      expect(suggestions).toContain("Ngxf5");
+      expect(suggestions).toContain("Ngxf6");
+      expect(suggestions).toContain("Ngxf7");
+      expect(suggestions).toContain("Ngxf8");
+    });
+
+    it("should suggest rook captures with disambiguation", () => {
+      const suggestions = generateMoveSuggestions("Raxd");
+      expect(suggestions).toHaveLength(8);
+      expect(suggestions).toContain("Raxd1");
+      expect(suggestions).toContain("Raxd8");
+    });
+
+    it("should suggest bishop captures with disambiguation", () => {
+      const suggestions = generateMoveSuggestions("Bcxe");
+      expect(suggestions).toHaveLength(8);
+      expect(suggestions).toContain("Bcxe1");
+      expect(suggestions).toContain("Bcxe8");
     });
   });
 
