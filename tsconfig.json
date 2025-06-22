@@ -17,10 +17,13 @@
   },
   "exclude": [
     "node_modules",
-    "dist",
+    "dist", 
     "public",
     "*.config.js",
     "*.config.ts",
-    "scripts"
+    "scripts",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "src/test/**/*"
   ]
 }
