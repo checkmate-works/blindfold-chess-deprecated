@@ -54,8 +54,16 @@
 ### Monitoring & Error Tracking
 - **@sentry/react 9.27.0** - Error monitoring and performance tracking
 
+## Testing
+
+### Unit & Integration Testing
+- **Vitest 3.2.4** - Test runner with Vite integration
+- **@testing-library/react 16.3.0** - React component testing
+- **@testing-library/jest-dom 6.6.3** - Custom matchers for DOM testing
+- **@testing-library/user-event 14.6.1** - User interaction simulation
+- **jsdom 26.1.0** - DOM implementation for Node.js
+
 ## Notes
 
-- No testing framework currently implemented
 - Bun is used as the primary package manager
 - Modern tech stack with React 19 and Vite 6

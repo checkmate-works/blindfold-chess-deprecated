@@ -20,6 +20,9 @@ Step-by-step guide for setting up the development environment and running the pr
 ### 🚀 [Deployment](./docs/deployment.md)
 Information about deployment configuration and processes using Vercel.
 
+### 🧪 [Testing](./docs/testing.md)
+Testing strategy, frameworks, and best practices for unit and integration tests.
+
 ## Quick Start
 
 ```bash
