@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { AlgebraicNotation, SkillLevel } from "@/types";
 import {
   ChessEngineService,
   StockfishEngine,
   AiMoveResult,
 } from "@/features/game/services/chess-engine.service";
+import { AlgebraicNotation, SkillLevel } from "@/types";
 
 type UseAiVersusOptions = {
   skillLevel?: SkillLevel;

@@ -1,17 +1,17 @@
-import { ContentLayout } from "@/components/layouts";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { PlayIcon } from "@heroicons/react/24/solid";
 import { Chess } from "chess.js";
-import { SkillLevel, AlgebraicNotation } from "@/types";
-import { SkillLevelSelector } from "@/features/game/components/skill-level-selector";
+import { Helmet } from "react-helmet-async";
+import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { ContentLayout } from "@/components/layouts";
 import { ColorSelector } from "@/features/game/components/color-selector";
 import { PgnInput } from "@/features/game/components/pgn-input";
+import { SkillLevelSelector } from "@/features/game/components/skill-level-selector";
 import { StartMethodSelector } from "@/features/game/components/start-method-selector";
-import { toast } from "react-hot-toast";
-import { saveGame } from "@/lib/storage";
-import { Helmet } from "react-helmet-async";
+import { useGameServices } from "@/features/game/services";
+import { SkillLevel, AlgebraicNotation } from "@/types";
 
 type StartMethod = "new" | "pgn";
 
@@ -27,6 +27,7 @@ const decidePlayerSide = (
 const GameSetupRoute = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { gameRepository } = useGameServices();
   const [selectedMethod, setSelectedMethod] = useState<StartMethod>("new");
   const [selectedColor, setSelectedColor] = useState<
     "white" | "black" | "random"
@@ -34,7 +35,7 @@ const GameSetupRoute = () => {
   const [skillLevel, setSkillLevel] = useState<SkillLevel>(10);
   const [pgn, setPgn] = useState("");
 
-  const handleStartGame = () => {
+  const handleStartGame = async () => {
     if (selectedMethod === "pgn" && pgn) {
       try {
         const chess = new Chess();
@@ -45,13 +46,12 @@ const GameSetupRoute = () => {
           color: playerSide,
           skillLevel,
         };
-        const gameId = saveGame(
+        const gameId = await gameRepository.save({
           moves,
-          playerSide,
+          playerColor: playerSide,
           skillLevel,
-          undefined,
-          "in_progress",
-        );
+          status: "in_progress",
+        });
         navigate("/game/play", {
           state: {
             settings,

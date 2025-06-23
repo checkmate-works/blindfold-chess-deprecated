@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import type { AlgebraicNotation } from "@/types";
 import { ChessEngineService, StockfishEngine } from "./chess-engine.service";
 import type { IChessEngine } from "./chess-engine.service";
-import type { AlgebraicNotation } from "@/types";
 
 // Mock implementation of IChessEngine for testing
 class MockChessEngine implements IChessEngine {

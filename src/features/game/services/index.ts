@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
-import { StockfishEngine, ChessEngineService } from "./chess-engine.service";
 import { AlgebraicNotation } from "@/types";
-import { GameStateService } from "./game-state.service";
-import { LocalStorageGameRepository } from "../repositories/game.repository";
 import { SkillLevel } from "@/types";
+import { LocalStorageGameRepository } from "../repositories/game.repository";
+import { StockfishEngine, ChessEngineService } from "./chess-engine.service";
+import { GameStateService } from "./game-state.service";
 
 export interface GameServices {
   chessEngineService: ChessEngineService;

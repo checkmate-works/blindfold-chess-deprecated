@@ -24,6 +24,38 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      "import/order": [
+        "error",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+            "object",
+            "type",
+          ],
+          pathGroups: [
+            {
+              pattern: "react",
+              group: "builtin",
+              position: "before",
+            },
+            {
+              pattern: "@/**",
+              group: "internal",
+            },
+          ],
+          pathGroupsExcludedImportTypes: ["react"],
+          "newlines-between": "never",
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
+        },
+      ],
       "import/no-restricted-paths": [
         "error",
         {

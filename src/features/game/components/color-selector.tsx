@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { PlayerColor } from "@/types";
 import { ColorOption } from "./color-option";
-import { useTranslation } from "react-i18next";
 
 type ColorSelectorProps = {
   selectedColor: PlayerColor;

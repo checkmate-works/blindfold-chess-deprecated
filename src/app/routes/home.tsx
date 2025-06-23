@@ -1,23 +1,29 @@
-import { ContentLayout } from "@/components/layouts";
 import { useEffect, useState } from "react";
-import { GameList } from "@/features/home/components/game-list";
-import { Game } from "@/types";
-import { loadGames, deleteGame } from "@/lib/storage";
-import { useTranslation } from "react-i18next";
-import { NewGameButton } from "@/features/home/components/new-game-button";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { ContentLayout } from "@/components/layouts";
+import { useGameServices } from "@/features/game/services";
+import { GameList } from "@/features/home/components/game-list";
+import { NewGameButton } from "@/features/home/components/new-game-button";
+import { Game } from "@/types";
 
 const AppRoot = () => {
   const [games, setGames] = useState<Game[]>([]);
   const { t } = useTranslation();
+  const { gameRepository } = useGameServices();
 
   useEffect(() => {
-    setGames(loadGames());
-  }, []);
+    const loadGames = async () => {
+      const loadedGames = await gameRepository.loadAll();
+      setGames(loadedGames);
+    };
+    loadGames();
+  }, [gameRepository]);
 
-  const handleDeleteGame = (gameId: string) => {
-    deleteGame(gameId);
-    setGames(loadGames());
+  const handleDeleteGame = async (gameId: string) => {
+    await gameRepository.delete(gameId);
+    const updatedGames = await gameRepository.loadAll();
+    setGames(updatedGames);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from "react";
-import { GameServicesContext, createGameServices } from "../services";
 import { SkillLevel } from "@/types";
+import { GameServicesContext, createGameServices } from "../services";
 
 type GameServicesProviderProps = {
   children: ReactNode;

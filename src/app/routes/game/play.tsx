@@ -1,10 +1,10 @@
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 import { useLocation, Navigate } from "react-router-dom";
 import { ContentLayout } from "@/components/layouts";
-import { GameSettings, AlgebraicNotation } from "@/types";
 import { GamePlayScreen } from "@/features/game/components/game-play-screen";
 import { GameServicesProvider } from "@/features/game/providers/game-services.provider";
-import { useTranslation } from "react-i18next";
-import { Helmet } from "react-helmet-async";
+import { GameSettings, AlgebraicNotation } from "@/types";
 
 export type PlayScreenState = {
   gameId?: string;

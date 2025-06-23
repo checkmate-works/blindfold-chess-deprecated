@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { AlgebraicNotation, Side, SkillLevel } from "@/types";
-import { saveGame } from "@/lib/storage";
+import { useGameServices } from "../services";
 
 type Props = {
   moves: AlgebraicNotation[];
@@ -20,6 +20,7 @@ export const useAutoSave = ({
   disabled,
 }: Props) => {
   const [gameId, setGameId] = useState<string | null>(initialId ?? null);
+  const { gameRepository } = useGameServices();
 
   const latestMovesRef = useRef(moves);
   const isDirtyRef = useRef(false);
@@ -64,17 +65,22 @@ export const useAutoSave = ({
         window.removeEventListener("beforeunload", handleBeforeUnload);
 
         if (isDirtyRef.current && latestMovesRef.current.length > 0) {
-          const id = saveGame(
-            latestMovesRef.current,
-            playerColor,
-            skillLevel,
-            gameId ?? undefined,
-            "in_progress",
-          );
-          setGameId(id);
-          onAutoSave?.();
+          // Use async IIFE to handle async repository save
+          (async () => {
+            const id = await gameRepository.save(
+              {
+                moves: latestMovesRef.current,
+                playerColor,
+                skillLevel,
+                status: "in_progress",
+              },
+              gameId ?? undefined,
+            );
+            setGameId(id);
+            onAutoSave?.();
+          })();
         }
       }
     };
-  }, [disabled, gameId, playerColor, skillLevel, onAutoSave]);
+  }, [disabled, gameId, playerColor, skillLevel, onAutoSave, gameRepository]);
 };

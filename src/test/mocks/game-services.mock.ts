@@ -1,13 +1,13 @@
 import { vi } from "vitest";
 import type {
-  IChessEngine,
-  AiMoveResult,
-} from "@/features/game/services/chess-engine.service";
-import type {
   IGameRepository,
   SaveGameParams,
 } from "@/features/game/repositories/game.repository";
 import type { GameServices } from "@/features/game/services";
+import type {
+  IChessEngine,
+  AiMoveResult,
+} from "@/features/game/services/chess-engine.service";
 import { GameStateService } from "@/features/game/services/game-state.service";
 import type { Game, AlgebraicNotation } from "@/types";
 

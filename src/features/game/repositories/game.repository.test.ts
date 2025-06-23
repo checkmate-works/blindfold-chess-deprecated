@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import type { Game } from "@/types";
 import { LocalStorageGameRepository } from "./game.repository";
 import type { SaveGameParams } from "./game.repository";
-import type { Game } from "@/types";
 
 // Mock localStorage
 const localStorageMock = {

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { GameStateService } from "./game-state.service";
 import type { AlgebraicNotation } from "@/types";
+import { GameStateService } from "./game-state.service";
 
 describe("GameStateService", () => {
   let gameStateService: GameStateService;

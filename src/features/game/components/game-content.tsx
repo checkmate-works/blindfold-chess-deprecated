@@ -1,11 +1,11 @@
-import { Chessboard } from "react-chessboard";
-import { MoveInput } from "./move-input";
-import { AlgebraicNotation, Side } from "@/types";
 import { useRef, useEffect, useState } from "react";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
+import { Chessboard } from "react-chessboard";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { AlgebraicNotation, Side } from "@/types";
 import { generatePgn } from "@/utils/pgn-parser";
+import { MoveInput } from "./move-input";
 
 type Tab = "moveInput" | "board" | "notation";
 

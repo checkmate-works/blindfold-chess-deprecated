@@ -1,5 +1,5 @@
-import { AlgebraicNotation, SkillLevel, GameStatus } from "@/types";
 import { Chess } from "chess.js";
+import { AlgebraicNotation, SkillLevel, GameStatus } from "@/types";
 
 export interface IChessEngine {
   getMove(fen: string): Promise<string>;

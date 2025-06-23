@@ -1,14 +1,14 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode, useContext } from "react";
 import { useTranslation } from "react-i18next";
 
-type Language = "en" | "ja";
+export type Language = "en" | "ja";
 
-type LanguageContextType = {
+export type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(
+export const LanguageContext = createContext<LanguageContextType | undefined>(
   undefined,
 );
 

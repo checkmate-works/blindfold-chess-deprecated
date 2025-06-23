@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GameSettings, GameStatus, AlgebraicNotation, Side } from "@/types";
-import { TabMenu } from "./tab-menu";
-import { GameHeader } from "./game-header";
-import { GameContent } from "./game-content";
-import { useNotation } from "../hooks/use-notation";
 import { useAutoSave } from "../hooks/use-auto-save";
-import { useTranslation } from "react-i18next";
+import { useNotation } from "../hooks/use-notation";
 import { useGameServices } from "../services";
 import { GameStateService } from "../services/game-state.service";
+import { GameContent } from "./game-content";
+import { GameHeader } from "./game-header";
+import { TabMenu } from "./tab-menu";
 
 type Tab = "moveInput" | "board" | "notation";
 
