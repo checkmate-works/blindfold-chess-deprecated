@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import { Chessboard } from "react-chessboard";
 import { toast } from "react-hot-toast";
@@ -41,32 +41,43 @@ export const GameContent = ({
   const [isResizing, setIsResizing] = useState(false);
   const { t } = useTranslation();
 
-  const updateBoardWidth = () => {
+  const updateBoardWidth = useCallback(() => {
     if (containerRef.current) {
-      setIsResizing(true);
-      const width = containerRef.current.offsetWidth;
-      setBoardWidth(width);
-      // リサイズ完了後に少し遅延を入れてから表示する
-      requestAnimationFrame(() => {
-        setIsResizing(false);
-      });
+      const newWidth = Math.min(containerRef.current.offsetWidth, 400);
+      // Only update if width actually changed significantly (prevents micro-adjustments)
+      if (Math.abs(newWidth - boardWidth) > 5) {
+        setIsResizing(true);
+        setBoardWidth(newWidth);
+        requestAnimationFrame(() => {
+          setIsResizing(false);
+        });
+      }
     }
-  };
+  }, [boardWidth]);
+
+  // Throttled version for resize events
+  const throttledUpdateBoardWidth = useCallback(() => {
+    let timeoutId: number;
+    return () => {
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(updateBoardWidth, 16); // ~60fps
+    };
+  }, [updateBoardWidth])();
 
   useEffect(() => {
     updateBoardWidth();
-    window.addEventListener("resize", updateBoardWidth);
+    window.addEventListener("resize", throttledUpdateBoardWidth);
 
     return () => {
-      window.removeEventListener("resize", updateBoardWidth);
+      window.removeEventListener("resize", throttledUpdateBoardWidth);
     };
-  }, []);
+  }, [updateBoardWidth, throttledUpdateBoardWidth]);
 
   useEffect(() => {
     if (activeTab === "board") {
       requestAnimationFrame(updateBoardWidth);
     }
-  }, [activeTab]);
+  }, [activeTab, updateBoardWidth]);
 
   const handleCopyFen = async () => {
     try {
@@ -140,7 +151,8 @@ export const GameContent = ({
         <div className="flex flex-col items-center w-full space-y-4">
           <div
             ref={containerRef}
-            className="w-full max-w-[400px] aspect-square"
+            className="w-full max-w-[400px] aspect-square relative"
+            style={{ minWidth: "320px", minHeight: "320px" }}
           >
             {!isResizing && (
               <Chessboard
