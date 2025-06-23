@@ -26,11 +26,10 @@ export class GameStateService {
   }
 
   makeMove(move: AlgebraicNotation): MoveResult {
-    const chessCopy = new Chess(this.chess.fen());
-
     try {
-      chessCopy.move(move);
-      this.chess = chessCopy;
+      // Make the move directly on the chess instance
+      // chess.js will throw an error if the move is invalid
+      this.chess.move(move);
 
       return {
         isValid: true,

@@ -83,12 +83,19 @@ export const GamePlayScreen = ({
     const makeFirstMove = async () => {
       const aiResult = await chessEngineService.getAiMove([]);
       pushMove(aiResult.move);
+
+      // Update GameStateService to stay in sync with the AI move
+      const gameStateService = gameStateServiceRef.current;
+      if (gameStateService) {
+        gameStateService.makeMove(aiResult.move);
+      }
     };
 
     if (playerSide === "black" && moves.length === 0) {
       setIsPlayerTurn(false);
-      makeFirstMove();
-      setIsPlayerTurn(true);
+      makeFirstMove().finally(() => {
+        setIsPlayerTurn(true);
+      });
     }
   }, [playerSide, moves, pushMove, chessEngineService]);
 
@@ -104,20 +111,7 @@ export const GamePlayScreen = ({
         return;
       }
 
-      // Validate current move sequence
-      const moveValidation = gameStateService.validateMoveSequence([
-        ...moves,
-        move,
-      ]);
-      if (!moveValidation.isValid) {
-        setErrorMessage(
-          moveValidation.errorMessage || t("game.moveInput.invalidMove"),
-        );
-        setIsPlayerTurn(true);
-        return;
-      }
-
-      // Make the player move
+      // Make the player move (chess.js will validate the move)
       const playerMoveResult = gameStateService.makeMove(move);
       if (!playerMoveResult.isValid) {
         setErrorMessage(
@@ -169,6 +163,9 @@ export const GamePlayScreen = ({
 
   const handleTakeBack = () => {
     if (moves.length >= 2) {
+      // Calculate the updated moves before popping
+      const updatedMoves = moves.slice(0, -2);
+
       popMove();
       popMove();
       setIsPlayerTurn(true);
@@ -176,8 +173,7 @@ export const GamePlayScreen = ({
       // Update game state service to reflect the take back
       const gameStateService = gameStateServiceRef.current;
       if (gameStateService) {
-        const updatedMoves = moves.slice(0, -2);
-        gameStateServiceRef.current = new GameStateService(updatedMoves);
+        gameStateServiceRef.current = createGameStateService(updatedMoves);
       }
     }
   };
