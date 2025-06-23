@@ -49,7 +49,9 @@
       "lastMove": "最後の手",
       "yourTurn": "あなたの手番",
       "enterMove": "手を入力してください",
-      "makeMove": "手を指してください"
+      "makeMove": "手を指してください",
+      "currentInput": "現在の入力",
+      "thinking": "AIが考え中..."
     },
     "tabs": {
       "moveInput": "手の入力",
@@ -58,7 +60,8 @@
     },
     "notifications": {
       "gameSaved": "ゲームを保存しました",
-      "resultSaved": "対局結果を保存しました"
+      "resultSaved": "対局結果を保存しました",
+      "saveFailed": "ゲームの保存に失敗しました"
     },
     "list": {
       "title": "対局一覧",
@@ -83,7 +86,9 @@
     },
     "pgnInput": {
       "placeholder": "PGNを入力",
-      "invalid": "無効なPGN形式です"
+      "invalid": "無効なPGN形式です",
+      "invalidFormat": "無効なPGN形式です",
+      "submit": "PGN入力"
     },
     "deleteConfirm": {
       "title": "ゲームの削除",

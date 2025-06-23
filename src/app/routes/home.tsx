@@ -32,9 +32,9 @@ const AppRoot = () => {
         <title>{t("app.title")}</title>
       </Helmet>
       <ContentLayout>
-        <div className="min-h-screen pb-20">
-          <div className="container mx-auto p-4">
-            <div className="w-full max-w-4xl mx-auto space-y-6">
+        <div className="min-h-screen bg-gray-50">
+          <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+            <div className="w-full max-w-4xl mx-auto space-y-4">
               <NewGameButton gameCount={games.length} />
               <GameList games={games} onDeleteGame={handleDeleteGame} />
             </div>

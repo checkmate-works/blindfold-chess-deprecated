@@ -54,28 +54,47 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
 
   return (
     <li
-      className="py-4 hover:bg-gray-50 transition-colors cursor-pointer"
+      className="hover:bg-gray-50 transition-colors cursor-pointer"
       onClick={handleGameClick}
     >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4">
-        <div className="flex items-center space-x-3">
-          <span className="text-sm text-gray-500">
-            {formatDate(new Date(game.date))}
-          </span>
-          <ColorIcon color={game.playerColor} />
-          <span
-            className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusStyles(
-              game.status,
-            )}`}
-          >
-            {t(`game.list.status.${game.status}`)}
-          </span>
-        </div>
-        <div className="mt-2 sm:mt-0 flex items-center space-x-4">
-          <span className="text-sm text-gray-600">
-            {game.moves.length} {t("game.list.moves")}
-          </span>
-          <DeleteGameButton gameId={game.id} onDelete={onDelete} />
+      <div className="px-4 py-4">
+        {/* Mobile Layout: Stacked */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            {/* First Row: Date and Status */}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-sm text-gray-500">
+                {formatDate(new Date(game.date))}
+              </span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusStyles(
+                  game.status,
+                )}`}
+              >
+                {t(`game.list.status.${game.status}`)}
+              </span>
+            </div>
+
+            {/* Second Row: Color and Moves */}
+            <div className="flex items-center gap-3 text-sm">
+              <div className="flex items-center gap-1.5">
+                <ColorIcon color={game.playerColor} />
+              </div>
+              <span className="text-gray-400">•</span>
+              <span className="text-gray-600">
+                {game.moves.length} {t("game.list.moves")}
+              </span>
+              <span className="text-gray-400">•</span>
+              <span className="text-gray-600">
+                {t(`game.ai.levels.${game.skillLevel}`)}
+              </span>
+            </div>
+          </div>
+
+          {/* Delete button */}
+          <div className="flex-shrink-0">
+            <DeleteGameButton gameId={game.id} onDelete={onDelete} />
+          </div>
         </div>
       </div>
     </li>

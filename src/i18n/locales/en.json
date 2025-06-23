@@ -49,7 +49,9 @@
       "lastMove": "Last move",
       "yourTurn": "Your turn",
       "enterMove": "Enter your move",
-      "makeMove": "Make your move"
+      "makeMove": "Make your move",
+      "currentInput": "Current input",
+      "thinking": "AI is thinking..."
     },
     "tabs": {
       "moveInput": "Move Input",
@@ -58,7 +60,8 @@
     },
     "notifications": {
       "gameSaved": "Game saved successfully",
-      "resultSaved": "Game result saved"
+      "resultSaved": "Game result saved",
+      "saveFailed": "Failed to save game"
     },
     "list": {
       "title": "Game List",
@@ -83,7 +86,9 @@
     },
     "pgnInput": {
       "placeholder": "Enter PGN",
-      "invalid": "Invalid PGN format"
+      "invalid": "Invalid PGN format",
+      "invalidFormat": "Invalid PGN format",
+      "submit": "PGN Input"
     },
     "deleteConfirm": {
       "title": "Delete Game",

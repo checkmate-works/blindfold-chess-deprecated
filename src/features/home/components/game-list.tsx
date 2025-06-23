@@ -23,8 +23,8 @@ export const GameList = ({ games, onDeleteGame }: Props) => {
   );
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <ul className="divide-y divide-gray-200">
+    <div className="w-full">
+      <ul className="divide-y divide-gray-200 bg-white rounded-lg shadow-sm overflow-hidden">
         {sortedGames.map((game) => (
           <GameListItem key={game.id} game={game} onDelete={onDeleteGame} />
         ))}
