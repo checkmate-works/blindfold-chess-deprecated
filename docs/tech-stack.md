@@ -1,69 +1,70 @@
 # Technical Stack
 
+**Rationale**: Selected technologies that enable the most efficient implementation in 2025 while ensuring long-term maintainability
+
 ## Frontend Framework
 
 ### React Ecosystem
-- **React 19.0.0** - UI component library (latest version)
-- **React Router DOM 7.1.5** - Client-side routing
-- **TypeScript 5.7.2** - Type safety
+- **React 19** - UI component library
+- **React Router DOM 7** - Client-side routing
+- **TypeScript 5** - Type safety
 
 ## Build Tools & Development Environment
 
 ### Build Tools
-- **Vite 6.1.0** - Fast development server and build tool
+- **Vite 6** - Fast development server and build tool
 - **Bun** - JavaScript runtime and package manager
 
 ### CSS & Styling
-- **Tailwind CSS 4.0.15** - Utility-first CSS framework (using Vite plugin)
-- **PostCSS 8.5.2** - CSS processing tool
-- **Autoprefixer 10.4.20** - Automatic vendor prefixing
+- **Tailwind CSS 4** - Utility-first CSS framework (using Vite plugin)
+- **PostCSS 8** - CSS processing tool
+- **Autoprefixer 10** - Automatic vendor prefixing
 
 ## Chess-related Libraries
 
-- **React Chessboard 4.7.2** - React chess board UI component
-- **Chess.js 1.0.0** - Chess rules and logic implementation
-- **Stockfish.js 10.0.2** - AI chess engine
+- **React Chessboard 4** - React chess board UI component
+- **Chess.js 1** - Chess rules and logic implementation
+- **Stockfish.js 10** - AI chess engine
 
 ## UI Components & Utilities
 
 ### UI Components
-- **@headlessui/react 2.2.4** - Accessible UI components
-- **@heroicons/react 2.2.0** - SVG icon set
-- **react-hot-toast 2.5.2** - Toast notifications
-- **react-helmet-async 2.0.5** - Document head management
+- **@headlessui/react 2** - Accessible UI components
+- **@heroicons/react 2** - SVG icon set
+- **react-hot-toast 2** - Toast notifications
+- **react-helmet-async 2** - Document head management
 
 ### Utilities
-- **clsx 2.1.1** - Conditional CSS class concatenation
-- **date-fns 4.1.0** - Date manipulation library
-- **Zod 3.25.67** - Schema validation
+- **clsx 2** - Conditional CSS class concatenation
+- **date-fns 4** - Date manipulation library
+- **Zod 3** - Schema validation
 
 ## Internationalization (i18n)
 
-- **i18next 25.0.2** - Internationalization framework
-- **react-i18next 15.5.1** - React bindings for i18next
-- **i18next-browser-languagedetector 8.1.0** - Automatic language detection
+- **i18next 25** - Internationalization framework
+- **react-i18next 15** - React bindings for i18next
+- **i18next-browser-languagedetector 8** - Automatic language detection
 
 ## Development Tools
 
 ### Code Quality
-- **ESLint 9.21.0** - JavaScript linter
-- **Prettier 3.5.2** - Code formatter
-- **Husky 9.1.7** - Git hooks management
-- **lint-staged 15.4.3** - Staged files linting
+- **ESLint 9** - JavaScript linter
+- **Prettier 3** - Code formatter
+- **Husky 9** - Git hooks management
+- **lint-staged 15** - Staged files linting
 
 ### Monitoring & Error Tracking
-- **@sentry/react 9.27.0** - Error monitoring and performance tracking
+- **@sentry/react 9** - Error monitoring and performance tracking
 
 ## Testing
 
 ### Unit & Integration Testing
-- **Vitest 3.2.4** - Test runner with Vite integration
-- **@testing-library/react 16.3.0** - React component testing
-- **@testing-library/jest-dom 6.6.3** - Custom matchers for DOM testing
-- **@testing-library/user-event 14.6.1** - User interaction simulation
-- **jsdom 26.1.0** - DOM implementation for Node.js
+- **Vitest 3** - Test runner with Vite integration
+- **@testing-library/react 16** - React component testing
+- **@testing-library/jest-dom 6** - Custom matchers for DOM testing
+- **@testing-library/user-event 14** - User interaction simulation
+- **jsdom 26** - DOM implementation for Node.js
 
 ## Notes
 
-- Bun is used as the primary package manager
-- Modern tech stack with React 19 and Vite 6
+- **Bun** is used as the package manager - As an alternative to npm/yarn/pnpm, Bun includes built-in package management capabilities, allowing dependency management through the `bun` command

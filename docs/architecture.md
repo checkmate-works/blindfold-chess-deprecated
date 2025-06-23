@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project follows the **Bulletproof React** architecture pattern, which provides a scalable and maintainable structure for React applications.
+This project follows the [**Bulletproof React**](https://github.com/alan2207/bulletproof-react) architecture pattern, which provides a scalable and maintainable structure for React applications.
 
 ## Directory Structure
 
@@ -59,7 +59,7 @@ features/
 └── hooks/        # React logic
 ```
 
-**Our Extended Pattern (NestJS-inspired):**
+**Our Extended Pattern ([NestJS](https://nestjs.com/)-inspired):**
 ```
 features/
 ├── components/   # UI layer (Bulletproof React)
