@@ -30,13 +30,6 @@ export const useAutoSave = ({
   const saveGame = useCallback(async () => {
     if (isDirtyRef.current && latestMovesRef.current.length > 0 && !disabled) {
       try {
-        console.log("🔄 Auto-saving game...", {
-          moves: latestMovesRef.current,
-          playerColor,
-          skillLevel,
-          gameId,
-        });
-
         const id = await gameRepository.save(
           {
             moves: latestMovesRef.current,
@@ -47,7 +40,6 @@ export const useAutoSave = ({
           gameId ?? undefined,
         );
 
-        console.log("✅ Game saved successfully with ID:", id);
         setGameId(id);
         isDirtyRef.current = false;
 
@@ -56,18 +48,12 @@ export const useAutoSave = ({
 
         onAutoSave?.();
         return id;
-      } catch (error) {
-        console.error("❌ Failed to save game:", error);
+      } catch {
         return null;
       }
     } else {
-      console.log("ℹ️ Skip saving:", {
-        isDirty: isDirtyRef.current,
-        hasMovs: latestMovesRef.current.length > 0,
-        disabled,
-      });
+      return null;
     }
-    return null;
   }, [disabled, gameId, playerColor, skillLevel, onAutoSave, gameRepository]);
 
   useEffect(() => {
@@ -75,14 +61,7 @@ export const useAutoSave = ({
       latestMovesRef.current.length !== moves.length ||
       !latestMovesRef.current.every((m, i) => m === moves[i])
     ) {
-      console.log("📝 Moves changed:", {
-        oldLength: latestMovesRef.current.length,
-        newLength: moves.length,
-        hasPlayerMoved: hasPlayerMovedRef.current,
-      });
-
       if (hasPlayerMovedRef.current) {
-        console.log("🔥 Setting isDirty = true");
         isDirtyRef.current = true;
       }
       latestMovesRef.current = moves;
@@ -96,16 +75,7 @@ export const useAutoSave = ({
       const wasPlayerMove =
         (lastMoveIndex % 2 === 0) === (playerColor === "white");
 
-      console.log("🎯 Move analysis:", {
-        movesLength: moves.length,
-        lastMoveIndex,
-        playerColor,
-        wasPlayerMove,
-        lastMove: moves[lastMoveIndex],
-      });
-
       if (wasPlayerMove) {
-        console.log("✅ Player move detected, setting hasPlayerMoved = true");
         hasPlayerMovedRef.current = true;
       }
     }

@@ -29,7 +29,7 @@ export const generatePgn = (moves: AlgebraicNotation[]): string => {
     try {
       chess.move(move);
     } catch {
-      console.error("Invalid move in history:", move);
+      // ... existing code ...
     }
   });
 

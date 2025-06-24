@@ -58,8 +58,7 @@ export const GamePlayScreen = ({
           );
           setSavedGameId(id);
           toast.success(t("game.notifications.resultSaved"));
-        } catch (error) {
-          console.error("Failed to save game:", error);
+        } catch {
           toast.error(t("game.notifications.saveFailed"));
         }
       }
@@ -84,7 +83,6 @@ export const GamePlayScreen = ({
   const { navigateWithSave } = usePageLeave({
     onBeforeLeave: useCallback(async () => {
       if (gameStatus === "in_progress") {
-        console.log("🚪 Page leaving, triggering auto-save...");
         await autoSaveGame();
       }
     }, [autoSaveGame, gameStatus]),
@@ -148,7 +146,6 @@ export const GamePlayScreen = ({
       // Make the AI move
       const aiMoveResult = gameStateService.makeMove(aiResult.move);
       if (!aiMoveResult.isValid) {
-        console.error("Invalid AI move:", aiResult.move);
         return;
       }
 

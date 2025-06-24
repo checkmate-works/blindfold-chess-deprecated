@@ -15,9 +15,7 @@ const AppRoot = () => {
   const location = useLocation();
 
   const loadGames = useCallback(async () => {
-    console.log("🔄 Loading games from localStorage...");
     const loadedGames = await gameRepository.loadAll();
-    console.log("📋 Loaded games:", loadedGames.length);
     setGames(loadedGames);
   }, [gameRepository]);
 
@@ -31,7 +29,6 @@ const AppRoot = () => {
     const checkForUpdates = () => {
       const gamesUpdated = sessionStorage.getItem("games_updated");
       if (gamesUpdated) {
-        console.log("🔄 Games update detected, reloading...");
         sessionStorage.removeItem("games_updated");
         loadGames();
       }
@@ -50,20 +47,17 @@ const AppRoot = () => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        console.log("👁️ Page became visible, reloading games...");
         loadGames();
       }
     };
 
     const handleFocus = () => {
-      console.log("🎯 Window focused, reloading games...");
       loadGames();
     };
 
     // Also reload when user comes back to the tab or window
     const handlePageShow = (event: PageTransitionEvent) => {
       if (event.persisted) {
-        console.log("📄 Page shown from cache, reloading games...");
         loadGames();
       }
     };

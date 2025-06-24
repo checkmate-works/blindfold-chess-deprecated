@@ -22,7 +22,6 @@ export const useNotation = (
         try {
           chess.move(move);
         } catch {
-          console.error("Invalid move in history:", move);
           return prev; // 既存の手が無効な場合は変更しない
         }
       }
@@ -31,7 +30,6 @@ export const useNotation = (
         try {
           chess.move(move);
         } catch {
-          console.error("Invalid move:", move);
           return prev; // 新しい手が無効な場合は追加しない
         }
       }
@@ -49,7 +47,7 @@ export const useNotation = (
       try {
         chess.move(move);
       } catch {
-        console.error("Invalid move:", move);
+        // ... existing code ...
       }
     });
     return chess.fen();

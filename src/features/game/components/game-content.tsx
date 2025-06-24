@@ -83,8 +83,7 @@ export const GameContent = ({
     try {
       await navigator.clipboard.writeText(currentFen);
       toast.success(t("game.fen.copied"));
-    } catch (err) {
-      console.error("Failed to copy FEN:", err);
+    } catch {
       toast.error(t("game.fen.copyFailed"));
     }
   };
@@ -94,8 +93,7 @@ export const GameContent = ({
       const pgn = generatePgn(moves);
       await navigator.clipboard.writeText(pgn);
       toast.success(t("game.pgn.copied"));
-    } catch (err) {
-      console.error("Failed to copy PGN:", err);
+    } catch {
       toast.error(t("game.pgn.copyFailed"));
     }
   };
