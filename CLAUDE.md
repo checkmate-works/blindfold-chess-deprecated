@@ -2,6 +2,8 @@
 
 Welcome to the Blindfold Chess project! This is an open-source web application for practicing chess without seeing the pieces.
 
+🌐 **Live Demo**: https://chess-blindfold.vercel.app/
+
 ## Project Overview
 
 Blindfold Chess is a training tool designed to help chess players improve their board visualization and calculation skills. Players must remember piece positions and make moves using algebraic notation without visual aids.

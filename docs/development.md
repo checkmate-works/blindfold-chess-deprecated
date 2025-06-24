@@ -66,12 +66,31 @@ The application will be available at `http://localhost:5173` (Vite's default por
 
 ## Environment Variables
 
-For local development, create a `.env.local` file in the project root:
+### Local Development
+
+For local development, environment variables are **optional**. The application will work without any configuration.
+
+If you want to test specific features locally, create a `.env.local` file in the project root:
 
 ```bash
 # Optional: Sentry DSN for error tracking
 VITE_SENTRY_DSN=your_sentry_dsn_here
+
+# Optional: Google Analytics (usually not needed in development)
+# VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
+
+### Production Environment Variables
+
+The following environment variables are used in production (configured in Vercel):
+
+- **`VITE_SENTRY_DSN`**: Required for error tracking
+- **`VITE_GA_MEASUREMENT_ID`**: Optional for Google Analytics
+  - Format: `G-XXXXXXXXXX`
+  - Only active in production builds (`import.meta.env.PROD`)
+  - Automatically disabled in development to prevent local analytics pollution
+
+### Validation
 
 Environment variables are validated using Zod schemas defined in `src/schemas/env.ts`.
 

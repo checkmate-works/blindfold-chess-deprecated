@@ -11,6 +11,7 @@ import { PgnInput } from "@/features/game/components/pgn-input";
 import { SkillLevelSelector } from "@/features/game/components/skill-level-selector";
 import { StartMethodSelector } from "@/features/game/components/start-method-selector";
 import { useGameServices } from "@/features/game/services";
+import { trackGameEvent } from "@/lib/analytics";
 import { SkillLevel, AlgebraicNotation } from "@/types";
 
 type StartMethod = "new" | "pgn";
@@ -69,6 +70,10 @@ const GameSetupRoute = () => {
         color: playerSide,
         skillLevel,
       };
+
+      // Track game start event
+      trackGameEvent.startGame(skillLevel, playerSide);
+
       navigate("/game/play", {
         state: {
           settings,

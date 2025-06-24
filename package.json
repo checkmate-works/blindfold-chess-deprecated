@@ -30,6 +30,7 @@
     "chess.js": "^1.0.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "gtag": "^1.0.1",
     "i18next": "^25.0.2",
     "i18next-browser-languagedetector": "^8.1.0",
     "install": "^0.13.0",
