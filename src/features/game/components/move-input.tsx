@@ -132,7 +132,7 @@ export const MoveInput = ({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-2">
+      <div className="space-y-4">
         <div className="relative">
           <input
             ref={inputRef}
@@ -159,40 +159,57 @@ export const MoveInput = ({
           {(errorMessage || localError) && (
             <div
               id="move-error"
-              className="absolute left-0 right-0 mt-1 p-2 bg-red-100 text-red-700 text-sm rounded shadow-lg z-10"
+              className="absolute left-0 right-0 mt-1 p-2 bg-red-100 text-red-700 text-sm rounded shadow-lg z-20"
               role="alert"
             >
               {errorMessage || localError}
             </div>
           )}
           {showSuggestions && suggestions.length > 0 && (
-            <div className="absolute left-0 right-0 mt-1 bg-chess-white border border-chess-gray-200 rounded shadow-lg z-10">
-              {suggestions.map((suggestion, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => handleSuggestionClick(suggestion)}
-                  className="w-full px-3 py-2 text-left hover:bg-chess-gray-100 focus:bg-chess-gray-100 focus:outline-none"
-                >
-                  {suggestion}
-                </button>
-              ))}
+            <div className="absolute left-0 right-0 mt-1 z-50">
+              {/* 完全不透明な背景レイヤー */}
+              <div
+                className="bg-white border border-gray-300 rounded-lg shadow-2xl overflow-hidden"
+                style={{ backgroundColor: "#FFFFFF" }}
+              >
+                {suggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="block w-full px-3 py-2 text-left text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition-colors duration-150"
+                    style={{ backgroundColor: "#FFFFFF" }}
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
-        <button
-          type="submit"
-          disabled={!isPlayerTurn || !currentMove}
-          className={`w-full px-4 py-2 text-chess-white rounded transition
-            ${
-              isPlayerTurn && currentMove
-                ? "bg-chess-black hover:bg-chess-gray-800"
-                : "bg-chess-gray-400 cursor-not-allowed"
-            }`}
+
+        <form
+          onSubmit={handleSubmit}
+          className={
+            showSuggestions && suggestions.length > 0
+              ? "opacity-50 pointer-events-none"
+              : ""
+          }
         >
-          {t("game.status.makeMove")}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={!isPlayerTurn || !currentMove}
+            className={`w-full px-4 py-3 text-lg font-semibold rounded-xl transition-all duration-200 shadow-md
+              ${
+                isPlayerTurn && currentMove
+                  ? "bg-chess-black text-chess-white hover:bg-chess-gray-800 hover:shadow-lg hover:scale-[1.01]"
+                  : "bg-chess-gray-300 text-chess-gray-500 cursor-not-allowed"
+              }`}
+          >
+            {t("game.status.makeMove")}
+          </button>
+        </form>
+      </div>
 
       <div className="mt-4 flex justify-center">
         <button
@@ -205,24 +222,30 @@ export const MoveInput = ({
       </div>
 
       {showConfirmDialog && (
-        <div className="fixed inset-0 bg-chess-gray-500 bg-opacity-75 flex items-center justify-center">
-          <div className="bg-chess-white rounded-lg p-6 max-w-sm w-full mx-4">
-            <h3 className="text-lg font-medium text-chess-gray-900 mb-4">
-              {t("game.moveInput.takeBackConfirm.title")}
-            </h3>
-            <p className="text-sm text-chess-gray-500 mb-4">
-              {t("game.moveInput.takeBackConfirm.description")}
-            </p>
-            <div className="flex justify-end space-x-3">
+        <div className="fixed inset-0 bg-chess-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="mx-auto max-w-md rounded-2xl bg-chess-white p-8 shadow-2xl border border-chess-gray-100">
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                <ArrowUturnLeftIcon className="w-6 h-6 text-red-600" />
+              </div>
+              <h3 className="text-xl font-bold text-chess-gray-900 mb-2">
+                {t("game.moveInput.takeBackConfirm.title")}
+              </h3>
+              <p className="text-chess-gray-600">
+                {t("game.moveInput.takeBackConfirm.description")}
+              </p>
+            </div>
+
+            <div className="flex gap-3">
               <button
                 onClick={() => setShowConfirmDialog(false)}
-                className="px-4 py-2 text-sm font-medium text-chess-gray-700 bg-chess-white border border-chess-gray-300 rounded-md hover:bg-chess-gray-50"
+                className="flex-1 px-4 py-3 text-chess-gray-700 bg-chess-gray-100 hover:bg-chess-gray-200 rounded-xl font-semibold transition-colors duration-200"
               >
                 {t("common.cancel")}
               </button>
               <button
                 onClick={confirmTakeBack}
-                className="px-4 py-2 text-sm font-medium text-chess-white bg-chess-accent border border-transparent rounded-md hover:bg-chess-gray-700"
+                className="flex-1 px-4 py-3 bg-red-600 text-chess-white rounded-xl font-semibold hover:bg-red-700 transition-colors duration-200"
               >
                 {t("common.confirm")}
               </button>
