@@ -14,8 +14,15 @@ export const ColorSelector = ({
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-4">
-      <h3 className="font-semibold text-lg">{t("game.color.title")}</h3>
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          {t("game.color.title")}
+        </h3>
+        <p className="text-sm text-gray-600">
+          Choose your piece color for the game
+        </p>
+      </div>
       <div className="grid grid-cols-3 gap-4">
         {(["white", "black", "random"] as PlayerColor[]).map((color) => (
           <ColorOption

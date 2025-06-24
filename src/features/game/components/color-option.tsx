@@ -11,36 +11,43 @@ type ColorOptionProps = {
 const iconMap: Record<PlayerColor, string> = {
   white: "♔",
   black: "♚",
-  random: "🎲",
+  random: "♔",
 };
 
 export const ColorOption = ({ color, selected, onClick }: ColorOptionProps) => {
   const { t } = useTranslation();
   const baseClasses =
-    "w-full aspect-square rounded-2xl flex flex-col items-center justify-center space-y-1 font-medium transition-all overflow-hidden border-2";
+    "group relative w-full aspect-square rounded-xl flex flex-col items-center justify-center font-medium transition-all duration-200 shadow-sm overflow-hidden";
 
   const colorClasses = clsx({
-    "bg-white text-black border-black": color === "white",
-    "bg-black text-white border-white": color === "black",
-    "bg-[linear-gradient(to_right,white_50%,black_50%)] text-black border-gray-400":
+    "bg-white text-black border-2 border-gray-900": color === "white",
+    "bg-gray-900 text-white border-2 border-gray-900": color === "black",
+    "bg-gradient-to-r from-white via-white to-gray-900 text-gray-900 border-2 border-gray-400":
       color === "random",
   });
 
-  const ringColor = clsx({
-    "ring-2 ring-gray-400 ring-offset-2": color === "white" && selected,
-    "ring-2 ring-gray-200 ring-offset-2": color === "black" && selected,
-    "ring-2 ring-gray-300 ring-offset-2": color === "random" && selected,
+  const selectedStyles = clsx({
+    "ring-2 ring-gray-900 ring-offset-2 shadow-lg": selected,
+    "hover:shadow-md hover:scale-[1.02]": !selected,
   });
 
   return (
     <button
       onClick={onClick}
-      className={clsx(baseClasses, colorClasses, ringColor, {
-        "hover:opacity-90": !selected,
-      })}
+      className={clsx(baseClasses, colorClasses, selectedStyles)}
       aria-label={t(`game.color.${color}`)}
     >
-      <span className="text-5xl leading-none">{iconMap[color]}</span>
+      <div className="flex flex-col items-center space-y-2">
+        <span className="text-4xl leading-none">{iconMap[color]}</span>
+        <span className="text-xs font-semibold tracking-wide uppercase">
+          {t(`game.color.${color}`)}
+        </span>
+      </div>
+      {selected && (
+        <div className="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center">
+          <span className="text-white text-xs">✓</span>
+        </div>
+      )}
     </button>
   );
 };

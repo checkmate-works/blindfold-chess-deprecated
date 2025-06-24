@@ -7,40 +7,66 @@ type Props = {
   onMethodSelect: (method: StartMethod) => void;
 };
 
-export const StartMethodSelector = ({ selectedMethod, onMethodSelect }: Props) => {
+export const StartMethodSelector = ({
+  selectedMethod,
+  onMethodSelect,
+}: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-medium text-gray-900">
-        {t("game.setup.title")}
-      </h2>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="space-y-6">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          {t("game.setup.title")}
+        </h2>
+        <p className="text-gray-600">
+          Choose how you want to start your blindfold chess game
+        </p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <button
           onClick={() => onMethodSelect("new")}
-          className={`px-4 py-3 rounded-lg border-2 ${
+          className={`group relative px-6 py-4 rounded-xl transition-all duration-200 shadow-sm ${
             selectedMethod === "new"
-              ? "border-black bg-black text-white"
-              : "border-gray-300 bg-white text-gray-900 hover:border-gray-400"
+              ? "bg-gray-900 text-white shadow-lg ring-2 ring-gray-900 ring-offset-2"
+              : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 hover:shadow-md"
           }`}
         >
-          <div className="font-medium">{t("game.setup.newGame")}</div>
-          <div className="text-sm mt-1">
-            {t("game.setup.newGameDescription")}
+          <div className="text-center">
+            <div className="font-semibold text-lg mb-1">
+              {t("game.setup.newGame")}
+            </div>
+            <div className="text-sm opacity-80">
+              {t("game.setup.newGameDescription")}
+            </div>
           </div>
+          {selectedMethod === "new" && (
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs">✓</span>
+            </div>
+          )}
         </button>
         <button
           onClick={() => onMethodSelect("pgn")}
-          className={`px-4 py-3 rounded-lg border-2 ${
+          className={`group relative px-6 py-4 rounded-xl transition-all duration-200 shadow-sm ${
             selectedMethod === "pgn"
-              ? "border-black bg-black text-white"
-              : "border-gray-300 bg-white text-gray-900 hover:border-gray-400"
+              ? "bg-gray-900 text-white shadow-lg ring-2 ring-gray-900 ring-offset-2"
+              : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 hover:shadow-md"
           }`}
         >
-          <div className="font-medium">{t("game.setup.startFromPgn")}</div>
-          <div className="text-sm mt-1">
-            {t("game.setup.startFromPgnDescription")}
+          <div className="text-center">
+            <div className="font-semibold text-lg mb-1">
+              {t("game.setup.startFromPgn")}
+            </div>
+            <div className="text-sm opacity-80">
+              {t("game.setup.startFromPgnDescription")}
+            </div>
           </div>
+          {selectedMethod === "pgn" && (
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs">✓</span>
+            </div>
+          )}
         </button>
       </div>
     </div>

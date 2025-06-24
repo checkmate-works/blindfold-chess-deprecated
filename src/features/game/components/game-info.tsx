@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { SkillLevel } from "@/types";
 
 interface Props {
@@ -15,14 +14,20 @@ const ColorIcon = ({ color }: { color: "white" | "black" }) => (
 );
 
 export const GameInfo = ({ skillLevel, playerColor }: Props) => {
-  const { t } = useTranslation();
-
   return (
-    <div className="flex items-center space-x-3">
-      <ColorIcon color={playerColor} />
-      <span className="text-sm text-gray-500">
-        {t("game.ai.title")}: {t(`game.ai.levels.${skillLevel}`)}
-      </span>
+    <div className="flex items-center gap-4 text-sm">
+      {/* Player Color */}
+      <div className="flex items-center gap-1.5">
+        <ColorIcon color={playerColor} />
+      </div>
+
+      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+
+      {/* AI Level */}
+      <div className="flex items-center gap-1.5">
+        <span className="text-gray-600">♔</span>
+        <span className="font-medium text-gray-600">LV {skillLevel}</span>
+      </div>
     </div>
   );
 };

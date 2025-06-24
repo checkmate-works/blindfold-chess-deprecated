@@ -30,36 +30,80 @@ export const GameHeader = ({
     }
   };
 
+  const getStatusInfo = () => {
+    if (status === "win") {
+      return {
+        text: t("game.status.win"),
+        icon: "✓",
+        bgColor: "bg-green-100",
+        textColor: "text-green-700",
+        borderColor: "border-green-200",
+      };
+    }
+    if (status === "loss") {
+      return {
+        text: t("game.status.lose"),
+        icon: "✗",
+        bgColor: "bg-red-100",
+        textColor: "text-red-700",
+        borderColor: "border-red-200",
+      };
+    }
+    if (status === "draw") {
+      return {
+        text: t("game.status.draw"),
+        icon: "=",
+        bgColor: "bg-gray-100",
+        textColor: "text-gray-700",
+        borderColor: "border-gray-200",
+      };
+    }
+    if (isPlayerTurn) {
+      return {
+        text: t("game.status.yourTurn"),
+        icon: "⏰",
+        bgColor: "bg-blue-100",
+        textColor: "text-blue-700",
+        borderColor: "border-blue-200",
+      };
+    }
+    return {
+      text: t("game.status.in_progress"),
+      icon: "⚡",
+      bgColor: "bg-purple-100",
+      textColor: "text-purple-700",
+      borderColor: "border-purple-200",
+    };
+  };
+
+  const statusInfo = getStatusInfo();
+
   return (
-    <div className="bg-white shadow">
+    <div className="bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          <div className="flex items-center">
-            <button
-              onClick={handleBack}
-              className="mr-4 p-2 rounded-full hover:bg-gray-100"
-            >
-              <ArrowLeftIcon className="h-6 w-6 text-gray-600" />
-            </button>
-            <div>
-              <h1 className="text-lg font-medium text-gray-900">
-                {t("game.status.title")}
-              </h1>
-              <GameInfo skillLevel={skillLevel} playerColor={playerColor} />
+        <div className="py-4">
+          <div className="flex items-center justify-between">
+            {/* Left: Back button + Title + Game Info */}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handleBack}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 group"
+              >
+                <ArrowLeftIcon className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+              </button>
+
+              <div className="flex items-center gap-6">
+                <GameInfo skillLevel={skillLevel} playerColor={playerColor} />
+              </div>
             </div>
-          </div>
-          <div className="text-right">
-            <p className="text-sm font-medium text-gray-900">
-              {status === "win"
-                ? t("game.status.win")
-                : status === "loss"
-                  ? t("game.status.lose")
-                  : status === "draw"
-                    ? t("game.status.draw")
-                    : isPlayerTurn
-                      ? t("game.status.yourTurn")
-                      : t("game.status.in_progress")}
-            </p>
+
+            {/* Right: Status Badge */}
+            <div
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border font-semibold text-sm ${statusInfo.bgColor} ${statusInfo.textColor} ${statusInfo.borderColor}`}
+            >
+              <span className="text-sm">{statusInfo.icon}</span>
+              {statusInfo.text}
+            </div>
           </div>
         </div>
       </div>

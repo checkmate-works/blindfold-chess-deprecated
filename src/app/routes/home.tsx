@@ -92,10 +92,27 @@ const AppRoot = () => {
       </Helmet>
       <ContentLayout>
         <div className="min-h-screen bg-gray-50">
-          <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
-            <div className="w-full max-w-4xl mx-auto space-y-4">
-              <NewGameButton gameCount={games.length} />
-              <GameList games={games} onDeleteGame={handleDeleteGame} />
+          <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <div className="w-full max-w-4xl mx-auto">
+              {/* Header Section */}
+              <div className="text-center mb-10">
+                <div className="flex flex-col items-center mb-6">
+                  <img
+                    src="/logo.png"
+                    alt="Blindfold Chess Logo"
+                    className="h-20 w-auto mb-4 drop-shadow-sm"
+                  />
+                </div>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                  Train your chess visualization skills by playing without
+                  seeing the board
+                </p>
+              </div>
+
+              <div className="space-y-8">
+                <NewGameButton gameCount={games.length} />
+                <GameList games={games} onDeleteGame={handleDeleteGame} />
+              </div>
             </div>
           </div>
         </div>

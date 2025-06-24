@@ -84,41 +84,45 @@ const GameSetupRoute = () => {
         <title>{t("app.title")}</title>
       </Helmet>
       <ContentLayout>
-        <div className="max-w-2xl mx-auto p-4 space-y-8">
-          <StartMethodSelector
-            selectedMethod={selectedMethod}
-            onMethodSelect={setSelectedMethod}
-          />
+        <div className="max-w-3xl mx-auto p-4 sm:p-6">
+          <div className="space-y-10">
+            <StartMethodSelector
+              selectedMethod={selectedMethod}
+              onMethodSelect={setSelectedMethod}
+            />
 
-          {selectedMethod === "new" ? (
-            <div className="space-y-8">
-              <ColorSelector
-                selectedColor={selectedColor}
-                onColorSelect={setSelectedColor}
-              />
-              <SkillLevelSelector
-                selectedLevel={skillLevel}
-                onSelect={setSkillLevel}
-              />
-            </div>
-          ) : (
-            <div className="space-y-8">
-              <PgnInput value={pgn} onChange={setPgn} />
-              <SkillLevelSelector
-                selectedLevel={skillLevel}
-                onSelect={setSkillLevel}
-              />
-            </div>
-          )}
+            {selectedMethod === "new" ? (
+              <div className="space-y-10">
+                <ColorSelector
+                  selectedColor={selectedColor}
+                  onColorSelect={setSelectedColor}
+                />
+                <SkillLevelSelector
+                  selectedLevel={skillLevel}
+                  onSelect={setSkillLevel}
+                />
+              </div>
+            ) : (
+              <div className="space-y-10">
+                <PgnInput value={pgn} onChange={setPgn} />
+                <SkillLevelSelector
+                  selectedLevel={skillLevel}
+                  onSelect={setSkillLevel}
+                />
+              </div>
+            )}
 
-          <button
-            onClick={handleStartGame}
-            disabled={selectedMethod === "pgn" && !pgn}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <PlayIcon className="w-5 h-5" />
-            {t("common.start")}
-          </button>
+            <div className="pt-4">
+              <button
+                onClick={handleStartGame}
+                disabled={selectedMethod === "pgn" && !pgn}
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gray-900 text-white text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg hover:bg-gray-800 hover:shadow-xl hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg"
+              >
+                <PlayIcon className="w-6 h-6" />
+                {t("common.start")}
+              </button>
+            </div>
+          </div>
         </div>
       </ContentLayout>
     </>
