@@ -25,10 +25,10 @@ export const PgnInput = ({ value, onChange }: Props) => {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        <h3 className="text-xl font-semibold text-chess-gray-900 mb-2">
           {t("game.pgnInput.submit")}
         </h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-chess-gray-600">
           Paste your PGN notation to continue from a specific position
         </p>
       </div>
@@ -38,7 +38,7 @@ export const PgnInput = ({ value, onChange }: Props) => {
           value={value}
           onChange={handleChange}
           placeholder={t("game.pgnInput.placeholder")}
-          className="w-full h-40 px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all duration-200 shadow-sm hover:border-gray-300 font-mono text-sm"
+          className="w-full h-40 px-4 py-3 text-chess-gray-900 border-2 border-chess-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-chess-gray-900 focus:border-transparent transition-all duration-200 shadow-sm hover:border-chess-gray-300 font-mono text-sm"
         />
         {error && (
           <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg border border-red-200">

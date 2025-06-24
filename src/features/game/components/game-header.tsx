@@ -53,9 +53,9 @@ export const GameHeader = ({
       return {
         text: t("game.status.draw"),
         icon: "=",
-        bgColor: "bg-gray-100",
-        textColor: "text-gray-700",
-        borderColor: "border-gray-200",
+        bgColor: "bg-chess-gray-100",
+        textColor: "text-chess-gray-700",
+        borderColor: "border-chess-gray-200",
       };
     }
     if (isPlayerTurn) {
@@ -79,7 +79,7 @@ export const GameHeader = ({
   const statusInfo = getStatusInfo();
 
   return (
-    <div className="bg-white border-b border-gray-200 shadow-sm">
+    <div className="bg-chess-white border-b border-chess-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-4">
           <div className="flex items-center justify-between">
@@ -87,9 +87,9 @@ export const GameHeader = ({
             <div className="flex items-center gap-4">
               <button
                 onClick={handleBack}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 group"
+                className="p-2 rounded-lg hover:bg-chess-gray-100 transition-colors duration-200 group"
               >
-                <ArrowLeftIcon className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+                <ArrowLeftIcon className="h-5 w-5 text-chess-gray-600 group-hover:text-chess-gray-900" />
               </button>
 
               <div className="flex items-center gap-6">

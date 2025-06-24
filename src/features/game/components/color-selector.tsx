@@ -16,10 +16,10 @@ export const ColorSelector = ({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        <h3 className="text-xl font-semibold text-chess-gray-900 mb-2">
           {t("game.color.title")}
         </h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-chess-gray-600">
           Choose your piece color for the game
         </p>
       </div>

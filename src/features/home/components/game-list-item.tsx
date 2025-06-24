@@ -11,13 +11,16 @@ interface GameListItemProps {
   onDelete: (gameId: string) => void;
 }
 
-const ColorIcon = ({ color }: { color: "white" | "black" }) => (
-  <div
-    className={`w-4 h-4 rounded-full ${
-      color === "white" ? "bg-white border border-gray-400" : "bg-gray-900"
-    }`}
-  />
-);
+const ColorIcon = ({ color }: { color: "white" | "black" }) => {
+  if (color === "white") {
+    return (
+      <div className="w-4 h-4 rounded-full bg-white border border-gray-400" />
+    );
+  }
+  return (
+    <div className="w-4 h-4 rounded-full bg-gray-800 border border-gray-700" />
+  );
+};
 
 export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
   const navigate = useNavigate();
@@ -67,7 +70,7 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
 
   return (
     <li
-      className="hover:bg-gray-50 transition-all duration-200 cursor-pointer group"
+      className="hover:bg-chess-gray-50 transition-all duration-200 cursor-pointer group"
       onClick={handleGameClick}
     >
       <div className="px-4 sm:px-6 py-4 sm:py-5">
@@ -83,7 +86,7 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
                 <span>{getStatusIcon(game.status)}</span>
                 {t(`game.list.status.${game.status}`)}
               </span>
-              <span className="text-sm text-gray-500 font-medium">
+              <span className="text-sm text-chess-gray-500 font-medium">
                 {formatDate(new Date(game.date))}
               </span>
             </div>
@@ -94,15 +97,15 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
                 <ColorIcon color={game.playerColor} />
               </div>
 
-              <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+              <div className="w-1 h-1 bg-chess-gray-300 rounded-full"></div>
 
-              <span className="text-gray-600 font-medium">
+              <span className="text-chess-gray-600 font-medium">
                 {game.moves.length} {t("game.list.moves")}
               </span>
 
-              <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+              <div className="w-1 h-1 bg-chess-gray-300 rounded-full"></div>
 
-              <span className="text-gray-600 font-medium">
+              <span className="text-chess-gray-600 font-medium">
                 LV {game.skillLevel}
               </span>
             </div>

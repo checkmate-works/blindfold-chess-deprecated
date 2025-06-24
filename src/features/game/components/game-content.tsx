@@ -101,7 +101,7 @@ export const GameContent = ({
   const renderNotation = () => {
     return (
       <div className="w-full max-w-2xl mx-auto space-y-4">
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-chess-white rounded-lg shadow p-4">
           <div className="grid grid-cols-2 gap-4">
             {moves.map((move, index) => {
               const moveNumber = Math.floor(index / 2) + 1;
@@ -109,7 +109,9 @@ export const GameContent = ({
               return (
                 <div key={index} className="flex items-center space-x-2">
                   {isWhiteMove && (
-                    <span className="text-gray-500 w-8">{moveNumber}.</span>
+                    <span className="text-chess-gray-500 w-8">
+                      {moveNumber}.
+                    </span>
                   )}
                   <span className={`font-mono ${isWhiteMove ? "ml-8" : ""}`}>
                     {move}
@@ -122,7 +124,7 @@ export const GameContent = ({
         <div className="flex justify-end">
           <button
             onClick={handleCopyPgn}
-            className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 text-chess-gray-600 hover:text-chess-gray-800 hover:bg-chess-gray-100 rounded-md transition-colors"
             title="PGNをコピー"
           >
             <ClipboardDocumentIcon className="w-5 h-5" />
@@ -171,11 +173,11 @@ export const GameContent = ({
               type="text"
               value={currentFen}
               readOnly
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-sm font-mono"
+              className="flex-1 px-3 py-2 border border-chess-gray-300 rounded-md bg-chess-gray-50 text-sm font-mono"
             />
             <button
               onClick={handleCopyFen}
-              className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+              className="p-2 text-chess-gray-600 hover:text-chess-gray-800 hover:bg-chess-gray-100 rounded-md transition-colors"
               title="FENをコピー"
             >
               <ClipboardDocumentIcon className="w-5 h-5" />

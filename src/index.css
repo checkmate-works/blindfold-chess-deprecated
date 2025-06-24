@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* Global styles for softer appearance */
+body {
+  @apply bg-gray-50 text-gray-800;
+}

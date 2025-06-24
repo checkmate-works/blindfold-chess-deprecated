@@ -5,13 +5,16 @@ interface Props {
   playerColor: "white" | "black";
 }
 
-const ColorIcon = ({ color }: { color: "white" | "black" }) => (
-  <div
-    className={`w-4 h-4 rounded-full ${
-      color === "white" ? "bg-white border border-gray-400" : "bg-gray-900"
-    }`}
-  />
-);
+const ColorIcon = ({ color }: { color: "white" | "black" }) => {
+  if (color === "white") {
+    return (
+      <div className="w-4 h-4 rounded-full bg-white border border-gray-400" />
+    );
+  }
+  return (
+    <div className="w-4 h-4 rounded-full bg-gray-800 border border-gray-700" />
+  );
+};
 
 export const GameInfo = ({ skillLevel, playerColor }: Props) => {
   return (
@@ -21,12 +24,12 @@ export const GameInfo = ({ skillLevel, playerColor }: Props) => {
         <ColorIcon color={playerColor} />
       </div>
 
-      <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+      <div className="w-1 h-1 bg-chess-gray-300 rounded-full"></div>
 
       {/* AI Level */}
       <div className="flex items-center gap-1.5">
-        <span className="text-gray-600">♔</span>
-        <span className="font-medium text-gray-600">LV {skillLevel}</span>
+        <span className="text-chess-gray-600">♔</span>
+        <span className="font-medium text-chess-gray-600">LV {skillLevel}</span>
       </div>
     </div>
   );

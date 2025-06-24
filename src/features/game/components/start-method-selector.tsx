@@ -16,10 +16,10 @@ export const StartMethodSelector = ({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-chess-gray-900 mb-2">
           {t("game.setup.title")}
         </h2>
-        <p className="text-gray-600">
+        <p className="text-chess-gray-600">
           Choose how you want to start your blindfold chess game
         </p>
       </div>
@@ -28,8 +28,8 @@ export const StartMethodSelector = ({
           onClick={() => onMethodSelect("new")}
           className={`group relative px-6 py-4 rounded-xl transition-all duration-200 shadow-sm ${
             selectedMethod === "new"
-              ? "bg-gray-900 text-white shadow-lg ring-2 ring-gray-900 ring-offset-2"
-              : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 hover:shadow-md"
+              ? "bg-chess-gray-900 text-chess-white shadow-lg ring-2 ring-chess-gray-900 ring-offset-2"
+              : "bg-chess-white text-chess-gray-700 hover:bg-chess-gray-50 border-2 border-chess-gray-200 hover:border-chess-gray-300 hover:shadow-md"
           }`}
         >
           <div className="text-center">
@@ -41,8 +41,8 @@ export const StartMethodSelector = ({
             </div>
           </div>
           {selectedMethod === "new" && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs">✓</span>
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-chess-gray-900 rounded-full flex items-center justify-center">
+              <span className="text-chess-white text-xs">✓</span>
             </div>
           )}
         </button>
@@ -50,8 +50,8 @@ export const StartMethodSelector = ({
           onClick={() => onMethodSelect("pgn")}
           className={`group relative px-6 py-4 rounded-xl transition-all duration-200 shadow-sm ${
             selectedMethod === "pgn"
-              ? "bg-gray-900 text-white shadow-lg ring-2 ring-gray-900 ring-offset-2"
-              : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 hover:shadow-md"
+              ? "bg-chess-gray-900 text-chess-white shadow-lg ring-2 ring-chess-gray-900 ring-offset-2"
+              : "bg-chess-white text-chess-gray-700 hover:bg-chess-gray-50 border-2 border-chess-gray-200 hover:border-chess-gray-300 hover:shadow-md"
           }`}
         >
           <div className="text-center">
@@ -63,8 +63,8 @@ export const StartMethodSelector = ({
             </div>
           </div>
           {selectedMethod === "pgn" && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs">✓</span>
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-chess-gray-900 rounded-full flex items-center justify-center">
+              <span className="text-chess-white text-xs">✓</span>
             </div>
           )}
         </button>

@@ -12,10 +12,10 @@ export const SkillLevelSelector = ({ selectedLevel, onSelect }: Props) => {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        <h3 className="text-xl font-semibold text-chess-gray-900 mb-2">
           {t("game.ai.title")}
         </h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-chess-gray-600">
           Select your preferred difficulty level
         </p>
       </div>
@@ -26,8 +26,8 @@ export const SkillLevelSelector = ({ selectedLevel, onSelect }: Props) => {
             onClick={() => onSelect(value)}
             className={`group relative px-3 py-4 text-sm font-semibold rounded-xl transition-all duration-200 shadow-sm ${
               selectedLevel === value
-                ? "bg-gray-900 text-white shadow-lg ring-2 ring-gray-900 ring-offset-2"
-                : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 hover:shadow-md"
+                ? "bg-chess-gray-900 text-chess-white shadow-lg ring-2 ring-chess-gray-900 ring-offset-2"
+                : "bg-chess-white text-chess-gray-700 hover:bg-chess-gray-50 border-2 border-chess-gray-200 hover:border-chess-gray-300 hover:shadow-md"
             }`}
           >
             <div className="flex flex-col items-center space-y-1">
@@ -37,8 +37,8 @@ export const SkillLevelSelector = ({ selectedLevel, onSelect }: Props) => {
               </span>
             </div>
             {selectedLevel === value && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs">✓</span>
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-chess-gray-900 rounded-full flex items-center justify-center">
+                <span className="text-chess-white text-xs">✓</span>
               </div>
             )}
           </button>

@@ -85,7 +85,7 @@ const AppRoot = () => {
         <title>{t("app.title")}</title>
       </Helmet>
       <ContentLayout>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-chess-gray-50">
           <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
             <div className="w-full max-w-4xl mx-auto">
               {/* Header Section */}
@@ -97,7 +97,7 @@ const AppRoot = () => {
                     className="h-20 w-auto mb-4 drop-shadow-sm"
                   />
                 </div>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                <p className="text-lg text-chess-gray-600 max-w-2xl mx-auto leading-relaxed">
                   Train your chess visualization skills by playing without
                   seeing the board
                 </p>

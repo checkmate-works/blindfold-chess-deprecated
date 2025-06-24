@@ -116,7 +116,7 @@ const GameSetupRoute = () => {
               <button
                 onClick={handleStartGame}
                 disabled={selectedMethod === "pgn" && !pgn}
-                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gray-900 text-white text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg hover:bg-gray-800 hover:shadow-xl hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg"
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-chess-gray-900 text-chess-white text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg hover:bg-chess-gray-800 hover:shadow-xl hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg"
               >
                 <PlayIcon className="w-6 h-6" />
                 {t("common.start")}
