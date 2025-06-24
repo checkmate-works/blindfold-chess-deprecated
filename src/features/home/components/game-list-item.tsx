@@ -25,7 +25,9 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
 
   const formatDate = (date: Date) => {
     const locale = i18n.language === "ja" ? ja : enUS;
-    return format(date, "MMM dd, HH:mm", { locale });
+    // Use shorter format on mobile
+    const formatString = window.innerWidth < 640 ? "MMM dd" : "MMM dd, HH:mm";
+    return format(date, formatString, { locale });
   };
 
   const handleGameClick = () => {
@@ -68,8 +70,8 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
       className="hover:bg-gray-50 transition-all duration-200 cursor-pointer group"
       onClick={handleGameClick}
     >
-      <div className="px-6 py-5">
-        <div className="flex items-center justify-between gap-4">
+      <div className="px-4 sm:px-6 py-4 sm:py-5">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
           <div className="flex-1 min-w-0">
             {/* Top Row: Status and Date */}
             <div className="flex items-center gap-3 mb-3">
@@ -87,8 +89,8 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
             </div>
 
             {/* Bottom Row: Game Details */}
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3 text-sm">
+              <div className="flex items-center gap-1">
                 <ColorIcon color={game.playerColor} />
               </div>
 
@@ -106,8 +108,8 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
             </div>
           </div>
 
-          {/* Delete button */}
-          <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          {/* Delete button - always visible on mobile */}
+          <div className="flex-shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
             <DeleteGameButton gameId={game.id} onDelete={onDelete} />
           </div>
         </div>
