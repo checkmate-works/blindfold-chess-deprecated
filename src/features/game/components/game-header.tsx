@@ -9,6 +9,7 @@ interface Props {
   status: GameStatus;
   isPlayerTurn: boolean;
   playerColor: "white" | "black";
+  onBack?: () => void;
 }
 
 export const GameHeader = ({
@@ -16,12 +17,17 @@ export const GameHeader = ({
   status,
   isPlayerTurn,
   playerColor,
+  onBack,
 }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate("/");
+    if (onBack) {
+      onBack();
+    } else {
+      navigate("/");
+    }
   };
 
   return (

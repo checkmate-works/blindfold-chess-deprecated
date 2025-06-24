@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GameSettings, GameStatus, AlgebraicNotation, Side } from "@/types";
 import { useAutoSave } from "../hooks/use-auto-save";
 import { useNotation } from "../hooks/use-notation";
+import { usePageLeave } from "../hooks/use-page-leave";
 import { useGameServices } from "../services";
 import { GameStateService } from "../services/game-state.service";
 import { GameContent } from "./game-content";
@@ -70,7 +71,7 @@ export const GamePlayScreen = ({
     toast.success(t("game.notifications.gameSaved"));
   }, [t]);
 
-  useAutoSave({
+  const { saveGame: autoSaveGame } = useAutoSave({
     moves,
     playerColor: playerSide,
     skillLevel: settings.skillLevel,
@@ -78,6 +79,24 @@ export const GamePlayScreen = ({
     onAutoSave: handleAutoSave,
     disabled: gameStatus !== "in_progress",
   });
+
+  // Handle page leave with auto-save
+  const { navigateWithSave } = usePageLeave({
+    onBeforeLeave: useCallback(async () => {
+      if (gameStatus === "in_progress") {
+        console.log("🚪 Page leaving, triggering auto-save...");
+        await autoSaveGame();
+      }
+    }, [autoSaveGame, gameStatus]),
+    shouldPrevent: useCallback(() => {
+      return gameStatus === "in_progress" && moves.length > 0;
+    }, [gameStatus, moves.length]),
+  });
+
+  // Handle navigation with auto-save
+  const handleNavigateBack = useCallback(async () => {
+    await navigateWithSave("/");
+  }, [navigateWithSave]);
 
   useEffect(() => {
     const makeFirstMove = async () => {
@@ -185,6 +204,7 @@ export const GamePlayScreen = ({
         status={gameStatus}
         isPlayerTurn={isPlayerTurn}
         playerColor={playerSide}
+        onBack={handleNavigateBack}
       />
       <div className="flex-1 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 md:px-8">
         <TabMenu
