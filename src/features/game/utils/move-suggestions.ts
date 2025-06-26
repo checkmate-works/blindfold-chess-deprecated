@@ -140,6 +140,11 @@ export const generateMoveSuggestions = (input: string): AlgebraicNotation[] => {
   const fromFile = input[0].toLowerCase();
   if (!["a", "b", "c", "d", "e", "f", "g", "h"].includes(fromFile)) return [];
 
+  // 大文字のファイル名が入力された場合は候補を表示しない
+  if (input.length === 1 && input[0] !== input[0].toLowerCase()) {
+    return [];
+  }
+
   // 入力が1文字の場合は、そのファイルの全ての移動先を返す
   if (input.length === 1) {
     return Array.from(
