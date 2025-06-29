@@ -3,7 +3,6 @@ import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-// @ts-expect-error - No type definitions available
 import "katex/dist/katex.min.css";
 
 interface MarkdownContentProps {
