@@ -105,5 +105,15 @@
   },
   "app": {
     "title": "Blindfold Chess"
+  },
+  "tips": {
+    "title": "Tips & Tutorials",
+    "description": "Learn chess concepts and improve your blindfold skills",
+    "allCategories": "All",
+    "noTipsFound": "No tips found in this category",
+    "backToList": "Back to Tips",
+    "notFound": "Tip not found",
+    "publishedAt": "Published",
+    "updatedAt": "Updated"
   }
 }

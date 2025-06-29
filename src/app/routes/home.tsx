@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
+import { BookOpenIcon } from "@heroicons/react/24/outline";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ContentLayout } from "@/components/layouts";
 import { useGameServices } from "@/features/game/services";
 import { GameList } from "@/features/home/components/game-list";
@@ -104,7 +105,16 @@ const AppRoot = () => {
               </div>
 
               <div className="space-y-8">
-                <NewGameButton gameCount={games.length} />
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <NewGameButton gameCount={games.length} />
+                  <Link
+                    to="/tips"
+                    className="flex items-center justify-center gap-3 px-6 py-4 bg-chess-white text-chess-gray-900 text-lg font-semibold rounded-xl border-2 border-chess-gray-300 transition-all duration-200 shadow-md hover:bg-chess-gray-100 hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    <BookOpenIcon className="w-6 h-6" />
+                    {t("tips.title")}
+                  </Link>
+                </div>
                 <GameList games={games} onDeleteGame={handleDeleteGame} />
               </div>
             </div>

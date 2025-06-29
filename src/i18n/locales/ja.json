@@ -105,5 +105,15 @@
   },
   "app": {
     "title": "目隠しチェス"
+  },
+  "tips": {
+    "title": "ヒント & チュートリアル",
+    "description": "チェスの概念を学び、目隠しチェスのスキルを向上させよう",
+    "allCategories": "すべて",
+    "noTipsFound": "このカテゴリーにはヒントがありません",
+    "backToList": "ヒント一覧へ戻る",
+    "notFound": "ヒントが見つかりません",
+    "publishedAt": "公開日",
+    "updatedAt": "更新日"
   }
 }
