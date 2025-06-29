@@ -4,3 +4,34 @@
 body {
   @apply bg-gray-50 text-gray-800;
 }
+
+/* KaTeX display math centering */
+.katex-display {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+/* KaTeX inline math spacing */
+.katex {
+  font-size: 1.1em;
+}
+
+/* Markdown content improvements */
+.prose .math-display {
+  overflow-x: auto;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.prose pre {
+  overflow-x: auto;
+}
+
+.prose table {
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
