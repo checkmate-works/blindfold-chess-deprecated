@@ -7,6 +7,7 @@
     "dev": "vite",
     "prebuild": "bun run copy-stockfish",
     "build": "tsc -b && vite build",
+    "build:ssg": "bun run build && bun run scripts/prerender.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
