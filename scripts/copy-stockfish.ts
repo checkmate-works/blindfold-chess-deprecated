@@ -15,4 +15,4 @@ async function copyStockfishFiles() {
   );
 }
 
-copyStockfishFiles().catch(console.error);
+copyStockfishFiles().catch(console.warn);

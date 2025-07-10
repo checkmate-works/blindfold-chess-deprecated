@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { ContentLayout } from "@/components/layouts";
+import { getMarkdownContent } from "@/content/tips/markdown-loader";
 import { MarkdownContent } from "../components/markdown-content";
 import { categories, getTipBySlug } from "../utils/tips-loader";
 
@@ -100,7 +101,10 @@ const TipDetailRoute = () => {
 
           {/* コンテンツ */}
           <MarkdownContent
-            content={isJapanese ? tip.content.ja : tip.content.en}
+            content={getMarkdownContent(
+              tip.frontmatter.slug,
+              isJapanese ? "ja" : "en",
+            )}
           />
 
           {/* フッター */}

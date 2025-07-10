@@ -1,6 +1,10 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import {
+  tipsMetadata,
+  AVAILABLE_TIPS,
+} from "../src/content/tips/tips-metadata";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
@@ -14,16 +18,6 @@ if (!existsSync(distDir)) {
   process.exit(1);
 }
 
-// tips-data.tsからデータを取得するための簡易的な方法
-// 実際のslugを手動でリストアップ（tips-data.tsから抽出）
-const tipSlugs = [
-  "bishop-movement",
-  "knight-movement",
-  "king-movement",
-  "rook-movement",
-  "square-colors",
-];
-
 // プリレンダリングするルートのリスト
 const routes = [
   {
@@ -32,15 +26,14 @@ const routes = [
     description:
       "Learn chess tactics, strategies, and improve your blindfold chess skills",
   },
-  ...tipSlugs.map((slug) => ({
-    path: `/tips/${slug}`,
-    title: `${slug
-      .split("-")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ")} | Blindfold Chess Tips`,
-    description:
-      "Learn chess tips and strategies to improve your blindfold chess skills",
-  })),
+  ...AVAILABLE_TIPS.map((slug) => {
+    const metadata = tipsMetadata[slug];
+    return {
+      path: `/tips/${slug}`,
+      title: `${metadata.title} | Blindfold Chess Tips`,
+      description: metadata.excerpt,
+    };
+  }),
 ];
 
 // HTMLテンプレートを読み込む
