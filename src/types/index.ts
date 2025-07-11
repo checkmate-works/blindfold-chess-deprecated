@@ -64,7 +64,7 @@ export type GameSettings = {
   skillLevel: SkillLevel;
 };
 
-export type GameStatus = "in_progress" | "win" | "loss" | "draw";
+export type GameStatus = "in_progress" | "win" | "loss" | "draw" | "checkmate";
 export type Game = {
   id: string;
   date: string;

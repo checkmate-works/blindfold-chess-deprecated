@@ -80,7 +80,7 @@ export class GameStateService {
         return chess.turn() === playerTurn ? "loss" : "win";
       } else {
         // プレイヤーの色が指定されていない場合は、従来の判定を使用
-        return chess.turn() === "w" ? "loss" : "win";
+        return "checkmate";
       }
     }
 
