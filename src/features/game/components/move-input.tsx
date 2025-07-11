@@ -140,9 +140,7 @@ export const MoveInput = ({
                 ? t("game.status.lose")
                 : gameStatus === "draw"
                   ? t("game.status.draw")
-                  : gameStatus === "checkmate"
-                    ? t("game.status.win")
-                    : t("game.status.in_progress")}
+                  : t("game.status.in_progress")}
         </div>
       </div>
 

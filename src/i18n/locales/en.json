@@ -75,7 +75,6 @@
         "lose": "Loss",
         "loss": "Loss",
         "draw": "Draw",
-        "checkmate": "Checkmate",
         "in_progress": "In Progress"
       },
       "moves": "moves"

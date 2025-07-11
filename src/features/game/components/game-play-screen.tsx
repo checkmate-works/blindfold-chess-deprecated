@@ -143,7 +143,7 @@ export const GamePlayScreen = ({
           setSavedGameId(id);
 
           // Show appropriate message based on game result
-          if (statusAfterPlayerMove === "checkmate") {
+          if (statusAfterPlayerMove === "win") {
             toast.success(t("game.notifications.checkmate"));
           } else if (statusAfterPlayerMove === "draw") {
             toast.success(t("game.notifications.draw"));
@@ -189,7 +189,7 @@ export const GamePlayScreen = ({
           setSavedGameId(id);
 
           // Show appropriate message based on game result
-          if (finalGameStatus === "checkmate") {
+          if (finalGameStatus === "loss") {
             toast.error(t("game.notifications.checkmateByAi"));
           } else if (finalGameStatus === "draw") {
             toast.success(t("game.notifications.draw"));

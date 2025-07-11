@@ -79,8 +79,8 @@ export class GameStateService {
         const playerTurn = playerColor === "white" ? "w" : "b";
         return chess.turn() === playerTurn ? "loss" : "win";
       } else {
-        // プレイヤーの色が指定されていない場合は、従来の判定を使用
-        return "checkmate";
+        // プレイヤーの色が指定されていない場合は、白の視点で判定
+        return chess.turn() === "w" ? "loss" : "win";
       }
     }
 

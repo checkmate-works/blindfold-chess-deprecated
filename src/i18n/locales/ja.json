@@ -75,7 +75,6 @@
         "lose": "敗北",
         "loss": "敗北",
         "draw": "引き分け",
-        "checkmate": "チェックメイト",
         "in_progress": "対局中"
       },
       "moves": "手"
