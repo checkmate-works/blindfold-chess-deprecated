@@ -44,6 +44,7 @@
       "title": "Game Status",
       "win": "You won!",
       "lose": "You lost!",
+      "loss": "You lost!",
       "draw": "Draw!",
       "in_progress": "Game in progress",
       "lastMove": "Last move",
@@ -72,7 +73,9 @@
       "status": {
         "win": "Win",
         "lose": "Loss",
+        "loss": "Loss",
         "draw": "Draw",
+        "checkmate": "Checkmate",
         "in_progress": "In Progress"
       },
       "moves": "moves"

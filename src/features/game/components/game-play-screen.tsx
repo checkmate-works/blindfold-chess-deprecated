@@ -124,7 +124,7 @@ export const GamePlayScreen = ({
       pushMove(move);
 
       // Check game status after player move
-      const statusAfterPlayerMove = gameStateService.getGameStatus();
+      const statusAfterPlayerMove = gameStateService.getGameStatus(playerSide);
 
       if (statusAfterPlayerMove !== "in_progress") {
         setGameStatus(statusAfterPlayerMove);
@@ -170,7 +170,7 @@ export const GamePlayScreen = ({
       pushMove(aiResult.move);
 
       // Check game status after AI move
-      const finalGameStatus = gameStateService.getGameStatus();
+      const finalGameStatus = gameStateService.getGameStatus(playerSide);
 
       if (finalGameStatus !== "in_progress") {
         setGameStatus(finalGameStatus);

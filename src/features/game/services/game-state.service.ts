@@ -65,13 +65,23 @@ export class GameStateService {
     };
   }
 
-  getGameStatus(): GameStatus {
-    return this.getGameStatusFromChess(this.chess);
+  getGameStatus(playerColor?: "white" | "black"): GameStatus {
+    return this.getGameStatusFromChess(this.chess, playerColor);
   }
 
-  private getGameStatusFromChess(chess: Chess): GameStatus {
+  private getGameStatusFromChess(
+    chess: Chess,
+    playerColor?: "white" | "black",
+  ): GameStatus {
     if (chess.isCheckmate()) {
-      return chess.turn() === "w" ? "loss" : "win";
+      if (playerColor) {
+        // プレイヤーの色が指定されている場合は、プレイヤーの視点で判定
+        const playerTurn = playerColor === "white" ? "w" : "b";
+        return chess.turn() === playerTurn ? "loss" : "win";
+      } else {
+        // プレイヤーの色が指定されていない場合は、従来の判定を使用
+        return chess.turn() === "w" ? "loss" : "win";
+      }
     }
 
     if (chess.isDraw()) {
