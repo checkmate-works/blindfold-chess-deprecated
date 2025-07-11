@@ -4,12 +4,13 @@ import { useLocation, Navigate } from "react-router-dom";
 import { ContentLayout } from "@/components/layouts";
 import { GamePlayScreen } from "@/features/game/components/game-play-screen";
 import { GameServicesProvider } from "@/features/game/providers/game-services.provider";
-import { GameSettings, AlgebraicNotation } from "@/types";
+import { GameSettings, AlgebraicNotation, GameStatus } from "@/types";
 
 export type PlayScreenState = {
   gameId?: string;
   settings: GameSettings;
   initialMoves: AlgebraicNotation[];
+  gameStatus?: GameStatus;
 };
 
 const GamePlayRoute = () => {
@@ -32,6 +33,7 @@ const GamePlayRoute = () => {
             gameId={state.gameId}
             settings={state.settings}
             initialMoves={state.initialMoves || []}
+            gameStatus={state.gameStatus}
           />
         </GameServicesProvider>
       </ContentLayout>

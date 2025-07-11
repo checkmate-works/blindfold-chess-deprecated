@@ -61,7 +61,10 @@
     "notifications": {
       "gameSaved": "Game saved successfully",
       "resultSaved": "Game result saved",
-      "saveFailed": "Failed to save game"
+      "saveFailed": "Failed to save game",
+      "checkmate": "Checkmate! You won!",
+      "checkmateByAi": "Checkmate! You lost!",
+      "draw": "Game ended in a draw!"
     },
     "list": {
       "title": "Game List",

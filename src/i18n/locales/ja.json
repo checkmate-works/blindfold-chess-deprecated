@@ -61,7 +61,10 @@
     "notifications": {
       "gameSaved": "ゲームを保存しました",
       "resultSaved": "対局結果を保存しました",
-      "saveFailed": "ゲームの保存に失敗しました"
+      "saveFailed": "ゲームの保存に失敗しました",
+      "checkmate": "チェックメイト！あなたの勝ちです！",
+      "checkmateByAi": "チェックメイト！負けました...",
+      "draw": "引き分けになりました！"
     },
     "list": {
       "title": "対局一覧",

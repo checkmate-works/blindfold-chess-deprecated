@@ -3,7 +3,7 @@ import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import { Chessboard } from "react-chessboard";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { AlgebraicNotation, Side } from "@/types";
+import { AlgebraicNotation, Side, GameStatus } from "@/types";
 import { generatePgn } from "@/utils/pgn-parser";
 import { MoveInput } from "./move-input";
 
@@ -21,6 +21,7 @@ type Props = {
   onErrorClear: () => void;
   moves: AlgebraicNotation[];
   onTakeBack: () => void;
+  gameStatus: GameStatus;
 };
 
 export const GameContent = ({
@@ -35,6 +36,7 @@ export const GameContent = ({
   onErrorClear,
   moves,
   onTakeBack,
+  gameStatus,
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(400);
@@ -146,6 +148,7 @@ export const GameContent = ({
           onErrorClear={onErrorClear}
           isThinking={isThinking}
           onTakeBack={onTakeBack}
+          gameStatus={gameStatus}
         />
       ) : activeTab === "board" ? (
         <div className="flex flex-col items-center w-full space-y-4">

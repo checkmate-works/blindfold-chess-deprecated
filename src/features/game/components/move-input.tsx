@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
 import { AlgebraicNotationSchema } from "@/schemas/algebraic-notation";
-import { type AlgebraicNotation } from "@/types";
+import { type AlgebraicNotation, type GameStatus } from "@/types";
 import { generateMoveSuggestions } from "../utils/move-suggestions";
 
 type MoveInputProps = {
@@ -13,6 +13,7 @@ type MoveInputProps = {
   onErrorClear?: () => void;
   isThinking: boolean;
   onTakeBack: () => void;
+  gameStatus: GameStatus;
 };
 
 export const MoveInput = ({
@@ -23,6 +24,7 @@ export const MoveInput = ({
   onErrorClear,
   isThinking,
   onTakeBack,
+  gameStatus,
 }: MoveInputProps) => {
   const { t } = useTranslation();
   const [currentMove, setCurrentMove] = useState<string>("");
@@ -128,7 +130,19 @@ export const MoveInput = ({
           </div>
         )}
         <div className="text-chess-gray-600">
-          {isPlayerTurn ? t("game.status.yourTurn") : t("game.status.thinking")}
+          {gameStatus === "in_progress"
+            ? isPlayerTurn
+              ? t("game.status.yourTurn")
+              : t("game.status.thinking")
+            : gameStatus === "win"
+              ? t("game.status.win")
+              : gameStatus === "loss"
+                ? t("game.status.lose")
+                : gameStatus === "draw"
+                  ? t("game.status.draw")
+                  : gameStatus === "checkmate"
+                    ? t("game.status.win")
+                    : t(`game.list.status.${gameStatus}`)}
         </div>
       </div>
 
@@ -140,13 +154,15 @@ export const MoveInput = ({
             value={currentMove}
             onChange={handleInputChange}
             onFocus={() => setShowSuggestions(true)}
-            disabled={!isPlayerTurn}
+            disabled={!isPlayerTurn || gameStatus !== "in_progress"}
             onKeyDown={handleKeyDown}
             placeholder={t("game.status.enterMove")}
-            className={`w-64 px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-chess-black text-chess-gray-900 ${
-              errorMessage || localError
-                ? "border-red-500 focus:ring-red-500"
-                : "border-chess-gray-300 focus:ring-chess-black"
+            className={`w-64 px-3 py-2 border rounded focus:outline-none focus:ring-2 ${
+              !isPlayerTurn || gameStatus !== "in_progress"
+                ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed focus:ring-gray-300"
+                : errorMessage || localError
+                  ? "border-red-500 focus:ring-red-500 text-chess-gray-900"
+                  : "border-chess-gray-300 focus:ring-chess-black text-chess-gray-900"
             }`}
             autoComplete="off"
             spellCheck="false"
@@ -198,12 +214,14 @@ export const MoveInput = ({
         >
           <button
             type="submit"
-            disabled={!isPlayerTurn || !currentMove}
+            disabled={
+              !isPlayerTurn || !currentMove || gameStatus !== "in_progress"
+            }
             className={`w-full px-4 py-3 text-lg font-semibold rounded-xl transition-all duration-200 shadow-md
               ${
-                isPlayerTurn && currentMove
+                isPlayerTurn && currentMove && gameStatus === "in_progress"
                   ? "bg-chess-black text-chess-white hover:bg-chess-gray-800 hover:shadow-lg hover:scale-[1.01]"
-                  : "bg-chess-gray-300 text-chess-gray-500 cursor-not-allowed"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
           >
             {t("game.status.makeMove")}
@@ -214,8 +232,8 @@ export const MoveInput = ({
       <div className="mt-4 flex justify-center">
         <button
           onClick={handleTakeBack}
-          disabled={isThinking || !lastMove}
-          className="inline-flex items-center px-3 py-2 border border-chess-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-chess-gray-700 bg-chess-white hover:bg-chess-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-chess-gray-100 disabled:cursor-not-allowed"
+          disabled={isThinking || !lastMove || gameStatus !== "in_progress"}
+          className="inline-flex items-center px-3 py-2 border shadow-sm text-sm leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300 enabled:border-chess-gray-300 enabled:text-chess-gray-700 enabled:bg-chess-white enabled:hover:bg-chess-gray-50"
         >
           <ArrowUturnLeftIcon className="h-5 w-5" />
         </button>

@@ -42,6 +42,7 @@ export const GameListItem = ({ game, onDelete }: GameListItemProps) => {
         },
         initialMoves: game.moves,
         gameId: game.id,
+        gameStatus: game.status,
       } satisfies PlayScreenState,
     });
   };

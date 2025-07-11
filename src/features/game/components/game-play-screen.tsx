@@ -18,20 +18,26 @@ type GamePlayScreenProps = {
   gameId?: string;
   settings: GameSettings;
   initialMoves: AlgebraicNotation[];
+  gameStatus?: GameStatus;
 };
 
 export const GamePlayScreen = ({
   gameId,
   settings,
   initialMoves,
+  gameStatus: initialGameStatus,
 }: GamePlayScreenProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [playerSide] = useState<Side>(settings.color);
-  const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
+  const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(
+    initialGameStatus === "in_progress" || !initialGameStatus,
+  );
   const [activeTab, setActiveTab] = useState<Tab>("moveInput");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [gameStatus, setGameStatus] = useState<GameStatus>("in_progress");
+  const [gameStatus, setGameStatus] = useState<GameStatus>(
+    initialGameStatus || "in_progress",
+  );
   const [savedGameId, setSavedGameId] = useState<string | null>(gameId ?? null);
   const { chessEngineService, gameRepository, createGameStateService } =
     useGameServices();
@@ -42,29 +48,6 @@ export const GamePlayScreen = ({
   useEffect(() => {
     gameStateServiceRef.current = createGameStateService(initialMoves || []);
   }, [initialMoves, createGameStateService]);
-
-  const handleSaveGame = useCallback(
-    async (status: GameStatus) => {
-      if (status !== "in_progress") {
-        try {
-          const id = await gameRepository.save(
-            {
-              moves,
-              playerColor: playerSide,
-              skillLevel: settings.skillLevel,
-              status,
-            },
-            savedGameId ?? undefined,
-          );
-          setSavedGameId(id);
-          toast.success(t("game.notifications.resultSaved"));
-        } catch {
-          toast.error(t("game.notifications.saveFailed"));
-        }
-      }
-    },
-    [moves, playerSide, settings.skillLevel, savedGameId, t, gameRepository],
-  );
 
   const handleAutoSave = useCallback(() => {
     toast.success(t("game.notifications.gameSaved"));
@@ -140,6 +123,41 @@ export const GamePlayScreen = ({
 
       pushMove(move);
 
+      // Check game status after player move
+      const statusAfterPlayerMove = gameStateService.getGameStatus();
+
+      if (statusAfterPlayerMove !== "in_progress") {
+        setGameStatus(statusAfterPlayerMove);
+
+        // Save the game with the final move included
+        try {
+          const id = await gameRepository.save(
+            {
+              moves: [...moves, move], // Include the final move
+              playerColor: playerSide,
+              skillLevel: settings.skillLevel,
+              status: statusAfterPlayerMove,
+            },
+            savedGameId ?? undefined,
+          );
+          setSavedGameId(id);
+
+          // Show appropriate message based on game result
+          if (statusAfterPlayerMove === "checkmate") {
+            toast.success(t("game.notifications.checkmate"));
+          } else if (statusAfterPlayerMove === "draw") {
+            toast.success(t("game.notifications.draw"));
+          } else {
+            toast.success(t(`game.list.status.${statusAfterPlayerMove}`));
+          }
+
+          setTimeout(() => navigate("/"), 1500); // Give time to see the toast
+        } catch {
+          toast.error(t("game.notifications.saveFailed"));
+        }
+        return;
+      }
+
       // Get AI move
       const aiResult = await chessEngineService.getAiMove([...moves, move]);
 
@@ -156,17 +174,34 @@ export const GamePlayScreen = ({
 
       if (finalGameStatus !== "in_progress") {
         setGameStatus(finalGameStatus);
-        handleSaveGame(finalGameStatus);
-        toast.success(t(`game.list.status.${finalGameStatus}`));
-        navigate("/");
-        return;
-      }
 
-      if (aiResult.status !== "in_progress") {
-        setGameStatus(aiResult.status);
-        handleSaveGame(aiResult.status);
-        toast.success(t(`game.list.status.${aiResult.status}`));
-        navigate("/");
+        // Save the game with all moves including AI's final move
+        try {
+          const id = await gameRepository.save(
+            {
+              moves: [...moves, move, aiResult.move], // Include both player's and AI's final moves
+              playerColor: playerSide,
+              skillLevel: settings.skillLevel,
+              status: finalGameStatus,
+            },
+            savedGameId ?? undefined,
+          );
+          setSavedGameId(id);
+
+          // Show appropriate message based on game result
+          if (finalGameStatus === "checkmate") {
+            toast.error(t("game.notifications.checkmateByAi"));
+          } else if (finalGameStatus === "draw") {
+            toast.success(t("game.notifications.draw"));
+          } else {
+            toast.success(t(`game.list.status.${finalGameStatus}`));
+          }
+
+          setTimeout(() => navigate("/"), 1500); // Give time to see the toast
+        } catch {
+          toast.error(t("game.notifications.saveFailed"));
+        }
+        return;
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -222,6 +257,7 @@ export const GamePlayScreen = ({
           onErrorClear={() => setErrorMessage(null)}
           moves={moves}
           onTakeBack={handleTakeBack}
+          gameStatus={gameStatus}
         />
       </div>
     </div>
