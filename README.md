@@ -1,4 +1,4 @@
-# Blindfold Chess
+# This repository has been moved to a [new repository](https://github.com/checkmate-works/blindfold-chess).
 
 🌐 **[Try Live Demo →](https://chess-blindfold.vercel.app/)** | 📚 **[View Full Documentation →](./CLAUDE.md)**
 
